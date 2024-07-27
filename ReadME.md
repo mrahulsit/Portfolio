@@ -15,7 +15,7 @@ This repository contains the HTML and CSS code for my professional resume. The r
 
 ## Demo
 
-You can view the live version of the resume [here](https://www.example.com).
+You can view the live version of the resume [here](https://resume-2024-portfolio.vercel.app/).
 
 ## Features
 
