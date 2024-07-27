@@ -463,6 +463,10 @@ footer > span {
   }
   .sidebar {
     margin-bottom: 0.2em;
+    height: 60vh;
+  }
+  .content {
+    height: 260vh;
   }
   .border {
     padding-left: 2em;
@@ -470,11 +474,15 @@ footer > span {
   .line {
     margin-top: 0.2em;
     left: 25px;
-    height: 63em;
-    gap: 19.6em;
+    height: 59em;
+    gap: 19em;
+  }
+  .line > .circle:nth-child(2) {
+    position: relative;
+    top: 10px;
   }
   .content > .divider {
-    width: 24em;
+    width: 27em;
     height: 0.3em;
     background-color: var(--var2);
     margin-top: 1em;
