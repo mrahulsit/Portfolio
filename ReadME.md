@@ -1,5 +1,4 @@
-````markdown
-# Rahul Mishra's Resume
+## Rahul Mishra's Resume
 
 This repository contains the HTML and CSS code for Rahul Mishra's professional resume. The resume is designed to be a static webpage that showcases personal details, contact information, skills, education, projects, and internships.
 
@@ -45,7 +44,6 @@ To view the resume locally, follow these steps:
    ```bash
    git clone https://github.com/rahulmishramishra/resume.git
    ```
-````
 
 2. **Navigate to the project directory:**
 
@@ -113,4 +111,8 @@ This project is open-source and available under the [MIT License](LICENSE).
 - **License**: Specifies the license under which the project is released.
 
 You can customize the README further to match the specifics of your project and its requirements. If you have any specific requirements or additions, let me know!
+```
+
+```
+
 ```
