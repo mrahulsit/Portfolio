@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rahul Mishra — Software Engineer · Résumé</title>
+<meta name="description" content="Rahul Mishra — Software Engineer / Full Stack Developer résumé." />
+<link rel="icon" href="./assets/img/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+<link rel="icon" href="./assets/img/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="./assets/img/favicon-light.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..650;1,9..144,400..650&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:#1c1a15; --ink-2:#45413a; --muted:#837d6f; --faint:#b3ac9c;
+    --accent:#b4452a; --line:#e4e0d4;
+    --display:"Fraunces", Georgia, serif; --ui:"Inter", -apple-system, sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body { margin:0; font-family:var(--ui); color:var(--ink-2); font-size:12.5px; line-height:1.5; background:#f7f5f0; }
+
+  .toolbar {
+    position:sticky; top:0; z-index:10; display:flex; gap:12px; justify-content:flex-end;
+    padding:14px 24px; background:#1c1a15;
+  }
+  .toolbar a, .toolbar button {
+    font:600 13px var(--ui); color:#f7f5f0; background:#b4452a; border:none; border-radius:999px;
+    padding:9px 16px; cursor:pointer; text-decoration:none;
+  }
+  .toolbar a.back { background:transparent; border:1px solid #4a463c; color:#cfcab9; }
+
+  .page {
+    width:794px; max-width:100%; margin:0 auto; background:#fdfcf9;
+    padding:52px 56px;
+  }
+
+  header { border-bottom:3px solid var(--accent); padding-bottom:18px; margin-bottom:22px; }
+  .name { font-family:var(--display); font-size:42px; font-weight:600; color:var(--ink); letter-spacing:-.02em; margin:0 0 4px; }
+  .role { font-family:var(--display); font-style:italic; font-size:19px; color:var(--accent); margin:0 0 14px; }
+  .contact { display:flex; flex-wrap:wrap; gap:6px 22px; font-size:12px; color:var(--ink-2); }
+  .contact a { color:var(--ink-2); text-decoration:none; }
+  .contact a:hover { color:var(--accent); }
+
+  h2 {
+    font-family:var(--ui); font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:26px 0 10px; padding-bottom:5px; border-bottom:1px solid var(--line);
+  }
+  h3 { font-size:14px; color:var(--ink); margin:0 0 1px; }
+
+  .grid { display:grid; grid-template-columns:1fr 1fr; column-gap:40px; }
+  .item { margin-bottom:14px; }
+  .item .top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .item .org { color:var(--accent); font-weight:600; }
+  .item .when { color:var(--faint); font-size:11px; white-space:nowrap; }
+  ul { margin:6px 0 0; padding-left:16px; }
+  li { margin-bottom:3px; }
+  .tags { display:flex; flex-wrap:wrap; gap:5px; margin-top:6px; padding:0; list-style:none; }
+  .tags li { font-size:10.5px; font-weight:500; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:2px 9px; }
+
+  @media print {
+    .toolbar { display:none; }
+    body, .page { background:#fff; }
+    .page { width:auto; padding:28px 34px; border:none; }
+    @page { size: A4; margin: 12mm; }
+  }
+  @media (max-width:640px) {
+    .page { padding:30px 22px; }
+    .grid { grid-template-columns:1fr; }
+    .name { font-size:34px; }
+    .toolbar { justify-content:center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <a class="back" href="./index.html">← Back to site</a>
+  <button onclick="window.print()">Download / Print PDF</button>
+</div>
+
+<div class="page">
+  <header>
+    <h1 class="name">Rahul Mishra</h1>
+    <p class="role">Software Engineer / Full&nbsp;Stack&nbsp;Developer</p>
+    <div class="contact">
+      <a href="mailto:mrahuls104@gmail.com">mrahuls104@gmail.com</a>
+      <a href="https://github.com/mrahulsit">github.com/mrahulsit</a>
+      <a href="https://www.linkedin.com/in/mrahulsit/">linkedin.com/in/mrahulsit</a>
+      <span>Rourkela, Odisha · India</span>
+    </div>
+  </header>
+
+  <h2>Profile</h2>
+  <p style="margin-top:0;">Software Engineer focused on building scalable, reliable, and user-centric applications across the full stack — React.js, Node.js, JavaScript/TypeScript, REST APIs, databases, and cloud-ready development. Increasingly exploring AI-powered and data-driven systems.</p>
+
+  <h2>Experience</h2>
+
+  <div class="item">
+    <div class="top"><div><h3>Software Engineer</h3><p class="org">Aptus Data Labs</p></div><span class="when">2025 — present</span></div>
+    <ul>
+      <li>Develop frontend applications with React.js; build backend services and REST APIs with Node.js.</li>
+      <li>Work in TypeScript and modern JavaScript; design against relational databases and SQL.</li>
+      <li>Debug across frontend, backend, and database layers; translate requirements into technical solutions.</li>
+      <li>Participate in the full software development lifecycle with exposure to AI, analytics, and data-oriented work.</li>
+    </ul>
+    <ul class="tags"><li>React.js</li><li>Node.js</li><li>TypeScript</li><li>SQL</li><li>REST APIs</li></ul>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="item">
+        <div class="top"><div><h3>Web Development Intern</h3><p class="org">Codebeat</p></div></div>
+        <ul>
+          <li>Built a pharmacy web app frontend in React (Vite) and backend in Node.js/Express.</li>
+          <li>Used Git/GitHub; deployed to production on Vercel.</li>
+        </ul>
+        <ul class="tags"><li>React</li><li>Node.js</li><li>Express</li><li>Vercel</li></ul>
+      </div>
+    </div>
+    <div>
+      <div class="item">
+        <div class="top"><div><h3>Java Development Intern</h3><p class="org">Syllogistek</p></div></div>
+        <ul>
+          <li>Built a menu-driven student record system in core Java; connected to MySQL over JDBC.</li>
+        </ul>
+        <ul class="tags"><li>Java</li><li>JDBC</li><li>MySQL</li></ul>
+      </div>
+      <div class="item">
+        <div class="top"><div><h3>Java Development Intern</h3><p class="org">Internship Studio</p></div></div>
+        <ul>
+          <li>Built a menu-driven pizza billing application in core/advanced Java with OOP.</li>
+        </ul>
+        <ul class="tags"><li>Java</li><li>OOP</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <h2>Projects</h2>
+  <div class="item">
+    <div class="top"><div><h3>CinePulse — Full-stack movie discovery &amp; watchlist platform</h3></div></div>
+    <ul>
+      <li>React client over a Node.js REST API with a PostgreSQL/Prisma database; cookie-based JWT auth, catalogue filters &amp; search, four-state watchlist CRUD, ratings and analytics.</li>
+    </ul>
+    <ul class="tags"><li>React 19</li><li>Express 5</li><li>Prisma</li><li>PostgreSQL</li><li>JWT</li></ul>
+  </div>
+  <div class="item">
+    <div class="top"><div><h3>Pharmacy — Online pharmacy storefront</h3></div></div>
+    <ul>
+      <li>Category-driven React storefront over an Express API with MongoDB; cart via Context, pincode delivery check, hashed login.</li>
+    </ul>
+    <ul class="tags"><li>React</li><li>Express</li><li>MongoDB</li><li>JWT</li><li>Vercel</li></ul>
+  </div>
+
+  <h2>Skills</h2>
+  <div class="grid">
+    <div>
+      <p style="margin:0 0 4px;"><strong style="color:var(--ink);">Frontend</strong> — React.js, JavaScript, TypeScript, HTML, CSS, Tailwind, Vite</p>
+      <p style="margin:0;"><strong style="color:var(--ink);">Backend</strong> — Node.js, Express.js, REST APIs, Authentication, Zod</p>
+    </div>
+    <div>
+      <p style="margin:0 0 4px;"><strong style="color:var(--ink);">Data</strong> — PostgreSQL, SQL, Prisma, MongoDB, MySQL</p>
+      <p style="margin:0;"><strong style="color:var(--ink);">Engineering</strong> — Git, GitHub, Docker, API &amp; system design, cloud deployment</p>
+    </div>
+  </div>
+
+  <h2>Education</h2>
+  <div class="item">
+    <div class="top"><div><h3>B.Tech — Electrical &amp; Electronics Engineering</h3><p class="org">Silicon Institute of Technology, Bhubaneswar</p></div><span class="when">2021 — 2025</span></div>
+  </div>
+</div>
+
+</body>
+</html>

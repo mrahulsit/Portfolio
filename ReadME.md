@@ -1,98 +1,58 @@
-## My Own Resume
+# Rahul Mishra — Portfolio
 
-This repository contains the HTML and CSS code for my professional resume. The resume is designed to be a static webpage that showcases personal details, contact information, skills, education, projects, and internships completed.
+Personal resume/portfolio website for **Rahul Mishra — Software Engineer / Full Stack Developer**.
 
-## Table of Contents
-
-- [Demo](#demo)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Responsive Design](#responsive-design)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Demo
-
-You can view the live version of the resume [here](https://resume-2024-portfolio.vercel.app/).
+Designed as a clean, editorial-minimal engineering platform: warm paper background, stately serif display type (Fraunces), hairline rules, and a single terracotta accent. Includes full light/dark theming, a print-ready résumé page, and responsive layouts from mobile to desktop.
 
 ## Features
 
-- **Contact Information**: Display contact details such as phone number, email, location, and portfolio link.
-- **Skills**: Showcase a list of personal and technical skills.
-- **Languages**: List languages spoken.
-- **Summary**: Provide a brief professional summary.
-- **Internships**: Outline internship experiences with details on roles and technologies used.
-- **Education**: Present educational background in a tabular format.
-- **Projects**: Highlight notable projects with descriptions and links to source code or additional information.
-- **Responsive Design**: The resume is designed to be fully responsive, adapting to different screen sizes from mobile to desktop.
+- **Hero** — name, role, CTAs, and an editorial contents index
+- **About** — engineering direction and current focus
+- **Experience** — vertical timeline with current role, internships, education
+- **Projects** — featured CinePulse case study (problem, data model, API surface, challenges), Pharmacy and WorkTrack cards
+- **Skills** — grouped technology cards (frontend, backend, database, engineering, AI/data)
+- **Writing & Highlights** — technical article, verified highlights, GitHub link
+- **Contact** — email/linkedin/github fields with one-click copy, message form (opens email app)
+- **Résumé** — dedicated `resume.html` page with a "Download / Print PDF" button
+- **Theming** — light/dark with system-preference detection and persisted choice
+- **Interactions** — sticky nav, active-section highlighting, scroll reveal, mobile menu, toast, copy feedback (respects `prefers-reduced-motion`)
 
-## Technologies Used
+## Tech
 
-- **HTML5**: For structuring the webpage content.
-- **CSS3**: For styling the webpage and creating responsive layouts.
-- **Font Awesome**: For incorporating scalable vector icons.
-- **[Font Awesome](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css)**: For icons used in contact information.
+Pure HTML + CSS + vanilla JS. No build step, no dependencies.
 
-## Setup
+- **Fonts:** Fraunces (display), Inter (UI) via Google Fonts
+- **Icons:** inline SVG
 
-To view the resume locally, follow these steps:
+## File structure
 
-1. **Clone the repository:**
+```
+.
+├── index.html              # Main portfolio page
+├── resume.html             # Print-ready résumé page
+├── assets/
+│   ├── css/style.css       # Design system + layout
+│   ├── js/main.js          # Theme, nav, reveal, copy, form
+│   └── img/
+│       ├── favicon.svg     # Site icon
+│       └── rahul-source.jpg# Source image
+└── resume/                 # Drop a PDF here to add direct PDF download
+```
 
-   ```bash
-   git clone https://github.com/mrahulsit/resume.git
-   ```
+## Run locally
 
-2. **Navigate to the project directory:**
+```bash
+# from the project root
+python3 -m http.server 8000
+# open http://localhost:8000
+```
 
-   ```bash
-   cd resume
-   ```
+Or simply open `index.html` in a browser.
 
-3. **Open the `index.html` file in your preferred web browser:**
+## Deploy
 
-   ```bash
-   open index.html
-   ```
-
-   Or, if you are using a command-line browser like Chrome, you can use:
-
-   ```bash
-   google-chrome index.html
-   ```
-
-## Usage
-
-Feel free to use this resume template as a starting point for your own resume. You can modify the HTML and CSS files to suit your personal style and content needs.
-
-### File Structure
-
-- `index.html`: Contains the main structure of the resume.
-- `./CSS/style.css`: Contains all styles for the resume.
-- `./Images/`: Contains images used in the resume (profile picture, favicon, etc.).
-
-### Responsive Design
-
-The CSS file includes media queries to ensure the resume displays well on devices of various sizes. Key breakpoints include:
-
-- **Tablet devices**: `max-width: 1024px`
-- **Mobile devices**: `max-width: 768px`
-- **Small mobile devices**: `max-width: 480px`
-
-You can find the relevant CSS in the `./CSS/style.css` file, which defines the layout adjustments for different screen sizes.
-
-## Contributing
-
-Contributions are welcome! If you have suggestions for improvements or find any issues, please feel free to open an issue or submit a pull request.
-
-1. Fork the repository.
-2. Create your feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
-5. Open a pull request.
+Static site — deploy the repository as-is to Vercel, Netlify, or GitHub Pages.
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+MIT

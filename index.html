@@ -1,242 +1,936 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume</title>
-    <link rel="stylesheet" href="./CSS/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
-    <link rel="icon" href="./Images/resume.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Rahul Mishra — Software Engineer | Full Stack Developer</title>
+  <meta name="description"
+    content="Software Engineer focused on full-stack development, React.js, Node.js, TypeScript, PostgreSQL, AI applications, and scalable software systems." />
+  <meta name="author" content="Rahul Mishra" />
+  <link rel="canonical" href="https://resume-2024-portfolio.vercel.app/" />
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#17150f" media="(prefers-color-scheme: dark)" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Rahul Mishra" />
+  <meta property="og:title" content="Rahul Mishra — Software Engineer | Full Stack Developer" />
+  <meta property="og:description"
+    content="Software Engineer focused on full-stack development, React.js, Node.js, TypeScript, PostgreSQL, AI applications, and scalable software systems." />
+  <meta property="og:url" content="https://resume-2024-portfolio.vercel.app/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="./assets/img/rahul-source.jpg" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rahul Mishra — Software Engineer | Full Stack Developer" />
+  <meta name="twitter:description"
+    content="Software Engineer building full-stack applications with React.js, Node.js, TypeScript and PostgreSQL." />
+
+  <link rel="icon" href="./assets/img/favicon-light.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
+  <link rel="icon" href="./assets/img/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="./assets/img/favicon-light.svg" type="image/svg+xml" /> <!-- fallback -->
+  <link rel="apple-touch-icon" href="./assets/img/favicon-light.svg" media="(prefers-color-scheme: light)" />
+  <link rel="apple-touch-icon" href="./assets/img/favicon-dark.svg" media="(prefers-color-scheme: dark)" />
+  <link rel="apple-touch-icon" href="./assets/img/favicon-light.svg" /> <!-- fallback -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..650;1,9..144,400..650&family=Inter:wght@400;500;550;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="./assets/css/style.css?v=8" />
+
+  <!-- Resolve theme before first paint to avoid a flash of the wrong palette. -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) { /* localStorage unavailable — keep the default */ }
+    })();
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rahul Mishra",
+      "jobTitle": "Software Engineer",
+      "email": "mailto:mrahuls104@gmail.com",
+      "url": "https://resume-2024-portfolio.vercel.app/",
+      "worksFor": { "@type": "Organization", "name": "Aptus Data Labs" },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Silicon Institute of Technology, Bhubaneswar"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Rourkela",
+        "addressRegion": "Odisha",
+        "addressCountry": "IN"
+      },
+      "knowsAbout": ["Full Stack Development", "React.js", "Node.js", "TypeScript", "PostgreSQL", "REST APIs"],
+      "sameAs": ["https://github.com/mrahulsit", "https://effortlesswithrahul.hashnode.dev/"]
+    }
+  </script>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <img src="./Images/Untitled-1.jpg" />
-            <!-- Contact -->
-            <div class="contact">
-                <span>Contact</span>
-                <div class="divide"></div>
-                <div class="contactinfo">
-                    <div>
-                        <i class="fa-solid fa-phone"></i>
-                        <li>+91 7608829333</li>
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-envelope"></i>
-                        <li>mrahuls104@gmail.com</li>
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-location-dot"></i>
-                        <li>Rourkela,Odisha,India</li>
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-globe"></i>
-                        <li>www.portfolio.netlify.app</li>
-                    </div>
-                </div>
-            </div>
-            <!-- Skills -->
-            <div class="skills">
-                <span>Skills</span>
-                <div class="divide"></div>
-                <div class="skillsinfo">
-                    <li>Leadership</li>
-                    <li>Collaboration</li>
-                    <li>Communication</li>
-                    <li>Teamwork</li>
-                    <li>Management</li>
-                </div>
-            </div>
-            <!-- Languages -->
-            <div class="languages">
-                <span>Languages</span>
-                <div class="divide"></div>
-                <div class="langinfo">
-                    <li>English</li>
-                    <li>Hindi</li>
-                    <li>Odia</li>
-                </div>
-            </div>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="header" id="header">
+    <div class="shell header__inner">
+      <a class="brand" href="#home" aria-label="Rahul Mishra — home">
+        Rahul<span class="brand__dot">.</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Sections">
+        <a href="#home" class="nav__link">Home</a>
+        <a href="#about" class="nav__link">About</a>
+        <a href="#experience" class="nav__link">Experience</a>
+        <a href="#projects" class="nav__link">Projects</a>
+        <a href="#skills" class="nav__link">Skills</a>
+        <a href="#contact" class="nav__link">Contact</a>
+      </nav>
+
+      <div class="nav__actions">
+        <a class="btn btn--sm btn--accent" href="./resume.html" target="_blank" rel="noopener noreferrer" data-resume>Résumé</a>
+        <a class="icon-btn" href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer"
+          aria-label="GitHub profile (opens in a new tab)">
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+        </a>
+        <a class="icon-btn" href="https://www.linkedin.com/in/mrahulsit/" target="_blank" rel="noopener noreferrer"
+          aria-label="LinkedIn profile (opens in a new tab)">
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch theme" aria-pressed="false">
+          <i class="fa-solid fa-sun icon-sun" aria-hidden="true"></i>
+          <i class="fa-solid fa-moon icon-moon" aria-hidden="true"></i>
+        </button>
+        <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false"
+          aria-controls="mobile-menu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sheet" id="mobile-menu" hidden>
+      <nav class="sheet__nav" aria-label="Sections">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#writing">Writing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn--accent btn--block" href="./resume.html" target="_blank" rel="noopener noreferrer" data-resume>Download résumé</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home">
+      <div class="shell hero__grid">
+        <div class="hero__copy">
+          <p class="hero__eyebrow">Software Engineer&nbsp;·&nbsp;Full&nbsp;Stack&nbsp;Developer</p>
+          <h1 class="hero__name">Rahul<br />Mishra</h1>
+          <p class="hero__role">I build scalable full-stack applications and explore AI &amp; data-driven systems.</p>
+          <p class="hero__lede">Reliable, user-centric applications across frontend, backend, databases, and modern
+            AI/data workflows.</p>
+
+          <div class="hero__cta">
+            <a class="btn btn--accent" href="#projects">View my work</a>
+            <a class="btn" href="./resume.html" target="_blank" rel="noopener noreferrer" data-resume>Download résumé</a>
+          </div>
+
+          <ul class="hero__links">
+            <li><a href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a></li>
+            <li><a href="https://www.linkedin.com/in/mrahulsit/" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>LinkedIn</a></li>
+            <li><a href="mailto:mrahuls104@gmail.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i>Email</a></li>
+          </ul>
         </div>
-        <!-- Main Content -->
-        <div class="content">
-            <div class="intro">
-                <h1>Rahul Mishra</h1>
-                <p>Fresher</p>
+
+        <!-- Editorial index / contents card -->
+        <aside class="index-card" aria-label="Contents">
+          <div class="index-card__head">
+            <span>Contents</span>
+            <span class="index-card__leds" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <nav class="index-card__toc">
+            <a href="#experience"><b>01</b><span>Experience</span></a>
+            <a href="#projects"><b>02</b><span>Projects</span></a>
+            <a href="#skills"><b>03</b><span>Skills</span></a>
+            <a href="#writing"><b>04</b><span>Writing &amp; Highlights</span></a>
+            <a href="#contact"><b>05</b><span>Contact</span></a>
+          </nav>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="sec sec--alt" id="about">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">About</p>
+            <p class="rail__meta">Rourkela, Odisha · IN</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Engineering across the full stack.</h2>
+          </div>
+        </div>
+
+        <div class="about">
+          <div class="about__prose">
+            <p class="lede">
+              I'm a Software Engineer focused on building scalable, reliable, and user-centric applications across
+              the full stack.
+            </p>
+            <p>
+              My experience spans React.js, Node.js, JavaScript/TypeScript, REST APIs, databases, and cloud-ready
+              application development. I enjoy working across the entire development lifecycle — from understanding
+              requirements and designing architecture to implementation, debugging, optimization, and deployment.
+            </p>
+            <p>
+              I'm also increasingly interested in AI-powered applications, data-driven systems, and how intelligent
+              technologies can be integrated into practical software products.
+            </p>
+            <p class="about__note">
+              My foundation is a B.Tech in Electrical &amp; Electronics Engineering — where I learned to reason about
+              systems, constraints, and signals. That habit of thinking in systems is what I now apply to software.
+            </p>
+          </div>
+
+          <aside class="focus" aria-labelledby="focus-h">
+            <h3 class="focus__h" id="focus-h">Currently focused on</h3>
+            <ul class="focus__list">
+              <li>Full-stack engineering</li>
+              <li>Backend architecture</li>
+              <li>TypeScript</li>
+              <li>PostgreSQL</li>
+              <li>AI applications</li>
+              <li>Data-driven systems</li>
+              <li>System design</li>
+            </ul>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section class="sec" id="experience">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">Experience</p>
+            <p class="rail__meta">Java → MERN → full stack</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Where I've built things.</h2>
+            <p class="sec__lede">Four roles, moving from core Java fundamentals into production full-stack work.</p>
+          </div>
+        </div>
+
+        <ol class="tl">
+          <li class="tl__item is-current" data-reveal>
+            <div class="tl__meta">
+              <span class="chip chip--built">Current</span>
+              <span class="tl__when">2025 — present</span>
             </div>
-            <div class="divider"></div>
-            <!-- Summary -->
-            <div class="summary">
-                <h2>SUMMARY</h2>
-                <div class="divider"></div>
-                <p>Recent Electrical and Electronics Engineering graduate with expertise in MERN stack web development
-                    and extensive
-                    experience in Python and Java coding. Completed multiple projects demonstrating skills in responsive
-                    web design, core
-                    projects in IoT, and electrical-based projects. Eager to leverage technical proficiency and
-                    problem-solving abilities in
-                    a dynamic software development role.</p>
+            <h3 class="tl__role">Software Engineer</h3>
+            <p class="tl__org">Aptus Data Labs</p>
+            <ul class="tl__points">
+              <li>Develop frontend applications using React.js.</li>
+              <li>Build backend services and REST APIs using Node.js.</li>
+              <li>Work in TypeScript and modern JavaScript across the codebase.</li>
+              <li>Work with relational databases and SQL.</li>
+              <li>Debug issues spanning frontend, backend, and database layers.</li>
+              <li>Collaborate on translating requirements into technical solutions.</li>
+              <li>Participate in the complete software development lifecycle.</li>
+              <li>Practical exposure to AI, analytics, and data-oriented solutions.</li>
+            </ul>
+            <ul class="tags tags--accent">
+              <li>React.js</li>
+              <li>Node.js</li>
+              <li>TypeScript</li>
+              <li>JavaScript</li>
+              <li>SQL</li>
+              <li>REST APIs</li>
+            </ul>
+          </li>
+
+          <li class="tl__item" data-reveal>
+            <div class="tl__meta">
+              <span class="chip">Internship</span>
             </div>
-            <!-- Summary Ends -->
-            <!-- Internships -->
-            <div class="internship">
-                <h2>INTERNSHIP</h2>
-                <div class="divider"></div>
-                <div class="border">
-                    <div class="line">
-                        <div class="circle"></div>
-                        <div class="circle"></div>
-                        <div class="circle"></div>
-                    </div>
-                    <div class="interninfo">
-                        <li>
-                            <h3>Internship at Syllogistek</h3>
-                            <p>STUDENT RECORD STORAGE</p>
-                            <div class="divider"></div>
-                            <span>Languages Used - Core Java Concepts</span>
-                            <ul>
-                                <li>A Menu Driven Program Framework</li>
-                                <li>Based on Java Class Overriding and Overloading Concept</li>
-                                <li>JDBC Connectivity using MySQL</li>
-                                <li>The Student Details were Recorded in the Database</li>
-                                <li>The User can access data using the Menu and Database</li>
-                            </ul>
-                        </li>
-                    </div>
-                    <div class="interninfo">
-                        <li>
-                            <h3>Internship at Internship Studio</h3>
-                            <p>PIZZA BILL GENERATOR STORAGE</p>
-                            <div class="divider"></div>
-                            <span>Languages Used - Core and Advance Java Concepts</span>
-                            <ul>
-                                <li>A Menu Driven Program Framework</li>
-                                <li>Based on Java Class Overriding and Overloading Concept</li>
-                                <li>Simple Logic Used for Bill Generation</li>
-                                <li>User selects the order from Menu</li>
-                                <li>After checkout of order Bill is generated</li>
-                            </ul>
-                        </li>
-                    </div>
-                    <div class="interninfo">
-                        <li>
-                            <h3>Internship at Codebeat</h3>
-                            <p>PHARMACY WEBSITE</p>
-                            <div class="divider"></div>
-                            <span>Languages Used - MERN Stack</span>
-                            <ul>
-                                <li>Learnt Basic HTML , CSS and Javascript</li>
-                                <li>Used Vite Bundler for making the Website Faster</li>
-                                <li>Used ReactJS for Frontend</li>
-                                <li>Learnt Git and Github</li>
-                                <li>Used NodeJS and ExpressJS for Backend</li>
-                                <li>Learnt Deployment using Vercel</li>
-                            </ul>
-                        </li>
-                    </div>
+            <h3 class="tl__role">Web Development Intern</h3>
+            <p class="tl__org">Codebeat</p>
+            <ul class="tl__points">
+              <li>Built a pharmacy web application frontend in React, bundled with Vite.</li>
+              <li>Implemented the backend using Node.js and Express.js.</li>
+              <li>Adopted Git and GitHub for version control and collaboration.</li>
+              <li>Deployed the application to production on Vercel.</li>
+            </ul>
+            <ul class="tags">
+              <li>React</li>
+              <li>Vite</li>
+              <li>Node.js</li>
+              <li>Express.js</li>
+              <li>Git</li>
+              <li>Vercel</li>
+            </ul>
+          </li>
+
+          <li class="tl__item" data-reveal>
+            <div class="tl__meta">
+              <span class="chip">Internship</span>
+            </div>
+            <h3 class="tl__role">Java Development Intern</h3>
+            <p class="tl__org">Internship Studio</p>
+            <ul class="tl__points">
+              <li>Built a menu-driven pizza billing application in core and advanced Java.</li>
+              <li>Applied class overriding and overloading to model the order and billing flow.</li>
+              <li>Generated itemised bills from user-selected menu orders.</li>
+            </ul>
+            <ul class="tags">
+              <li>Java</li>
+              <li>OOP</li>
+            </ul>
+          </li>
+
+          <li class="tl__item" data-reveal>
+            <div class="tl__meta">
+              <span class="chip">Internship</span>
+            </div>
+            <h3 class="tl__role">Java Development Intern</h3>
+            <p class="tl__org">Syllogistek</p>
+            <ul class="tl__points">
+              <li>Built a menu-driven student record system in core Java.</li>
+              <li>Connected the application to MySQL over JDBC for persistence.</li>
+              <li>Exposed create and read operations on student records through the menu interface.</li>
+            </ul>
+            <ul class="tags">
+              <li>Java</li>
+              <li>JDBC</li>
+              <li>MySQL</li>
+            </ul>
+          </li>
+        </ol>
+
+        <div class="edu" data-reveal>
+          <h3 class="edu__h">Education</h3>
+          <div>
+            <p class="edu__degree">B.Tech — Electrical &amp; Electronics Engineering</p>
+            <p class="edu__org">Silicon Institute of Technology, Bhubaneswar</p>
+          </div>
+          <p class="edu__when">2021 — 2025</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section class="sec sec--alt" id="projects">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">Projects</p>
+            <p class="rail__meta">2 shipped · 1 in design</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Things I've engineered.</h2>
+            <p class="sec__lede">Production applications with real users, real databases, and real deployment pipelines. Each project demonstrates full-stack thinking — from data modeling to user experience.</p>
+          </div>
+        </div>
+
+        <div class="projects-new">
+
+          <!-- CinePulse Featured -->
+          <article class="proj-card proj-card--featured" data-reveal>
+            <div class="proj-card__visual">
+              <div class="proj-card__mockup">
+                <div class="proj-card__browser">
+                  <span></span><span></span><span></span>
                 </div>
-            </div>
-            <!-- End of Internships -->
-            <!-- Education -->
-            <div class="education">
-                <h2>EDUCATION</h2>
-                <div class="divider"></div>
-                <table border="1">
-                    <tr>
-                        <th>Institution</th>
-                        <th>Degree</th>
-                        <th>Year</th>
-                    </tr>
-                    <tr>
-                        <td>St. Paul's School</td>
-                        <td>Senior Secondary(10)</td>
-                        <td>2019</td>
-                    </tr>
-                    <tr>
-                        <td>Deepika English Medium School</td>
-                        <td>Higher Secondary(12)</td>
-                        <td>2021</td>
-                    </tr>
-                    <tr>
-                        <td>Silicon University</td>
-                        <td>B.Tech in Electrical and Electronics</td>
-                        <td>2021-present</td>
-                    </tr>
-                </table>
-            </div>
-            <!-- End of Education -->
-            <!-- Projects -->
-            <div class="projects">
-                <h2>PROJECTS</h2>
-                <div class="divider"></div>
-                <div class="projectinfo">
-                    <div class="project">
-                        <h3>Syllogistek Student Record Storage</h3>
-                        <p>A simple Java program to store and retrieve student details using JDBC.</p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://github.com/rahulmishramishra/StudentRecordStorage"
-                                target="_blank">GitHub
-                                Repository</a>
-                        </div>
-                    </div>
-                    <div class="project">
-                        <h3>Pizza Bill Generator</h3>
-                        <p>A simple Java program to generate a pizza bill using object-oriented programming.</p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://github.com/rahulmishramishra/PizzaBillGenerator"
-                                target="_blank">GitHub
-                                Repository</a>
-                        </div>
-                    </div>
-                    <div class="project">
-                        <h3>E-Commerce Shopkart Website</h3>
-                        <p>A Shopping Website made using Django Framework built on Python Programming.</p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://github.com/rahulmishramishra/PizzaBillGenerator"
-                                target="_blank">GitHub
-                                Repository</a>
-                        </div>
-                    </div>
-                    <div class="project">
-                        <h3>CodeBeat Pharmacy Website</h3>
-                        <p>A MERN stack based website that uses ReactJS for frontend and Node with Express as Backend.
-                        </p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://github.com/rahulmishramishra/PizzaBillGenerator"
-                                target="_blank">GitHub
-                                Repository</a>
-                        </div>
-                    </div>
-                    <div class="project">
-                        <h3>Solar Tricycle based on Solar Energy</h3>
-                        <p>An Electrical Minor Project Analysis made on a Solar tricycle made using BLDC Motor.
-                        </p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://effortlesswithrahul.hashnode.dev/"
-                                target="_blank">Blog Analysis</a>
-                        </div>
-                    </div>
-                    <div class="project">
-                        <h3>Traffic Management System based on IOT</h3>
-                        <p>An IOT based project on Traffic Control System that improves the commute problem.
-                        </p>
-                        <div class="projectlink">
-                            For More Details Visit : <a href="https://effortlesswithrahul.hashnode.dev/"
-                                target="_blank">Blog
-                                Analysis</a>
-                        </div>
-                    </div>
+                <div class="proj-card__screen">
+                  <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+                    <rect fill="#0d1117" width="400" height="240"/>
+                    <rect fill="#1a1f2e" x="20" y="30" width="360" height="40" rx="8"/>
+                    <rect fill="#4f46e5" x="30" y="40" width="80" height="20" rx="4" opacity="0.3"/>
+                    <rect fill="#818cf8" x="120" y="40" width="100" height="20" rx="4" opacity="0.2"/>
+                    <rect fill="#1a1f2e" x="20" y="85" width="170" height="130" rx="8"/>
+                    <rect fill="#1a1f2e" x="205" y="85" width="170" height="130" rx="8"/>
+                    <rect fill="#4f46e5" x="30" y="95" width="150" height="90" rx="6" opacity="0.4"/>
+                    <rect fill="#818cf8" x="215" y="95" width="150" height="90" rx="6" opacity="0.3"/>
+                    <rect fill="#2d3548" x="30" y="190" width="60" height="8" rx="4"/>
+                    <rect fill="#2d3548" x="215" y="190" width="70" height="8" rx="4"/>
+                  </svg>
                 </div>
-                <!-- Projects Ends -->
-                <!-- End of Main Content -->
-                <footer>
-                    <span>&copy; Rahul Mishra 2024</span>
-                </footer>
+              </div>
+              <span class="proj-card__status proj-card__status--live">Production</span>
             </div>
-            <!-- End of Container -->
+
+            <div class="proj-card__content">
+              <div class="proj-card__header">
+                <h3 class="proj-card__title">CinePulse</h3>
+                <p class="proj-card__subtitle">Full-stack movie discovery & watchlist platform</p>
+              </div>
+
+              <p class="proj-card__desc">
+                A complete movie platform where users discover films, manage personal watchlists across four states (planned, watching, completed, dropped), rate with stars, and track viewing analytics. Built as a React SPA over a Node.js REST API with PostgreSQL persistence.
+              </p>
+
+              <div class="proj-card__tech">
+                <span class="tech-badge tech-badge--react">React 19</span>
+                <span class="tech-badge tech-badge--node">Express 5</span>
+                <span class="tech-badge tech-badge--db">PostgreSQL</span>
+                <span class="tech-badge">Prisma 7</span>
+                <span class="tech-badge">JWT Auth</span>
+                <span class="tech-badge">Zod</span>
+              </div>
+
+              <div class="proj-card__highlights">
+                <div class="proj-card__highlight">
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  Cookie-based JWT authentication
+                </div>
+                <div class="proj-card__highlight">
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  Normalised database schema with migrations
+                </div>
+                <div class="proj-card__highlight">
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  Full-text search and advanced filters
+                </div>
+                <div class="proj-card__highlight">
+                  <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                  Analytics dashboard with completion tracking
+                </div>
+              </div>
+
+              <div class="proj-card__actions">
+                <a class="btn btn--accent btn--sm" href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">
+                  View Live Demo
+                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                </a>
+                <a class="btn btn--sm" href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>
+                  Source Code
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Pharmacy & WorkTrack Grid -->
+          <div class="proj-card-grid">
+
+            <!-- Pharmacy -->
+            <article class="proj-card" data-reveal>
+              <div class="proj-card__visual proj-card__visual--sm">
+                <div class="proj-card__mockup proj-card__mockup--sm">
+                  <div class="proj-card__browser">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="proj-card__screen">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                      <rect fill="#fafbfc" width="300" height="180"/>
+                      <rect fill="#4f46e5" x="20" y="20" width="260" height="30" rx="6" opacity="0.15"/>
+                      <rect fill="#e5e7eb" x="20" y="65" width="80" height="80" rx="8"/>
+                      <rect fill="#e5e7eb" x="110" y="65" width="80" height="80" rx="8"/>
+                      <rect fill="#e5e7eb" x="200" y="65" width="80" height="80" rx="8"/>
+                      <rect fill="#4f46e5" x="30" y="150" width="60" height="8" rx="4" opacity="0.3"/>
+                    </svg>
+                  </div>
+                </div>
+                <span class="proj-card__status proj-card__status--live">Live</span>
+              </div>
+
+              <div class="proj-card__content proj-card__content--compact">
+                <div class="proj-card__header">
+                  <h3 class="proj-card__title">Pharmacy</h3>
+                  <p class="proj-card__subtitle">E-commerce pharmacy storefront</p>
+                </div>
+
+                <p class="proj-card__desc">
+                  Category-driven pharmacy platform with medicine catalog, cart management via React Context, pincode serviceability check, and JWT-secured authentication.
+                </p>
+
+                <div class="proj-card__tech">
+                  <span class="tech-badge tech-badge--react">React</span>
+                  <span class="tech-badge tech-badge--node">Express</span>
+                  <span class="tech-badge tech-badge--db">MongoDB</span>
+                  <span class="tech-badge">JWT</span>
+                </div>
+
+                <div class="proj-card__actions">
+                  <a class="btn btn--accent btn--sm" href="https://pharmacy-app-six.vercel.app" target="_blank" rel="noopener noreferrer">
+                    Live Demo
+                    <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  </a>
+                  <a class="btn btn--sm" href="https://github.com/mrahulsit/Pharmacy-App" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-github" aria-hidden="true"></i>
+                    Source
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- WorkTrack -->
+            <article class="proj-card" data-reveal>
+              <div class="proj-card__visual proj-card__visual--sm">
+                <div class="proj-card__mockup proj-card__mockup--sm">
+                  <div class="proj-card__browser">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="proj-card__screen proj-card__screen--blueprint">
+                    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+                      <rect fill="#0d1117" width="300" height="180"/>
+                      <line x1="20" y1="30" x2="280" y2="30" stroke="#2d3548" stroke-width="1" stroke-dasharray="4 2"/>
+                      <line x1="20" y1="80" x2="280" y2="80" stroke="#2d3548" stroke-width="1" stroke-dasharray="4 2"/>
+                      <line x1="20" y1="130" x2="280" y2="130" stroke="#2d3548" stroke-width="1" stroke-dasharray="4 2"/>
+                      <rect fill="none" stroke="#4f46e5" stroke-width="2" x="30" y="40" width="100" height="30" rx="6" opacity="0.6"/>
+                      <rect fill="none" stroke="#818cf8" stroke-width="2" x="150" y="40" width="120" height="30" rx="6" opacity="0.4"/>
+                      <rect fill="none" stroke="#4f46e5" stroke-width="2" x="30" y="90" width="240" height="30" rx="6" opacity="0.5"/>
+                      <circle cx="40" cy="55" r="4" fill="#4f46e5" opacity="0.8"/>
+                      <circle cx="160" cy="55" r="4" fill="#818cf8" opacity="0.6"/>
+                    </svg>
+                  </div>
+                </div>
+                <span class="proj-card__status proj-card__status--design">In Design</span>
+              </div>
+
+              <div class="proj-card__content proj-card__content--compact">
+                <div class="proj-card__header">
+                  <h3 class="proj-card__title">WorkTrack</h3>
+                  <p class="proj-card__subtitle">Timesheet & productivity platform</p>
+                </div>
+
+                <p class="proj-card__desc">
+                  Time tracking platform with live timer, idle detection, manual entries, project/task boards, and weekly/monthly reports. Currently at design stage — wireframes complete.
+                </p>
+
+                <div class="proj-card__tech">
+                  <span class="tech-badge tech-badge--muted">React</span>
+                  <span class="tech-badge tech-badge--muted">TypeScript</span>
+                  <span class="tech-badge tech-badge--muted">Node.js</span>
+                  <span class="tech-badge tech-badge--muted">PostgreSQL</span>
+                </div>
+
+                <p class="proj-card__note">Stack planned, implementation pending</p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <!-- Easter egg hint -->
+        <div class="projects-hint" data-reveal>
+          <p>
+            <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
+            Curious developer? Type <code>sudo hire rahul</code> anywhere on this page and press Enter.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="sec" id="skills">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">Skills</p>
+            <p class="rail__meta">What I reach for</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Current stack.</h2>
+          </div>
+        </div>
+
+        <div class="skills">
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">Frontend</h3>
+            <ul class="tags tags--lg">
+              <li>React.js</li>
+              <li>JavaScript</li>
+              <li>TypeScript</li>
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>Tailwind CSS</li>
+              <li>Vite</li>
+            </ul>
+          </div>
+
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">Backend</h3>
+            <ul class="tags tags--lg">
+              <li>Node.js</li>
+              <li>Express.js</li>
+              <li>REST APIs</li>
+              <li>Authentication</li>
+              <li>Zod</li>
+            </ul>
+          </div>
+
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">Database</h3>
+            <ul class="tags tags--lg">
+              <li>PostgreSQL</li>
+              <li>SQL</li>
+              <li>Prisma</li>
+              <li>MongoDB</li>
+              <li>MySQL</li>
+            </ul>
+          </div>
+
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">Engineering</h3>
+            <ul class="tags tags--lg">
+              <li>Git</li>
+              <li>GitHub</li>
+              <li>Docker</li>
+              <li>API design</li>
+              <li>System design</li>
+              <li>Cloud deployment</li>
+            </ul>
+          </div>
+
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">Languages</h3>
+            <ul class="tags tags--lg">
+              <li>JavaScript</li>
+              <li>TypeScript</li>
+              <li>Java</li>
+              <li>Python</li>
+              <li>SQL</li>
+            </ul>
+          </div>
+
+          <div class="skillcard" data-reveal>
+            <h3 class="skillcard__h">AI &amp; data <span class="skillcard__tag">exploring</span></h3>
+            <ul class="tags tags--lg tags--muted">
+              <li>LLM API integration</li>
+              <li>Chatbot interfaces</li>
+              <li>Data-driven features</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ GITHUB ============ -->
+    <section class="sec sec--alt" id="github">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">GitHub</p>
+            <p class="rail__meta">Building in the open</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Building in the open.</h2>
+            <p class="sec__lede">Live data from my GitHub profile — public repositories and the languages I work in.
+              No stars to show off, but a real paper trail of shipped work.</p>
+          </div>
+        </div>
+
+        <div id="github-stats" class="gh-stats" aria-live="polite">
+          <div class="gh-stats__loading">Loading live GitHub data…</div>
+        </div>
+        <div id="github-repos" class="gh-repos" aria-live="polite"></div>
+        <div class="gh-more">
+          <a class="btn" href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            See all repositories <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WRITING & HIGHLIGHTS ============ -->
+    <section class="sec" id="writing">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">Writing</p>
+            <p class="rail__meta">&amp; highlights</p>
+          </div>
+          <div>
+            <h2 class="sec__title">Reading, writing, shipping.</h2>
+          </div>
+        </div>
+
+        <div class="wh">
+          <article class="write" data-reveal>
+            <p class="write__eyebrow">Technical writing / research</p>
+            <h3 class="write__h">AI-driven banking compliance and autonomous oversight</h3>
+            <p class="write__body">
+              A written exploration of how autonomous systems could take on continuous compliance monitoring in
+              banking — where the oversight burden is constant, the rules are explicit, and the audit trail matters as
+              much as the decision.
+            </p>
+            <a class="link-arrow" href="https://effortlesswithrahul.hashnode.dev/" target="_blank"
+              rel="noopener noreferrer">Read on my blog <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </article>
+
+          <div class="high" data-reveal>
+            <h3 class="high__h">Highlights</h3>
+            <ul class="high__list">
+              <li>Working as a Software Engineer at Aptus Data Labs</li>
+              <li>Full-stack applications deployed to production on Vercel and Render</li>
+              <li>Designed and shipped a normalised PostgreSQL schema with Prisma migrations</li>
+              <li>Implemented cookie-based JWT authentication across origins</li>
+              <li>Three engineering internships spanning core Java and the MERN stack</li>
+              <li>Publish technical writing on engineering and AI topics</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="gh" data-reveal>
+          <div>
+            <h3 class="gh__h">More on GitHub</h3>
+            <p>Side projects, experiments and older work — including chatbot interfaces and earlier portfolio builds.</p>
+          </div>
+          <a class="btn" href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            github.com/mrahulsit <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="sec sec--alt" id="contact">
+      <div class="shell">
+        <div class="sec__head">
+          <div class="sec__rail">
+            <p class="rail__label">Contact</p>
+            <p class="rail__meta"><span class="avail"><span class="avail__dot" aria-hidden="true"></span>Open to
+                opportunities</span></p>
+          </div>
+          <div>
+            <h2 class="sec__title">Let's build something useful.</h2>
+            <p class="sec__lede">
+              I'm always interested in discussing software engineering, full-stack development, interesting technical
+              problems, and opportunities to build impactful products.
+            </p>
+          </div>
+        </div>
+
+        <div class="contact">
+          <div class="contact__direct">
+            <div class="field-row">
+              <p class="field-row__label"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email</p>
+              <div class="field-row__val">
+                <a href="mailto:mrahuls104@gmail.com">mrahuls104@gmail.com</a>
+                <button class="copy" type="button" data-copy="mrahuls104@gmail.com" aria-label="Copy email address">
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
+                  <span class="copy__say" aria-hidden="true">Copy</span>
+                </button>
+              </div>
+            </div>
+            <div class="field-row">
+              <p class="field-row__label"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i> LinkedIn</p>
+              <div class="field-row__val">
+                <a href="https://www.linkedin.com/in/mrahulsit/" target="_blank" rel="noopener noreferrer">linkedin.com/in/mrahulsit <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              </div>
+            </div>
+            <div class="field-row">
+              <p class="field-row__label"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub</p>
+              <div class="field-row__val">
+                <a href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">github.com/mrahulsit <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+              </div>
+            </div>
+            <div class="field-row">
+              <p class="field-row__label"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Résumé</p>
+              <div class="field-row__val">
+                <a href="./resume.html" target="_blank" rel="noopener noreferrer"><i class="fa-solid fa-download" aria-hidden="true"></i> Download PDF</a>
+              </div>
+            </div>
+          </div>
+
+          <form class="form" id="contact-form" novalidate>
+            <p class="form__intro">Or send a message — this opens your email app with the message ready to send.</p>
+
+            <div class="form__field">
+              <label for="cf-name">Name</label>
+              <input type="text" id="cf-name" name="name" autocomplete="name" required />
+              <p class="form__err" data-err-for="cf-name" hidden>Add your name so I know who's writing.</p>
+            </div>
+
+            <div class="form__field">
+              <label for="cf-email">Email</label>
+              <input type="email" id="cf-email" name="email" autocomplete="email" required />
+              <p class="form__err" data-err-for="cf-email" hidden>Add an email address I can reply to.</p>
+            </div>
+
+            <div class="form__field">
+              <label for="cf-message">Message</label>
+              <textarea id="cf-message" name="message" rows="5" required></textarea>
+              <p class="form__err" data-err-for="cf-message" hidden>Add a message.</p>
+            </div>
+
+            <button class="btn btn--accent btn--block" type="submit">Send message</button>
+            <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot">
+    <div class="shell">
+      <div class="foot__main">
+        <div class="foot__id">
+          <p class="foot__name">Rahul Mishra</p>
+          <p class="foot__role">Software Engineer · Full Stack Developer</p>
+          <p class="foot__tagline">Building reliable, user-centric applications</p>
+        </div>
+
+        <div class="foot__links-group">
+          <div class="foot__col">
+            <p class="foot__col-h">Navigate</p>
+            <nav class="foot__links" aria-label="Footer navigation">
+              <a href="#about">About</a>
+              <a href="#experience">Experience</a>
+              <a href="#projects">Projects</a>
+              <a href="#skills">Skills</a>
+            </nav>
+          </div>
+
+          <div class="foot__col">
+            <p class="foot__col-h">Connect</p>
+            <nav class="foot__links" aria-label="Social links">
+              <a href="https://github.com/mrahulsit" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>
+                GitHub
+              </a>
+              <a href="https://www.linkedin.com/in/mrahulsit/" target="_blank" rel="noopener noreferrer">
+                <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                LinkedIn
+              </a>
+              <a href="mailto:mrahuls104@gmail.com">
+                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                Email
+              </a>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot__meta">
+        <div class="foot__analytics">
+          <div class="foot__stat">
+            <span class="foot__stat-dot"></span>
+            <span id="foot-visitors">—</span> viewing now
+          </div>
+          <div class="foot__stat">
+            <span id="foot-total">—</span> total visits
+          </div>
+        </div>
+        <p class="foot__copy">
+          © <span id="year">2026</span> Rahul Mishra ·
+          Built with vanilla JS, zero dependencies ·
+          <button type="button" class="foot__palette-hint" id="foot-palette-hint">Press ⌘K</button>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ EASTER EGG MODAL ============ -->
+  <div class="easter-egg" id="easter-egg" hidden>
+    <div class="easter-egg__overlay"></div>
+    <div class="easter-egg__terminal">
+      <div class="easter-egg__header">
+        <span class="easter-egg__led"></span>
+        <span class="easter-egg__led"></span>
+        <span class="easter-egg__led"></span>
+        <span class="easter-egg__title">rahul@portfolio:~$</span>
+        <button class="easter-egg__close" type="button" aria-label="Close"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </div>
+      <div class="easter-egg__body">
+        <div class="easter-egg__line">
+          <span class="easter-egg__prompt">$</span>
+          <span class="easter-egg__cmd">sudo hire rahul</span>
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <span class="easter-egg__text">Checking candidate credentials...</span>
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <i class="fa-solid fa-check easter-egg__check" aria-hidden="true"></i> Full Stack Development
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <i class="fa-solid fa-check easter-egg__check" aria-hidden="true"></i> React.js & Node.js
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <i class="fa-solid fa-check easter-egg__check" aria-hidden="true"></i> TypeScript & PostgreSQL
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <i class="fa-solid fa-check easter-egg__check" aria-hidden="true"></i> Problem Solver
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <i class="fa-solid fa-check easter-egg__check" aria-hidden="true"></i> Team Player
+        </div>
+        <div class="easter-egg__line easter-egg__line--success">
+          <span class="easter-egg__badge">ACCESS GRANTED</span>
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <span class="easter-egg__text"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Contact: <a href="mailto:mrahuls104@gmail.com">mrahuls104@gmail.com</a></span>
+        </div>
+        <div class="easter-egg__line easter-egg__line--output">
+          <span class="easter-egg__text"><i class="fa-brands fa-github" aria-hidden="true"></i> GitHub: <a href="https://github.com/mrahulsit" target="_blank">@mrahulsit</a></span>
+        </div>
+        <div class="easter-game">
+          <div class="easter-game__bar">
+            <span class="easter-game__label"><i class="fa-solid fa-gamepad" aria-hidden="true"></i> bonus: keyhunter</span>
+            <span class="easter-game__hint">arrow keys / WASD</span>
+          </div>
+          <div class="easter-game__field">
+            <canvas class="easter-game__canvas" width="300" height="300" aria-label="Snake mini-game"></canvas>
+            <div class="easter-game__overlay">
+              <p class="easter-game__tag">Eat the keys · grow your skill</p>
+              <button class="easter-game__start" type="button"><i class="fa-solid fa-play" aria-hidden="true"></i> Start game</button>
+            </div>
+          </div>
+          <div class="easter-game__score">
+            <span>score <b class="easter-game__scoreval">0</b></span>
+            <span>best <b class="easter-game__best">0</b></span>
+            <span class="easter-game__status">ready</span>
+          </div>
+        </div>
+
+        <div class="easter-egg__line easter-egg__line--final">
+          <span class="easter-egg__prompt">$</span>
+          <span class="easter-egg__cursor">_</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ COMMAND PALETTE ============ -->
+  <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+    <div class="palette__box">
+      <div class="palette__field">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input id="palette-input" type="text" placeholder="Type a command or jump to…" autocomplete="off"
+          role="combobox" aria-expanded="true" aria-controls="palette-list" />
+        <kbd class="palette__kbd">esc</kbd>
+      </div>
+      <ul class="palette__list" id="palette-list" role="listbox"></ul>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./assets/js/main.js?v=11" defer></script>
 </body>
 
 </html>

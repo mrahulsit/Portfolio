@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter Egg Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        .test-info {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .test-area {
+            border: 2px dashed #4f46e5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .steps {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Easter Egg Terminal Test</h1>
+
+    <div class="test-info">
+        <p>This test page helps verify the easter egg terminal modal functionality.</p>
+        <p>Open browser console to see debug messages.</p>
+    </div>
+
+    <div class="steps">
+        <h2>Steps to Test:</h2>
+        <ol>
+            <li>Click anywhere in the test area below to focus</li>
+            <li>Type: <span class="highlight">sudo hire rahul</span> (all lowercase)</li>
+            <li>A terminal modal should appear with animated checkmarks</li>
+            <li>Check console for <span class="highlight">✅ Easter egg triggered!</span> message</li>
+            <li>Close with ✕ button, overlay click, or Escape key</li>
+        </ol>
+    </div>
+
+    <div class="test-area">
+        <h3>Test Area (Click here first, then type)</h3>
+        <p>Make sure this area is focused before typing. Type slowly to see the buffer in console.</p>
+        <p>Expected result: A dark terminal modal with animated checkmarks should appear.</p>
+    </div>
+
+    <div>
+        <h3>Expected Features:</h3>
+        <ul>
+            <li>Terminal header with LED lights (red, yellow, green)</li>
+            <li>Animated typing effect for the command</li>
+            <li>Checkmarks appearing with skills</li>
+            <li>"ACCESS GRANTED" badge</li>
+            <li>Contact links (email, GitHub)</li>
+            <li>Blinking cursor at the end</li>
+            <li>Close functionality (3 ways)</li>
+        </ul>
+    </div>
+
+    <script>
+        // Add some basic logging
+        console.log('🟡 Easter Egg Test Page Loaded');
+        console.log('Type: sudo hire rahul in the test area');
+
+        // Add keyboard listener for testing
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                console.log('Key pressed:', e.key, '| Modifiers:', {
+                    ctrl: e.ctrlKey,
+                    alt: e.altKey,
+                    meta: e.metaKey,
+                    shift: e.shiftKey
+                });
+            }
+        });
+
+        // Focus the test area when clicked
+        document.querySelector('.test-area').addEventListener('click', function() {
+            this.focus();
+            console.log('🔘 Test area focused - ready for typing');
+        });
+    </script>
+</body>
+</html>
