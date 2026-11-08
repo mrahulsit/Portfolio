@@ -119,7 +119,7 @@ export default function HeroVisual() {
       lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(linePos, 3));
       const lineMat = new THREE.LineBasicMaterial({
         transparent: true,
-        opacity: 0.1,
+        opacity: 0.24,
         depthWrite: false,
       });
       const lines = new THREE.LineSegments(lineGeo, lineMat);
