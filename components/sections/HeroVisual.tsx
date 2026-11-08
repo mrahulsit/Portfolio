@@ -14,85 +14,109 @@ export default function HeroVisual() {
 
     (async () => {
       const THREE = await import("three");
-      const { RoundedBoxGeometry } = await import(
-        "three/examples/jsm/geometries/RoundedBoxGeometry.js"
-      );
       if (disposed) return;
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-      camera.position.set(0, 0.2, 5.4);
+      camera.position.set(0, 0, 5.2);
       camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
+      renderer.toneMappingExposure = 1.1;
       const canvas = renderer.domElement;
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       canvas.style.display = "block";
       mount.appendChild(canvas);
 
-      /* ---- lights ---- */
-      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+      scene.add(new THREE.AmbientLight(0xffffff, 1));
 
-      const key = new THREE.DirectionalLight(0xffffff, 2.8);
-      key.position.set(4, 5, 6);
-      scene.add(key);
-
-      const rim = new THREE.DirectionalLight(0xffffff, 1.3);
-      rim.position.set(-4, -2.5, -3);
-      scene.add(rim);
-
-      const lime = new THREE.PointLight(0xcdf22b, 8, 16, 2);
-      lime.position.set(-2.6, 2.2, 2.8);
-      scene.add(lime);
-
-      /* ---- full-stack layers ---- */
       const group = new THREE.Group();
-      group.rotation.x = -0.32;
+      group.rotation.x = -0.14;
       scene.add(group);
 
-      const neutralMats: import("three").MeshStandardMaterial[] = [];
-      const geos: import("three").BufferGeometry[] = [];
-      const mats: import("three").Material[] = [];
-
-      const ACCENT = 0xcdf22b;
-      const layers = [
-        { y: -0.57, color: 0x9aa0a8 }, // data
-        { y: -0.19, color: 0x9aa0a8 }, // api
-        { y: 0.19, color: 0x9aa0a8 }, // logic
-        { y: 0.57, color: ACCENT }, // ui / frontend
-      ];
-
-      for (const layer of layers) {
-        const geo = new RoundedBoxGeometry(2.35, 0.18, 2.35, 4, 0.07);
-        const isAccent = layer.color === ACCENT;
-        const mat = new THREE.MeshStandardMaterial({
-          color: layer.color,
-          metalness: 0.55,
-          roughness: 0.3,
-          emissive: isAccent ? 0x2b3600 : 0x000000,
-          emissiveIntensity: isAccent ? 0.9 : 0,
-        });
-        if (!isAccent) neutralMats.push(mat);
-
-        const mesh = new THREE.Mesh(geo, mat);
-        mesh.position.y = layer.y;
-        group.add(mesh);
-
-        geos.push(geo);
-        mats.push(mat);
+      /* ---- build a network sphere (Fibonacci points) ---- */
+      const N = 200;
+      const R = 1.72;
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      const vecs: import("three").Vector3[] = [];
+      for (let i = 0; i < N; i++) {
+        const y = 1 - (i / (N - 1)) * 2;
+        const r = Math.sqrt(Math.max(0, 1 - y * y));
+        const theta = golden * i;
+        vecs.push(
+          new THREE.Vector3(Math.cos(theta) * r, y, Math.sin(theta) * r).multiplyScalar(R)
+        );
       }
 
-      /* ---- theme-aware neutral colour ---- */
+      /* soft round sprite for points */
+      const spriteTex = (() => {
+        const c = document.createElement("canvas");
+        c.width = c.height = 64;
+        const ctx = c.getContext("2d")!;
+        const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+        g.addColorStop(0, "rgba(255,255,255,1)");
+        g.addColorStop(0.35, "rgba(255,255,255,0.95)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(32, 32, 32, 0, Math.PI * 2);
+        ctx.fill();
+        const t = new THREE.CanvasTexture(c);
+        t.needsUpdate = true;
+        return t;
+      })();
+
+      const pointGeo = new THREE.BufferGeometry().setFromPoints(vecs);
+      const pointMat = new THREE.PointsMaterial({
+        size: 0.06,
+        map: spriteTex,
+        transparent: true,
+        opacity: 0.95,
+        depthWrite: false,
+        sizeAttenuation: true,
+      });
+      const points = new THREE.Points(pointGeo, pointMat);
+      group.add(points);
+
+      /* connections between nearby points */
+      const MAX = 0.5;
+      const linePos: number[] = [];
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          if (vecs[i].distanceTo(vecs[j]) < MAX) {
+            linePos.push(vecs[i].x, vecs[i].y, vecs[i].z, vecs[j].x, vecs[j].y, vecs[j].z);
+          }
+        }
+      }
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(linePos, 3));
+      const lineMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.14 });
+      const lines = new THREE.LineSegments(lineGeo, lineMat);
+      group.add(lines);
+
+      /* lime accent nodes */
+      const accentGeo = new THREE.SphereGeometry(0.055, 16, 16);
+      const accentMat = new THREE.MeshBasicMaterial({ color: 0xcdf22b });
+      const accentIdx = [12, 47, 73, 118, 156, 191];
+      const accents: import("three").Mesh[] = accentIdx.map((i, k) => {
+        const m = new THREE.Mesh(accentGeo, accentMat);
+        m.position.copy(vecs[i]);
+        m.userData.phase = k * 1.1;
+        group.add(m);
+        return m;
+      });
+
+      /* ---- theme-aware colours ---- */
       const applyTheme = () => {
         const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-        const c = new THREE.Color(isDark ? 0xd7dae0 : 0x353a43);
-        for (const m of neutralMats) m.color.copy(c);
+        const line = new THREE.Color(isDark ? 0xf2f0ea : 0x0a0b0d);
+        pointMat.color.copy(line);
+        lineMat.color.copy(line);
       };
       applyTheme();
       const themeObserver = new MutationObserver(applyTheme);
@@ -145,12 +169,16 @@ export default function HeroVisual() {
         smoothed.y += (target.y - smoothed.y) * 0.06;
 
         if (!reduce) {
-          group.rotation.y = t * 0.32 + smoothed.x * 0.4;
-          group.position.y = Math.sin(t * 0.8) * 0.04;
+          group.rotation.y = t * 0.16 + smoothed.x * 0.35;
         } else {
-          group.rotation.y = smoothed.x * 0.4;
+          group.rotation.y = smoothed.x * 0.35;
         }
-        group.rotation.x = -0.32 + smoothed.y * 0.18;
+        group.rotation.x = -0.14 + smoothed.y * 0.22;
+
+        for (const a of accents) {
+          const s = reduce ? 1 : 1 + Math.sin(t * 2 + a.userData.phase) * 0.35;
+          a.scale.setScalar(s);
+        }
 
         renderer.render(scene, camera);
       };
@@ -162,8 +190,13 @@ export default function HeroVisual() {
         resizeObserver.disconnect();
         themeObserver.disconnect();
         window.removeEventListener("pointermove", onPointerMove);
-        for (const g of geos) g.dispose();
-        for (const m of mats) m.dispose();
+        pointGeo.dispose();
+        pointMat.dispose();
+        spriteTex.dispose();
+        lineGeo.dispose();
+        lineMat.dispose();
+        accentGeo.dispose();
+        accentMat.dispose();
         renderer.dispose();
         if (canvas.parentNode === mount) mount.removeChild(canvas);
       };
