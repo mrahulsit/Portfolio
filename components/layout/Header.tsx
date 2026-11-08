@@ -66,7 +66,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-4 z-[100] pointer-events-none">
-      <div className="mx-auto max-w-[1260px] w-full pointer-events-auto">
+        <div className="mx-auto max-w-[1160px] w-full pointer-events-auto">
         <div
           className={`relative flex items-center justify-between gap-5 rounded-[2rem] border border-line-strong bg-elev/70 backdrop-blur-[20px] backdrop-saturate-[1.5] shadow-card px-5 py-2.5 transition-colors duration-300 ${
             scrolled
