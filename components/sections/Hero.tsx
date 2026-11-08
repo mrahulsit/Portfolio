@@ -122,46 +122,20 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* 3D abstract visual plate */}
+        {/* 3D full-stack visual (open, no frame) */}
         <motion.div
           ref={cardRef}
           aria-hidden
-          initial={reduce ? false : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
-          className="relative mx-auto aspect-square w-full max-w-[460px] overflow-hidden rounded-card border border-line bg-elev shadow-card will-change-transform transition-shadow duration-300 hover:shadow-lift lg:max-w-none"
+          initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
+          className="relative mx-auto aspect-square w-full max-w-[520px] will-change-transform lg:max-w-none"
           style={{ transformStyle: "preserve-3d" }}
         >
-          {/* faint technical grid */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-70"
-            style={{
-              backgroundImage:
-                "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
-              backgroundSize: "46px 46px",
-            }}
-          />
+          {/* soft ambient glow behind the model */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,var(--accent-soft),transparent_60%)] opacity-60" />
 
-          {/* soft accent glow */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,var(--accent-soft),transparent_62%)] opacity-70" />
-
-          {/* 3D abstract visual */}
           <HeroVisual />
-
-          {/* hairline labels */}
-          <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-faint">
-            <div className="flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5">
-                <i className="block h-1.5 w-1.5 rounded-full bg-accent" />
-                Portfolio
-              </span>
-              <span>Fig. 01</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span>Rahul Mishra</span>
-              <span>Full Stack Engineer</span>
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>

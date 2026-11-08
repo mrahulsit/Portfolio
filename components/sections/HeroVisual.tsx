@@ -14,13 +14,17 @@ export default function HeroVisual() {
 
     (async () => {
       const THREE = await import("three");
+      const { RoundedBoxGeometry } = await import(
+        "three/examples/jsm/geometries/RoundedBoxGeometry.js"
+      );
       if (disposed) return;
 
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-      camera.position.set(0, 0, 5.2);
+      camera.position.set(0, 0.2, 5.4);
+      camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -33,54 +37,62 @@ export default function HeroVisual() {
       mount.appendChild(canvas);
 
       /* ---- lights ---- */
-      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-      const key = new THREE.DirectionalLight(0xffffff, 2.6);
-      key.position.set(3.5, 4, 5);
+      const key = new THREE.DirectionalLight(0xffffff, 2.8);
+      key.position.set(4, 5, 6);
       scene.add(key);
 
-      const rim = new THREE.DirectionalLight(0xffffff, 1.4);
+      const rim = new THREE.DirectionalLight(0xffffff, 1.3);
       rim.position.set(-4, -2.5, -3);
       scene.add(rim);
 
-      const lime = new THREE.PointLight(0xcdf22b, 6, 14, 2);
-      lime.position.set(-2.4, 1.8, 2.4);
+      const lime = new THREE.PointLight(0xcdf22b, 8, 16, 2);
+      lime.position.set(-2.6, 2.2, 2.8);
       scene.add(lime);
 
-      /* ---- group (pointer parallax target) ---- */
+      /* ---- full-stack layers ---- */
       const group = new THREE.Group();
+      group.rotation.x = -0.32;
       scene.add(group);
 
-      /* crystal */
-      const crystalGeo = new THREE.IcosahedronGeometry(1.02, 1);
-      const crystalMat = new THREE.MeshStandardMaterial({
-        color: 0xcdf22b,
-        metalness: 0.5,
-        roughness: 0.28,
-        flatShading: true,
-      });
-      const crystal = new THREE.Mesh(crystalGeo, crystalMat);
-      group.add(crystal);
+      const neutralMats: import("three").MeshStandardMaterial[] = [];
+      const geos: import("three").BufferGeometry[] = [];
+      const mats: import("three").Material[] = [];
 
-      /* wireframe cage */
-      const cageGeo = new THREE.IcosahedronGeometry(1.62, 1);
-      const cageMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.32 });
-      const cage = new THREE.LineSegments(new THREE.WireframeGeometry(cageGeo), cageMat);
-      group.add(cage);
+      const ACCENT = 0xcdf22b;
+      const layers = [
+        { y: -0.57, color: 0x9aa0a8 }, // data
+        { y: -0.19, color: 0x9aa0a8 }, // api
+        { y: 0.19, color: 0x9aa0a8 }, // logic
+        { y: 0.57, color: ACCENT }, // ui / frontend
+      ];
 
-      /* thin orbital ring */
-      const ringGeo = new THREE.TorusGeometry(1.9, 0.007, 8, 200);
-      const ringMat = new THREE.MeshBasicMaterial({ transparent: true, opacity: 0.4 });
-      const ring = new THREE.Mesh(ringGeo, ringMat);
-      ring.rotation.x = Math.PI / 2.4;
-      group.add(ring);
+      for (const layer of layers) {
+        const geo = new RoundedBoxGeometry(2.35, 0.18, 2.35, 4, 0.07);
+        const isAccent = layer.color === ACCENT;
+        const mat = new THREE.MeshStandardMaterial({
+          color: layer.color,
+          metalness: 0.55,
+          roughness: 0.3,
+          emissive: isAccent ? 0x2b3600 : 0x000000,
+          emissiveIntensity: isAccent ? 0.9 : 0,
+        });
+        if (!isAccent) neutralMats.push(mat);
 
-      /* ---- theme-aware line colour ---- */
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.y = layer.y;
+        group.add(mesh);
+
+        geos.push(geo);
+        mats.push(mat);
+      }
+
+      /* ---- theme-aware neutral colour ---- */
       const applyTheme = () => {
         const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-        const line = new THREE.Color(isDark ? 0xfaf8f3 : 0x08090b);
-        cageMat.color.copy(line);
-        ringMat.color.copy(line);
+        const c = new THREE.Color(isDark ? 0xd7dae0 : 0x353a43);
+        for (const m of neutralMats) m.color.copy(c);
       };
       applyTheme();
       const themeObserver = new MutationObserver(applyTheme);
@@ -129,19 +141,16 @@ export default function HeroVisual() {
         if (!visible) return;
 
         const t = clock.getElapsedTime();
-
         smoothed.x += (target.x - smoothed.x) * 0.06;
         smoothed.y += (target.y - smoothed.y) * 0.06;
-        group.rotation.y = smoothed.x * 0.35;
-        group.rotation.x = smoothed.y * 0.22;
 
         if (!reduce) {
-          crystal.rotation.y = t * 0.28;
-          crystal.rotation.x = Math.sin(t * 0.35) * 0.16;
-          cage.rotation.y = -t * 0.14;
-          cage.rotation.z = t * 0.06;
-          ring.rotation.z = -t * 0.2;
+          group.rotation.y = t * 0.32 + smoothed.x * 0.4;
+          group.position.y = Math.sin(t * 0.8) * 0.04;
+        } else {
+          group.rotation.y = smoothed.x * 0.4;
         }
+        group.rotation.x = -0.32 + smoothed.y * 0.18;
 
         renderer.render(scene, camera);
       };
@@ -153,13 +162,8 @@ export default function HeroVisual() {
         resizeObserver.disconnect();
         themeObserver.disconnect();
         window.removeEventListener("pointermove", onPointerMove);
-        crystalGeo.dispose();
-        crystalMat.dispose();
-        cageGeo.dispose();
-        cage.geometry.dispose();
-        cageMat.dispose();
-        ringGeo.dispose();
-        ringMat.dispose();
+        for (const g of geos) g.dispose();
+        for (const m of mats) m.dispose();
         renderer.dispose();
         if (canvas.parentNode === mount) mount.removeChild(canvas);
       };
