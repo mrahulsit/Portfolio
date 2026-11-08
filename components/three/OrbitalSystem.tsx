@@ -79,7 +79,7 @@ function Ring({
         : t * orbit.spin + orbit.phase;
     }
     if (lineMatRef.current) {
-      lineMatRef.current.opacity = progress * (theme === "dark" ? 0.95 : 0.9);
+      lineMatRef.current.opacity = progress * (theme === "dark" ? 0.85 : 0.8);
     }
     if (arcMatRef.current) {
       arcMatRef.current.opacity = progress;
@@ -108,14 +108,14 @@ function Ring({
         {orbit.limeArc ? (
           <mesh>
             <tubeGeometry
-              args={[arcCurve, 90, orbit.thickness * 1.65, 8, false]}
+              args={[arcCurve, 90, orbit.thickness * 1.5, 8, false]}
               attach="geometry"
             />
             <meshStandardMaterial
               ref={arcMatRef}
               color={LIME}
               emissive={LIME}
-              emissiveIntensity={theme === "dark" ? 1.35 : 1.05}
+              emissiveIntensity={theme === "dark" ? 1.1 : 0.9}
               metalness={0.2}
               roughness={0.35}
               transparent

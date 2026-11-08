@@ -21,36 +21,41 @@ export default function SceneLighting({ theme, reduced, quality }: Props) {
     const t = state.clock.elapsedTime;
     const angle = t * 0.34;
     limeRef.current.position.set(
-      Math.cos(angle) * 3.1,
-      Math.sin(t * 0.45) * 1.3 + 0.5,
-      Math.sin(angle) * 3.1
+      Math.cos(angle) * 3.2,
+      Math.sin(t * 0.45) * 1.1 + 0.6,
+      Math.sin(angle) * 3.2
     );
   });
 
   return (
     <>
-      <ambientLight intensity={dark ? 0.3 : 0.48} />
+      <ambientLight intensity={dark ? 0.35 : 0.5} />
       <directionalLight
         position={[4, 5, 6]}
-        intensity={dark ? 2 : 1.6}
+        intensity={dark ? 1.5 : 1.2}
+        color={IVORY}
+      />
+      <directionalLight
+        position={[-2.5, 3, -6]}
+        intensity={dark ? 1.5 : 1.1}
         color={IVORY}
       />
       <directionalLight
         position={[-5, -2, -4]}
-        intensity={dark ? 0.9 : 0.55}
+        intensity={dark ? 0.7 : 0.45}
         color={LIME}
       />
       <directionalLight
         position={[-3, 3, 4]}
-        intensity={dark ? 0.4 : 0.6}
+        intensity={dark ? 0.35 : 0.5}
         color={IVORY}
       />
       <pointLight
         ref={limeRef}
-        position={[3.1, 0.5, 0]}
+        position={[3.2, 0.6, 0]}
         color={LIME}
-        intensity={dark ? 11 : 7}
-        distance={14}
+        intensity={dark ? 5 : 3.4}
+        distance={16}
         decay={2}
       />
 
@@ -59,45 +64,45 @@ export default function SceneLighting({ theme, reduced, quality }: Props) {
         resolution={quality === "high" ? 256 : 128}
         frames={1}
       >
-        <color attach="background" args={[dark ? "#050608" : "#cfcbc0"]} />
+        <color attach="background" args={[dark ? "#050608" : "#cbc7bd"]} />
         <Lightformer
           form="rect"
-          intensity={dark ? 3.4 : 2.6}
+          intensity={dark ? 2.6 : 2.2}
           color={IVORY}
-          position={[0, 4, -8]}
-          scale={[14, 8, 1]}
+          position={[0, 5, -8]}
+          scale={[18, 10, 1]}
           target={[0, 0, 0]}
         />
         <Lightformer
           form="rect"
-          intensity={1.7}
+          intensity={dark ? 1.3 : 1}
           color={IVORY}
-          position={[6, 1.5, 3]}
-          scale={[6, 7, 1]}
+          position={[7, 1, 4]}
+          scale={[7, 9, 1]}
           target={[0, 0, 0]}
         />
         <Lightformer
           form="rect"
-          intensity={dark ? 1.5 : 0.9}
+          intensity={dark ? 0.9 : 0.6}
           color={LIME}
-          position={[-6, -2, -3]}
-          scale={[4, 5, 1]}
-          target={[0, 0, 0]}
-        />
-        <Lightformer
-          form="ring"
-          intensity={dark ? 1.1 : 0.8}
-          color={IVORY}
-          position={[0, 0, 7]}
-          scale={5.5}
+          position={[-7, -3, -2]}
+          scale={[5, 6, 1]}
           target={[0, 0, 0]}
         />
         <Lightformer
           form="rect"
-          intensity={0.35}
-          color="#1a1d21"
-          position={[0, -5, 1]}
-          scale={[12, 8, 1]}
+          intensity={0.5}
+          color={IVORY}
+          position={[0, 0, 9]}
+          scale={[16, 10, 1]}
+          target={[0, 0, 0]}
+        />
+        <Lightformer
+          form="rect"
+          intensity={0.15}
+          color="#15171a"
+          position={[0, -6, 0]}
+          scale={[14, 9, 1]}
           target={[0, 0, 0]}
         />
       </Environment>

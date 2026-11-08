@@ -33,41 +33,34 @@ function Fallback() {
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="relative aspect-square w-[80%] max-w-[440px]">
         <div
-          className="absolute inset-[20%] rounded-full"
+          className="absolute inset-[11%] rounded-full"
           style={{
             background:
               "radial-gradient(circle at 34% 28%, #34373c 0%, #0b0c0e 44%, #050607 100%)",
             boxShadow:
-              "inset -16px -20px 46px rgba(0,0,0,0.85), 0 40px 80px -36px rgba(0,0,0,0.75)",
+              "inset -22px -28px 60px rgba(0,0,0,0.85), 0 44px 90px -38px rgba(0,0,0,0.75)",
           }}
         />
         <div
-          className="absolute inset-[2%] rounded-full opacity-60"
+          className="absolute inset-[1%] rounded-full opacity-55"
           style={{
             border: "1px solid var(--line)",
-            transform: "rotate(-16deg) scaleY(0.36)",
+            transform: "rotate(-14deg) scaleY(0.4)",
           }}
         />
         <div
-          className="absolute inset-[9%] rounded-full opacity-45"
+          className="absolute inset-[7%] rounded-full opacity-40"
           style={{
             border: "1px solid var(--line)",
-            transform: "rotate(11deg) scaleY(0.42)",
+            transform: "rotate(12deg) scaleY(0.46)",
           }}
         />
         <div
-          className="absolute inset-[16%] rounded-full opacity-30"
-          style={{
-            border: "1px solid var(--line)",
-            transform: "rotate(-28deg) scaleY(0.3)",
-          }}
-        />
-        <div
-          className="absolute left-[74%] top-[24%] h-2 w-2 rounded-full"
+          className="absolute left-[74%] top-[26%] h-2 w-2 rounded-full"
           style={{ background: "#cdf22b", boxShadow: "0 0 14px #cdf22b" }}
         />
         <div
-          className="absolute left-[19%] top-[63%] h-1.5 w-1.5 rounded-full opacity-80"
+          className="absolute left-[17%] top-[66%] h-1.5 w-1.5 rounded-full opacity-70"
           style={{ background: "var(--line)" }}
         />
       </div>

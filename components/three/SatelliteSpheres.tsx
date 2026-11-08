@@ -53,7 +53,7 @@ function Satellite({
     }
     if (glowMatRef.current) {
       glowMatRef.current.opacity =
-        progress * (theme === "dark" ? 0.18 : 0.1);
+        progress * (theme === "dark" ? 0.13 : 0.08);
     }
   });
 
@@ -68,7 +68,7 @@ function Satellite({
             metalness={isLime ? 0.15 : 0.9}
             roughness={isLime ? 0.38 : 0.22}
             emissive={isLime ? LIME : "#000000"}
-            emissiveIntensity={isLime ? 1.15 : 0}
+            emissiveIntensity={isLime ? 1 : 0}
             envMapIntensity={1.15}
             transparent
             opacity={0}

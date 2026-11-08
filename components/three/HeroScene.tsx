@@ -112,7 +112,7 @@ function Sculpture({
       -0.06 + smoothed.current.y * -0.12 + idleX + scroll.current * 0.08;
     group.rotation.y =
       smoothed.current.x * 0.22 + idleY + scroll.current * 0.12;
-    group.position.x = 0.15 + smoothed.current.x * 0.05;
+    group.position.x = smoothed.current.x * 0.05;
     group.position.y = -scroll.current * 0.22;
   });
 
@@ -121,7 +121,7 @@ function Sculpture({
       <CentralSphere theme={theme} reduced={reduced} />
       <OrbitalSystem theme={theme} reduced={reduced} />
       <SatelliteSpheres theme={theme} reduced={reduced} />
-      <AbstractDetails theme={theme} reduced={reduced} quality={quality} />
+      <AbstractDetails theme={theme} reduced={reduced} />
     </group>
   );
 }
@@ -133,7 +133,7 @@ export default function HeroScene({ theme, quality, reduced, active }: Props) {
     <div ref={hostRef} className="absolute inset-0">
       <Canvas
         dpr={[1, quality === "high" ? 2 : 1.5]}
-        camera={{ position: [0, 0, 7.4], fov: 42 }}
+        camera={{ position: [0, 0, 7.6], fov: 42 }}
         gl={{
           antialias: true,
           alpha: true,
@@ -142,7 +142,7 @@ export default function HeroScene({ theme, quality, reduced, active }: Props) {
         frameloop={active ? "always" : "never"}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.05;
+          gl.toneMappingExposure = 1;
         }}
       >
         <Suspense fallback={null}>
