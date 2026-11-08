@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { profile } from "@/lib/data";
+import HeroVisual from "./HeroVisual";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -121,7 +122,7 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Minimal monogram plate */}
+        {/* 3D abstract visual plate */}
         <motion.div
           ref={cardRef}
           aria-hidden
@@ -144,41 +145,8 @@ export default function Hero() {
           {/* soft accent glow */}
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,var(--accent-soft),transparent_62%)] opacity-70" />
 
-          {/* faint ring + lime arc */}
-          <svg
-            viewBox="0 0 100 100"
-            className="pointer-events-none absolute inset-0 h-full w-full"
-            role="presentation"
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              className="text-line-strong"
-              stroke="currentColor"
-              strokeWidth="0.4"
-              strokeOpacity="0.7"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              style={{ stroke: "var(--accent)" }}
-              strokeWidth="0.9"
-              strokeLinecap="round"
-              strokeDasharray="63 251"
-              transform="rotate(-90 50 50)"
-            />
-          </svg>
-
-          {/* monogram */}
-          <div className="relative flex h-full w-full items-center justify-center">
-            <span className="font-display font-medium leading-none tracking-[-0.06em] text-ink [font-size:clamp(112px,19vw,196px)]">
-              RM
-            </span>
-          </div>
+          {/* 3D abstract visual */}
+          <HeroVisual />
 
           {/* hairline labels */}
           <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-faint">
