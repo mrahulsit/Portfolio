@@ -266,6 +266,35 @@ code {
 }
 
 /* ==========================================================================
+   Hero abstract visual
+   ========================================================================== */
+@keyframes hv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.hv-spin {
+  animation: hv-spin 48s linear infinite;
+}
+
+@keyframes hv-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.75;
+  }
+}
+.hv-pulse {
+  animation: hv-pulse 4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ==========================================================================
    Reduced motion
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
