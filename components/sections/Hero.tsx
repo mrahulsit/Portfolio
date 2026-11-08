@@ -5,11 +5,6 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  FaGithub as Github,
-  FaLinkedin as Linkedin,
-  FaEnvelope as Mail,
-} from "react-icons/fa";
 import { profile } from "@/lib/data";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -124,29 +119,6 @@ export default function Hero() {
               Download Resume
             </Link>
           </motion.div>
-
-          <motion.ul
-            variants={item}
-            className="mt-[26px] flex flex-wrap gap-5 border-t border-line pt-[22px]"
-          >
-            {[
-              { href: profile.github, label: "GitHub", Icon: Github },
-              { href: profile.linkedin, label: "LinkedIn", Icon: Linkedin },
-              { href: `mailto:${profile.email}`, label: "Email", Icon: Mail },
-            ].map(({ href, label, Icon }) => (
-              <li key={label}>
-                <a
-                  href={href}
-                  target={href.startsWith("http") ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[14.5px] font-[550] text-ink transition-colors hover:text-accent"
-                >
-                  <Icon size={14} className="opacity-85" />
-                  {label}
-                </a>
-              </li>
-            ))}
-          </motion.ul>
         </motion.div>
 
         {/* Minimal monogram plate */}
