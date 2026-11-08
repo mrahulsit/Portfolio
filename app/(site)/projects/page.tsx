@@ -75,7 +75,7 @@ export default function ProjectsPage({
                   href={`/projects?status=${f}`}
                   className={`rounded-full border px-4 py-1.5 text-[12.5px] font-[550] uppercase tracking-[0.06em] transition-all duration-200 ${
                     isActive
-                      ? "border-accent bg-accent text-white"
+                      ? "border-accent bg-accent text-accent-text"
                       : "border-line-strong text-ink-2 hover:border-accent"
                   }`}
                 >

@@ -248,7 +248,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                     rel="noopener noreferrer"
                     className={`inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-[550] transition-all duration-200 hover:-translate-y-0.5 ${
                       i === 0
-                        ? "border-accent bg-accent text-white hover:bg-accent-ink hover:border-accent-ink"
+                        ? "border-accent bg-accent text-accent-text hover:bg-accent-ink hover:border-accent-ink"
                         : "border-line-strong text-ink hover:border-ink"
                     }`}
                   >

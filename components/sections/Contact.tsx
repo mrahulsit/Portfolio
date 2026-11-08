@@ -222,7 +222,7 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-white transition-all duration-200 hover:bg-accent-ink hover:border-accent-ink"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:bg-accent-ink hover:border-accent-ink"
               >
                 Send message
               </button>

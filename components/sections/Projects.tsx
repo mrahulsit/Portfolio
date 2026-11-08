@@ -191,7 +191,7 @@ export function TechBadge({ label, kind }: { label: string; kind?: Project["tech
 
 export function ActionRow({ project }: { project: Project }) {
   const primaryCls =
-    "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-accent bg-accent text-white hover:bg-accent-ink hover:border-accent-ink";
+    "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-accent bg-accent text-accent-text hover:bg-accent-ink hover:border-accent-ink";
   const ghostCls =
     "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-line-strong text-ink hover:border-ink";
 

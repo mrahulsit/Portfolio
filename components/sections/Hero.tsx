@@ -15,7 +15,7 @@ import { contents, profile } from "@/lib/data";
 gsap.registerPlugin(ScrollTrigger);
 
 const btnAccent =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-white transition-all duration-200 hover:-translate-y-[3px] hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.5)]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:-translate-y-[3px] hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.5)]";
 const btnGhost =
   "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_16px_-8px_rgba(79,70,229,0.3)]";
 
