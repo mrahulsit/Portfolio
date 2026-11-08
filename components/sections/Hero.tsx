@@ -149,132 +149,77 @@ export default function Hero() {
           </motion.ul>
         </motion.div>
 
-        {/* Abstract geometric visual */}
+        {/* Minimal monogram plate */}
         <motion.div
           ref={cardRef}
           aria-hidden
           initial={reduce ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.35, ease: "easeOut" }}
-          className="relative mx-auto aspect-square w-full max-w-[480px] overflow-hidden rounded-card border border-line bg-elev shadow-card will-change-transform transition-shadow duration-300 hover:shadow-lift lg:max-w-none"
+          className="relative mx-auto aspect-square w-full max-w-[460px] overflow-hidden rounded-card border border-line bg-elev shadow-card will-change-transform transition-shadow duration-300 hover:shadow-lift lg:max-w-none"
           style={{ transformStyle: "preserve-3d" }}
         >
+          {/* faint technical grid */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              backgroundImage:
+                "linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px)",
+              backgroundSize: "46px 46px",
+            }}
+          />
+
           {/* soft accent glow */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_26%,var(--accent-soft),transparent_62%)] opacity-80" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,var(--accent-soft),transparent_62%)] opacity-70" />
 
-          <svg viewBox="0 0 480 480" className="relative h-full w-full" role="presentation">
-            <defs>
-              <pattern id="hvGrid" width="30" height="30" patternUnits="userSpaceOnUse">
-                <path
-                  d="M30 0H0V30"
-                  fill="none"
-                  stroke="#808080"
-                  strokeOpacity="0.16"
-                  strokeWidth="1"
-                />
-              </pattern>
-            </defs>
-
-            {/* technical grid */}
-            <rect width="480" height="480" fill="url(#hvGrid)" />
-
-            {/* inner disc for depth */}
-            <circle cx="240" cy="240" r="72" style={{ fill: "var(--accent-soft)" }} opacity="0.55" />
-
-            {/* structural rings */}
+          {/* faint ring + lime arc */}
+          <svg
+            viewBox="0 0 100 100"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+            role="presentation"
+          >
             <circle
-              cx="240"
-              cy="240"
-              r="158"
+              cx="50"
+              cy="50"
+              r="40"
               fill="none"
               className="text-line-strong"
               stroke="currentColor"
-              strokeOpacity="0.9"
-            />
-            <circle
-              cx="240"
-              cy="240"
-              r="72"
-              fill="none"
-              className="text-line"
-              stroke="currentColor"
-            />
-            <rect
-              x="150"
-              y="150"
-              width="180"
-              height="180"
-              transform="rotate(45 240 240)"
-              fill="none"
-              className="text-line"
-              stroke="currentColor"
+              strokeWidth="0.4"
               strokeOpacity="0.7"
             />
-
-            {/* rotating dotted ring */}
-            <g className="hv-spin" style={{ transformOrigin: "240px 240px" }}>
-              <circle
-                cx="240"
-                cy="240"
-                r="118"
-                fill="none"
-                className="text-line-strong"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeDasharray="1 11"
-                strokeLinecap="round"
-                strokeOpacity="0.85"
-              />
-            </g>
-
-            {/* accent arc */}
-            <path
-              d="M212.9 86.4A156 156 0 0 1 393.6 212.9"
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
               fill="none"
               style={{ stroke: "var(--accent)" }}
-              strokeWidth="5"
+              strokeWidth="0.9"
               strokeLinecap="round"
+              strokeDasharray="63 251"
+              transform="rotate(-90 50 50)"
             />
-
-            {/* center crosshair */}
-            <g className="text-line-strong" stroke="currentColor" strokeWidth="1" strokeOpacity="0.8">
-              <line x1="240" y1="228" x2="240" y2="252" />
-              <line x1="228" y1="240" x2="252" y2="240" />
-            </g>
-
-            {/* nodes on inner ring */}
-            <g className="text-ink" fill="currentColor" opacity="0.9">
-              <circle cx="240" cy="168" r="3.2" />
-              <circle cx="312" cy="240" r="3.2" />
-              <circle cx="240" cy="312" r="3.2" />
-              <circle cx="168" cy="240" r="3.2" />
-            </g>
-
-            {/* accent node + halo */}
-            <circle cx="240" cy="82" r="16" style={{ fill: "var(--accent)" }} opacity="0.18" />
-            <circle cx="240" cy="82" r="8" style={{ fill: "var(--accent)" }} className="hv-pulse" />
-
-            {/* corner registration marks */}
-            <g className="text-faint" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M28 52V28h24" fill="none" />
-              <path d="M452 52V28h-24" fill="none" />
-              <path d="M28 428v24h24" fill="none" />
-              <path d="M452 428v24h-24" fill="none" />
-            </g>
           </svg>
 
-          {/* technical labels */}
-          <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-4 font-ui text-[10px] font-semibold uppercase tracking-[0.18em] text-faint">
+          {/* monogram */}
+          <div className="relative flex h-full w-full items-center justify-center">
+            <span className="font-display font-medium leading-none tracking-[-0.06em] text-ink [font-size:clamp(112px,19vw,196px)]">
+              RM
+            </span>
+          </div>
+
+          {/* hairline labels */}
+          <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-5 font-ui text-[10px] font-semibold uppercase tracking-[0.2em] text-faint">
             <div className="flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5">
                 <i className="block h-1.5 w-1.5 rounded-full bg-accent" />
-                System / V2
+                Portfolio
               </span>
               <span>Fig. 01</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>20.29° N</span>
-              <span>85.82° E</span>
+              <span>Rahul Mishra</span>
+              <span>Full Stack Engineer</span>
             </div>
           </div>
         </motion.div>
