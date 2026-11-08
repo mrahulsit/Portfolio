@@ -4,8 +4,8 @@ import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import CentralSphere from "./CentralSphere";
+import CircuitTraces from "./CircuitTraces";
 import OrbitalSystem from "./OrbitalSystem";
-import SatelliteSpheres from "./SatelliteSpheres";
 import AbstractDetails from "./AbstractDetails";
 import SceneLighting from "./SceneLighting";
 
@@ -119,8 +119,8 @@ function Sculpture({
   return (
     <group ref={groupRef}>
       <CentralSphere theme={theme} reduced={reduced} />
+      <CircuitTraces theme={theme} reduced={reduced} />
       <OrbitalSystem theme={theme} reduced={reduced} />
-      <SatelliteSpheres theme={theme} reduced={reduced} />
       <AbstractDetails theme={theme} reduced={reduced} />
     </group>
   );
