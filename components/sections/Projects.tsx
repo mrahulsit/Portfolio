@@ -260,7 +260,7 @@ export default function Projects() {
                   {featured.subtitle}
                 </h3>
               </div>
-              <p className="mb-6 leading-relaxed text-ink-2">{featured.desc}</p>
+                <p className="mb-6 leading-relaxed text-ink">{featured.desc}</p>
 
               <p className="mb-2.5 font-ui text-[11px] font-[650] uppercase tracking-[0.12em] text-faint">
                 Technology
@@ -278,7 +278,7 @@ export default function Projects() {
                   </p>
                   <div className="grid gap-2.5">
                     {featured.highlights.map((h) => (
-                      <p key={h} className="flex items-center gap-2.5 text-[14.5px] text-ink-2">
+                      <p key={h} className="flex items-center gap-2.5 text-[14.5px] text-ink">
                         <span aria-hidden className="text-accent">
                           ✓
                         </span>
@@ -312,6 +312,7 @@ export default function Projects() {
                       {p.title}
                     </h3>
                     <p className="text-base text-muted">{p.subtitle}</p>
+                  <p className="mb-6 text-base leading-relaxed text-ink">{p.desc}</p>
                   </div>
                   <p className="mb-6 text-base leading-relaxed text-ink-2">{p.desc}</p>
                   <div className="mb-6 flex flex-wrap gap-2">

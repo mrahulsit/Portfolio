@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { caseStudies, getCaseStudy } from "@/lib/caseStudies";
-import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
+import {
+  FaArrowLeft as ArrowLeft,
+  FaExternalLinkAlt as ArrowUpRight,
+  FaGithub as Github,
+} from "react-icons/fa";
 
 export const dynamicParams = false;
 

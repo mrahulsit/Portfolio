@@ -1,5 +1,8 @@
 import SectionHead from "@/components/ui/SectionHead";
-import { Github as GithubIcon, ArrowUpRight } from "lucide-react";
+import {
+  FaGithub as GithubIcon,
+  FaExternalLinkAlt as ArrowUpRight,
+} from "react-icons/fa";
 import { profile } from "@/lib/data";
 
 export const revalidate = 3600;
@@ -80,7 +83,7 @@ export default async function GithubSection() {
             href={profile.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-sm font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_16px_-8px_rgba(79,70,229,0.3)]"
+            className="inline-flex items-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-sm font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_14px_-6px_rgba(205,242,43,0.35)]"
           >
             <GithubIcon size={14} />
             See all repositories

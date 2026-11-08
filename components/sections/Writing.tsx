@@ -1,6 +1,10 @@
 import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
-import { Github, ArrowRight, ArrowUpRight } from "lucide-react";
+import {
+  FaGithub as Github,
+  FaArrowRight as ArrowRight,
+  FaExternalLinkAlt as ArrowUpRight,
+} from "react-icons/fa";
 import { profile, writing } from "@/lib/data";
 
 export default function Writing() {
@@ -23,7 +27,7 @@ export default function Writing() {
             <h3 className="mb-3.5 font-display text-[27px] font-medium tracking-[-0.01em] text-ink">
               {writing.title}
             </h3>
-            <p className="mb-[22px] text-ink-2">{writing.body}</p>
+            <p className="mb-[22px] text-ink">{writing.body}</p>
             <a
               href={writing.href}
               target="_blank"

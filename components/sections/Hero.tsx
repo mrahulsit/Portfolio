@@ -5,7 +5,11 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Github, Linkedin, Mail } from "lucide-react";
+import {
+  FaGithub as Github,
+  FaLinkedin as Linkedin,
+  FaEnvelope as Mail,
+} from "react-icons/fa";
 import { contents, profile } from "@/lib/data";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -93,7 +97,7 @@ export default function Hero() {
 
           <motion.p
             variants={item}
-            className="mb-7 max-w-[34em] text-[clamp(16.5px,2vw,18.5px)] leading-relaxed text-ink-2"
+            className="mb-7 max-w-[34em] text-[clamp(16.5px,2vw,18.5px)] leading-relaxed text-ink"
           >
             {profile.lede}
           </motion.p>
@@ -137,7 +141,7 @@ export default function Hero() {
                   href={href}
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[14.5px] font-[550] text-ink-2 transition-colors hover:text-accent"
+                  className="inline-flex items-center gap-2 text-[14.5px] font-[550] text-ink transition-colors hover:text-accent"
                 >
                   <Icon size={14} className="opacity-85" />
                   {label}

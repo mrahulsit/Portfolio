@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronLeft, Filter, Layers } from "lucide-react";
+import { FaChevronLeft as ChevronLeft, FaFilter as Filter } from "react-icons/fa";
+import { MdLayers as Layers } from "react-icons/md";
 import SectionHead from "@/components/ui/SectionHead";
 import {
   ActionRow,

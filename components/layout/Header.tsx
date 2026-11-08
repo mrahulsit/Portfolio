@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Github, Linkedin, Menu, Moon, Sun, X } from "lucide-react";
+import {
+  FaGithub as Github,
+  FaLinkedin as Linkedin,
+  FaBars as Menu,
+  FaMoon as Moon,
+  FaSun as Sun,
+} from "react-icons/fa";
+import { SiX as X } from "react-icons/si";
 import { navLinks, profile } from "@/lib/data";
 import { useTheme } from "@/lib/theme";
 

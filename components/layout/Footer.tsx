@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Github, Linkedin, Mail } from "lucide-react";
+import {
+  FaGithub as Github,
+  FaLinkedin as Linkedin,
+  FaEnvelope as Mail,
+} from "react-icons/fa";
 import { profile } from "@/lib/data";
 
 function useVisitorStats() {

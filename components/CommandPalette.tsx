@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Search } from "lucide-react";
+import { FaSearch as Search } from "react-icons/fa";
 import { useTheme } from "@/lib/theme";
 import { useToast } from "@/lib/toast";
 import { profile } from "@/lib/data";

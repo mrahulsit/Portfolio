@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import {
-  Mail,
-  Linkedin,
-  Github,
-  FileText,
-  Download,
-  Copy,
-  Check,
-  ArrowUpRight,
-} from "lucide-react";
+  FaEnvelope as Mail,
+  FaLinkedin as Linkedin,
+  FaGithub as Github,
+  FaFile as FileText,
+  FaDownload as Download,
+  FaCopy as Copy,
+  FaCheck as Check,
+  FaExternalLinkAlt as ArrowUpRight,
+} from "react-icons/fa";
 import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
 import { useToast } from "@/lib/toast";
@@ -92,10 +92,10 @@ export default function Contact() {
               <div className="flex flex-wrap items-center gap-3.5">
                 <a
                   href={`mailto:${profile.email}`}
-                  className="font-semibold text-ink-2 transition-colors hover:text-accent"
-                >
-                  {profile.email}
-                </a>
+                className="font-semibold text-ink transition-colors hover:text-accent"
+              >
+                {profile.email}
+              </a>
                 <button
                   type="button"
                   onClick={copyEmail}
@@ -117,7 +117,7 @@ export default function Contact() {
                 href={profile.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-semibold text-ink-2 transition-colors hover:text-accent"
+                className="inline-flex items-center gap-1.5 font-semibold text-ink transition-colors hover:text-accent"
               >
                 linkedin.com/in/{profile.linkedinHandle}
                 <ArrowUpRight size={11} className="opacity-70" />
@@ -133,7 +133,7 @@ export default function Contact() {
                 href={profile.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-semibold text-ink-2 transition-colors hover:text-accent"
+                className="inline-flex items-center gap-1.5 font-semibold text-ink transition-colors hover:text-accent"
               >
                 {profile.githubHandle}
                 <ArrowUpRight size={11} className="opacity-70" />
@@ -149,7 +149,7 @@ export default function Contact() {
                 href="/resume"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-semibold text-ink-2 transition-colors hover:text-accent"
+                className="inline-flex items-center gap-1.5 font-semibold text-ink transition-colors hover:text-accent"
               >
                 <Download size={12} />
                 Download PDF
@@ -169,7 +169,7 @@ export default function Contact() {
               </p>
 
               <div className="mb-[18px]">
-                <label htmlFor="cf-name" className="mb-1.5 block text-[13px] font-semibold text-ink-2">
+                <label htmlFor="cf-name" className="mb-1.5 block text-[13px] font-semibold text-ink">
                   Name
                 </label>
                 <input
@@ -185,7 +185,7 @@ export default function Contact() {
               </div>
 
               <div className="mb-[18px]">
-                <label htmlFor="cf-email" className="mb-1.5 block text-[13px] font-semibold text-ink-2">
+                <label htmlFor="cf-email" className="mb-1.5 block text-[13px] font-semibold text-ink">
                   Email
                 </label>
                 <input
@@ -204,7 +204,7 @@ export default function Contact() {
               <div className="mb-[18px]">
                 <label
                   htmlFor="cf-message"
-                  className="mb-1.5 block text-[13px] font-semibold text-ink-2"
+                  className="mb-1.5 block text-[13px] font-semibold text-ink"
                 >
                   Message
                 </label>

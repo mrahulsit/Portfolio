@@ -1,7 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X, Check, Mail, Github, Gamepad, Play } from "lucide-react";
+import {
+  FaCheck as Check,
+  FaEnvelope as Mail,
+  FaGithub as Github,
+  FaGamepad as Gamepad,
+  FaPlay as Play,
+} from "react-icons/fa";
+import { SiX as X } from "react-icons/si";
 import { profile } from "@/lib/data";
 
 const PHRASE = "sudo hire rahul";
