@@ -56,18 +56,13 @@ export default function HeroVisual() {
         );
       }
 
-      /* icon anchor positions on a slightly larger shell */
+      /* icons land on existing constellation nodes, evenly spread along the lattice */
       const M = TECH_ICONS.length;
-      const IR = 1.95;
-      const iconPos: import("three").Vector3[] = [];
+      const iconIdx: number[] = [];
       for (let i = 0; i < M; i++) {
-        const y = 1 - (i / (M - 1)) * 2;
-        const r = Math.sqrt(Math.max(0, 1 - y * y));
-        const theta = golden * i + 0.6;
-        iconPos.push(
-          new THREE.Vector3(Math.cos(theta) * r, y, Math.sin(theta) * r).multiplyScalar(IR)
-        );
+        iconIdx.push(Math.round((i * (N - 1)) / Math.max(1, M - 1)));
       }
+      const iconNodeSet = new Set(iconIdx);
 
       /* round dot sprite texture */
       const makeDotTexture = () => {
@@ -102,7 +97,9 @@ export default function HeroVisual() {
       group.add(dots);
 
       /* lime accent dots */
-      const ACCENT_DOTS = [7, 23, 41, 58, 79, 96, 112, 131, 145];
+      const ACCENT_DOTS = [7, 23, 41, 58, 79, 96, 112, 131, 145].filter(
+        (i) => !iconNodeSet.has(i)
+      );
       const accentPts = ACCENT_DOTS.map((i) => pts[i]);
       const accentGeo = new THREE.BufferGeometry().setFromPoints(accentPts);
       const accentMat = new THREE.PointsMaterial({
@@ -141,13 +138,6 @@ export default function HeroVisual() {
           .sort((x, y) => x.d - y.d);
         for (let k = 0; k < K; k++) addEdge(pts[i], pts[order[k].j]);
       }
-
-      for (const ip of iconPos) {
-        const order = pts
-          .map((p, j) => ({ j, d: ip.distanceTo(p) }))
-          .sort((x, y) => x.d - y.d);
-        for (let k = 0; k < 2; k++) addEdge(ip, pts[order[k].j]);
-      }
       const lineGeo = new THREE.BufferGeometry();
       lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(linePos, 3));
       const lineMat = new THREE.LineBasicMaterial({
@@ -182,7 +172,7 @@ export default function HeroVisual() {
       const sprites: import("three").Sprite[] = [];
 
       TECH_ICONS.forEach((icon, i) => {
-        const pos = iconPos[i];
+        const pos = pts[iconIdx[i]];
 
         const tex = makeIconTexture(icon.path);
         const mat = new THREE.SpriteMaterial({
@@ -234,12 +224,20 @@ export default function HeroVisual() {
       /* ---- pointer parallax ---- */
       const target = { x: 0, y: 0 };
       const smoothed = { x: 0, y: 0 };
+      const clamp = (v: number) => Math.max(-1, Math.min(1, v));
       const onPointerMove = (e: PointerEvent) => {
         const rect = mount.getBoundingClientRect();
-        target.x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-        target.y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+        if (!rect.width || !rect.height) return;
+        target.x = clamp(((e.clientX - rect.left) / rect.width - 0.5) * 2);
+        target.y = clamp(((e.clientY - rect.top) / rect.height - 0.5) * 2);
+      };
+      const onPointerLeave = () => {
+        target.x = 0;
+        target.y = 0;
       };
       window.addEventListener("pointermove", onPointerMove, { passive: true });
+      window.addEventListener("pointerleave", onPointerLeave);
+      window.addEventListener("blur", onPointerLeave);
 
       /* ---- pause when offscreen ---- */
       let visible = true;
@@ -289,6 +287,8 @@ export default function HeroVisual() {
         resizeObserver.disconnect();
         themeObserver.disconnect();
         window.removeEventListener("pointermove", onPointerMove);
+        window.removeEventListener("pointerleave", onPointerLeave);
+        window.removeEventListener("blur", onPointerLeave);
         baseGeo.dispose();
         baseMat.dispose();
         accentGeo.dispose();
