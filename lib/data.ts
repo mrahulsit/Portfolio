@@ -150,7 +150,7 @@ export type Project = {
   actions?: { label: string; href: string; primary?: boolean }[];
   caseStudy?: string;
   note?: string;
-  mockup: "cinepulse" | "pharmacy" | "worktrack";
+  mockup: "cinepulse" | "pharmacy" | "worktrack" | "gemini" | "chatbot";
 };
 
 export const projects: Project[] = [
@@ -216,34 +216,86 @@ export const projects: Project[] = [
     note: "Stack planned, implementation pending",
     mockup: "worktrack",
   },
+  {
+    id: "gemini",
+    title: "Gemini Clone",
+    subtitle: "Multimodal AI chat interface",
+    desc:
+      "Chat interface built with the Gemini API — streaming responses, conversation history, and multimodal input handling.",
+    status: "live",
+    statusLabel: "Live",
+    tech: [
+      { label: "React 19", kind: "react" },
+      { label: "TypeScript" },
+      { label: "Gemini API" },
+      { label: "Vite" },
+    ],
+    actions: [
+      { label: "Live Demo", href: "https://gemini-clone-five-mu.vercel.app", primary: true },
+      { label: "Source", href: "https://github.com/mrahulsit/GeminiClone" },
+    ],
+    mockup: "gemini",
+  },
+  {
+    id: "chatbot",
+    title: "Support Chatbot",
+    subtitle: "AI customer-support assistant",
+    desc:
+      "AI-powered support chatbot with contextual replies, quick-reply suggestions, and a clean support-desk interface.",
+    status: "live",
+    statusLabel: "Live",
+    tech: [
+      { label: "React", kind: "react" },
+      { label: "TypeScript" },
+      { label: "OpenAI API" },
+      { label: "Node.js", kind: "node" },
+    ],
+    actions: [
+      { label: "Live Demo", href: "https://chatbot-zeta-topaz.vercel.app", primary: true },
+      { label: "Source", href: "https://github.com/mrahulsit/Chatbot" },
+    ],
+    mockup: "chatbot",
+  },
 ];
 
 export const skills = [
   {
-    title: "Frontend",
-    tags: ["React.js", "JavaScript", "TypeScript", "HTML", "CSS", "Tailwind CSS", "Vite"],
+    title: "Core stack",
+    desc:
+      "Production-proven tools I use daily — from interface to database and deployment.",
+    tags: [
+      "React.js",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL",
+      "Prisma",
+      "Tailwind CSS",
+      "GitHub Actions",
+      "Docker",
+    ],
   },
   {
-    title: "Backend",
-    tags: ["Node.js", "Express.js", "REST APIs", "Authentication", "Zod"],
+    title: "Backend & APIs",
+    desc: "REST architecture, auth, validation, and containerised deployment.",
+    tags: ["Express.js", "FastAPI", "REST APIs", "JWT", "Zod", "Docker"],
   },
   {
-    title: "Database",
-    tags: ["PostgreSQL", "SQL", "Prisma", "MongoDB", "MySQL"],
-  },
-  {
-    title: "Engineering",
-    tags: ["Git", "GitHub", "Docker", "API design", "System design", "Cloud deployment"],
-  },
-  {
-    title: "Languages",
-    tags: ["JavaScript", "TypeScript", "Java", "Python", "SQL"],
+    title: "Testing & quality",
+    desc: "Unit, E2E, and CI pipelines that keep refactors safe.",
+    tags: ["Jest", "Playwright", "Vitest", "SonarQube", "GitHub Actions"],
   },
   {
     title: "AI & data",
     tag: "exploring",
-    muted: true,
-    tags: ["LLM API integration", "Chatbot interfaces", "Data-driven features"],
+    desc: "LLM interfaces, retrieval-augmented features, and data-driven products.",
+    tags: ["Gemini API", "OpenAI API", "Chatbot interfaces", "Vector search", "RAG patterns"],
+  },
+  {
+    title: "Languages",
+    desc:
+      "JavaScript and TypeScript for product work; Java and Python from earlier engineering.",
+    tags: ["TypeScript", "JavaScript", "Java", "Python", "SQL"],
   },
 ];
 

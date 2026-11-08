@@ -9,15 +9,28 @@ function CinePulseScreen() {
   return (
     <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <rect fill="#0d1117" width="400" height="240" />
-      <rect fill="#1a1f2e" x="20" y="30" width="360" height="40" rx="8" />
-      <rect fill="#4f46e5" x="30" y="40" width="80" height="20" rx="4" opacity="0.3" />
-      <rect fill="#818cf8" x="120" y="40" width="100" height="20" rx="4" opacity="0.2" />
-      <rect fill="#1a1f2e" x="20" y="85" width="170" height="130" rx="8" />
-      <rect fill="#1a1f2e" x="205" y="85" width="170" height="130" rx="8" />
-      <rect fill="#4f46e5" x="30" y="95" width="150" height="90" rx="6" opacity="0.4" />
-      <rect fill="#818cf8" x="215" y="95" width="150" height="90" rx="6" opacity="0.3" />
-      <rect fill="#2d3548" x="30" y="190" width="60" height="8" rx="4" />
-      <rect fill="#2d3548" x="215" y="190" width="70" height="8" rx="4" />
+      <rect fill="#161b22" width="400" height="44" />
+      <circle fill="#ff5f56" cx="12" cy="22" r="3" />
+      <circle fill="#ffbd2e" cx="20" cy="22" r="3" />
+      <circle fill="#27ca3f" cx="28" cy="22" r="3" />
+      <rect fill="#21262d" x="60" y="12" width="150" height="20" rx="10" opacity="0.7" />
+      <rect fill="#161b22" x="20" y="56" width="360" height="38" rx="8" />
+      <rect fill="#30363d" x="34" y="66" width="120" height="16" rx="4" opacity="0.8" />
+      <rect fill="#30363d" x="164" y="66" width="60" height="16" rx="4" opacity="0.8" />
+      <rect fill="#161b22" x="20" y="104" width="116" height="118" rx="10" />
+      <rect fill="#1a1f2e" x="28" y="112" width="100" height="78" rx="6" />
+      <rect fill="#4f46e5" x="28" y="112" width="100" height="10" rx="4" opacity="0.5" />
+      <rect fill="#30363d" x="28" y="196" width="60" height="8" rx="4" />
+      <rect fill="#30363d" x="96" y="196" width="36" height="8" rx="4" />
+      <rect fill="#161b22" x="156" y="104" width="116" height="118" rx="10" />
+      <rect fill="#1a1f2e" x="164" y="112" width="100" height="78" rx="6" />
+      <rect fill="#818cf8" x="164" y="112" width="100" height="10" rx="4" opacity="0.5" />
+      <rect fill="#30363d" x="164" y="196" width="56" height="8" rx="4" />
+      <rect fill="#30363d" x="228" y="196" width="36" height="8" rx="4" />
+      <rect fill="#161b22" x="20" y="220" width="360" height="20" rx="10" />
+      <circle fill="#30363d" cx="30" cy="230" r="6" />
+      <rect fill="#30363d" x="46" y="226" width="70" height="8" rx="4" opacity="0.8" />
+      <rect fill="#30363d" x="122" y="226" width="60" height="8" rx="4" opacity="0.6" />
     </svg>
   );
 }
@@ -26,11 +39,23 @@ function PharmacyScreen() {
   return (
     <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <rect fill="#fafbfc" width="300" height="180" />
-      <rect fill="#4f46e5" x="20" y="20" width="260" height="30" rx="6" opacity="0.15" />
-      <rect fill="#e5e7eb" x="20" y="65" width="80" height="80" rx="8" />
-      <rect fill="#e5e7eb" x="110" y="65" width="80" height="80" rx="8" />
-      <rect fill="#e5e7eb" x="200" y="65" width="80" height="80" rx="8" />
-      <rect fill="#4f46e5" x="30" y="150" width="60" height="8" rx="4" opacity="0.3" />
+      <rect fill="#e2e8f0" width="300" height="44" />
+      <rect fill="#cbd5e1" x="24" y="16" width="28" height="12" rx="6" />
+      <rect fill="#e2e8f0" x="60" y="15" width="130" height="14" rx="7" opacity="0.9" />
+      <rect fill="#e2e8f0" x="200" y="15" width="76" height="14" rx="7" opacity="0.6" />
+      <rect fill="#ffffff" x="20" y="62" width="80" height="92" rx="10" stroke="#e5e7eb" strokeWidth="1" />
+      <rect fill="#e5e7eb" x="28" y="72" width="64" height="48" rx="8" />
+      <rect fill="#94a3b8" x="28" y="126" width="56" height="10" rx="5" />
+      <rect fill="#e5e7eb" x="28" y="142" width="40" height="8" rx="4" />
+      <rect fill="#ffffff" x="112" y="62" width="80" height="92" rx="10" stroke="#e5e7eb" strokeWidth="1" />
+      <rect fill="#e5e7eb" x="120" y="72" width="64" height="48" rx="8" />
+      <rect fill="#94a3b8" x="120" y="126" width="56" height="10" rx="5" />
+      <rect fill="#e5e7eb" x="120" y="142" width="40" height="8" rx="4" />
+      <rect fill="#ffffff" x="204" y="62" width="76" height="92" rx="10" stroke="#e5e7eb" strokeWidth="1" />
+      <rect fill="#e5e7eb" x="212" y="72" width="60" height="48" rx="8" />
+      <rect fill="#94a3b8" x="212" y="126" width="56" height="10" rx="5" />
+      <rect fill="#e5e7eb" x="212" y="142" width="40" height="8" rx="4" />
+      <rect fill="#f1f5f9" x="20" y="160" width="260" height="12" rx="6" />
     </svg>
   );
 }
@@ -39,14 +64,56 @@ function WorkTrackScreen() {
   return (
     <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" aria-hidden>
       <rect fill="#0d1117" width="300" height="180" />
-      <line x1="20" y1="30" x2="280" y2="30" stroke="#2d3548" strokeWidth="1" strokeDasharray="4 2" />
-      <line x1="20" y1="80" x2="280" y2="80" stroke="#2d3548" strokeWidth="1" strokeDasharray="4 2" />
-      <line x1="20" y1="130" x2="280" y2="130" stroke="#2d3548" strokeWidth="1" strokeDasharray="4 2" />
-      <rect fill="none" stroke="#4f46e5" strokeWidth="2" x="30" y="40" width="100" height="30" rx="6" opacity="0.6" />
-      <rect fill="none" stroke="#818cf8" strokeWidth="2" x="150" y="40" width="120" height="30" rx="6" opacity="0.4" />
-      <rect fill="none" stroke="#4f46e5" strokeWidth="2" x="30" y="90" width="240" height="30" rx="6" opacity="0.5" />
-      <circle cx="40" cy="55" r="4" fill="#4f46e5" opacity="0.8" />
-      <circle cx="160" cy="55" r="4" fill="#818cf8" opacity="0.6" />
+      <rect fill="#161b22" width="56" height="180" />
+      <rect fill="#30363d" x="20" y="24" width="16" height="16" rx="4" />
+      <rect fill="#30363d" x="20" y="52" width="16" height="4" rx="2" />
+      <rect fill="#30363d" x="20" y="64" width="16" height="4" rx="2" />
+      <rect fill="#161b22" x="72" y="24" width="208" height="72" rx="10" />
+      <rect fill="#4f46e5" x="92" y="36" width="120" height="32" rx="8" opacity="0.5" />
+      <rect fill="#30363d" x="92" y="76" width="80" height="8" rx="4" />
+      <rect fill="#161b22" x="72" y="108" width="208" height="48" rx="10" />
+      <rect fill="#4f46e5" x="92" y="118" width="110" height="24" rx="6" opacity="0.5" />
+      <circle cx="104" cy="132" r="5" fill="#30363d" />
+      <rect fill="#30363d" x="92" y="146" width="64" height="8" rx="4" />
+    </svg>
+  );
+}
+
+function GeminiScreen() {
+  return (
+    <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <rect fill="#0d1117" width="400" height="240" />
+      <rect fill="#161b22" width="400" height="44" />
+      <circle fill="#ff5f56" cx="12" cy="22" r="3" />
+      <circle fill="#ffbd2e" cx="20" cy="22" r="3" />
+      <circle fill="#27ca3f" cx="28" cy="22" r="3" />
+      <rect fill="#21262d" x="60" y="12" width="150" height="20" rx="10" opacity="0.7" />
+      <rect fill="#30363d" x="24" y="72" width="180" height="34" rx="10" />
+      <rect fill="#818cf8" x="196" y="80" width="170" height="34" rx="10" />
+      <rect fill="#30363d" x="24" y="132" width="220" height="34" rx="10" />
+      <rect fill="#818cf8" x="170" y="148" width="196" height="34" rx="10" />
+      <rect fill="#161b22" x="24" y="200" width="352" height="36" rx="18" />
+      <rect fill="#30363d" x="36" y="210" width="240" height="16" rx="8" opacity="0.8" />
+      <rect fill="#30363d" x="286" y="210" width="24" height="24" rx="6" />
+    </svg>
+  );
+}
+
+function ChatbotScreen() {
+  return (
+    <svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <rect fill="#fafbfc" width="300" height="180" />
+      <rect fill="#e2e8f0" width="300" height="44" />
+      <rect fill="#cbd5e1" x="24" y="16" width="26" height="12" rx="6" />
+      <rect fill="#e2e8f0" x="60" y="15" width="110" height="14" rx="7" opacity="0.9" />
+      <rect fill="#e2e8f0" x="240" y="15" width="36" height="14" rx="7" opacity="0.6" />
+      <rect fill="#ffffff" x="16" y="64" width="150" height="30" rx="10" />
+      <rect fill="#e2e8f0" x="24" y="72" width="100" height="14" rx="7" />
+      <rect fill="#4f46e5" x="134" y="70" width="150" height="34" rx="10" />
+      <rect fill="#ffffff" x="16" y="112" width="140" height="30" rx="10" />
+      <rect fill="#e2e8f0" x="24" y="120" width="92" height="14" rx="7" />
+      <rect fill="#e1f5fe" x="24" y="156" width="252" height="24" rx="12" />
+      <rect fill="#bfdbfe" x="32" y="162" width="120" height="12" rx="6" />
     </svg>
   );
 }
@@ -55,6 +122,8 @@ const mockups = {
   cinepulse: CinePulseScreen,
   pharmacy: PharmacyScreen,
   worktrack: WorkTrackScreen,
+  gemini: GeminiScreen,
+  chatbot: ChatbotScreen,
 } as const;
 
 /* ---------- shared card bits ---------- */
@@ -170,9 +239,9 @@ export default function Projects() {
       <div className="shell">
         <SectionHead
           label="Projects"
-          meta="2 shipped · 1 in design"
+          meta="4 shipped · 1 in design"
           title="Things I've engineered."
-          lede="Production applications with real users, real databases, and real deployment pipelines. Each project demonstrates full-stack thinking — from data modeling to user experience."
+          lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Each one demonstrates full-stack thinking from data model to user experience."
         />
 
         <div className="grid gap-8">

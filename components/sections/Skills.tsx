@@ -9,41 +9,42 @@ export default function Skills() {
         <SectionHead
           label="Skills"
           meta="The toolkit"
-          title="Tools I reach for."
-          lede="The technologies I use day to day, and the ones I'm actively exploring."
+          title="Tools I ship with."
+          lede="Grouped by how I use them — the core stack is production-proven; AI & data is what I'm actively shipping next."
         />
 
-        <div className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-[26px] md:grid-cols-2 lg:grid-cols-2">
           {skills.map((group, i) => (
             <Reveal
               key={group.title}
-              delay={i * 0.05}
-              className={`rounded-card border border-line bg-elev p-[26px] transition-all duration-300 ease-[cubic-bezier(.25,.8,.25,1)] [transform-style:preserve-3d] hover:-translate-y-1.5 hover:border-accent hover:shadow-lift ${
-                group.muted ? "max-lg:grid max-lg:grid-cols-1" : ""
-              }`}
+              delay={i * 0.06}
+              className="rounded-card border border-line bg-elev p-[26px]"
             >
-              <h3 className="mb-[18px] flex items-baseline gap-2.5 font-display text-[19px] text-ink">
-                {group.title}
-                {"tag" in group && group.tag && (
-                  <span className="font-ui text-[11px] font-semibold uppercase tracking-[0.06em] text-accent">
-                    {group.tag}
-                  </span>
-                )}
-              </h3>
-              <ul className={`flex flex-wrap gap-2 ${group.muted ? "text-muted" : ""}`}>
+              <div className="mb-[14px] flex items-baseline gap-2.5">
+                <h3 className="font-display text-[18px] font-medium text-ink">
+                  {group.title}
+                  {group.tag && (
+                    <span className="text-[10px] font-[650] uppercase tracking-[0.08em] text-accent">
+                      {group.tag}
+                    </span>
+                  )}
+                </h3>
+              </div>
+              {group.desc && (
+                <p className="mb-[18px] text-[14px] leading-relaxed text-muted">
+                  {group.desc}
+                </p>
+              )}
+              <div className="flex flex-wrap gap-2">
                 {group.tags.map((t) => (
-                  <li
+                  <span
                     key={t}
-                    className={`rounded-full border px-[15px] py-2 text-[13.5px] font-[550] ${
-                      group.muted
-                        ? "border-line-strong bg-elev text-muted"
-                        : "border-line-strong bg-elev text-ink-2"
-                    }`}
+                    className="rounded-full border border-line-strong px-2.5 py-1 text-[12.5px] font-[550] text-ink-2 bg-bg"
                   >
                     {t}
-                  </li>
+                  </span>
                 ))}
-              </ul>
+              </div>
             </Reveal>
           ))}
         </div>

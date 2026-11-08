@@ -30,6 +30,94 @@ export async function generateMetadata({
   };
 }
 
+function ArchFlow({
+  layers,
+}: {
+  layers: { layer: string; detail: string; protocol?: string }[];
+}) {
+  const gap = 210;
+  const startX = 60;
+  const boxW = 160;
+  const boxH = 64;
+  const cy = 72;
+
+  return (
+    <div className="w-full overflow-x-auto pb-4">
+      <svg
+        viewBox={`0 0 700 220`}
+        className="w-full h-[200px] max-w-[700px]"
+        role="img"
+        aria-label="System architecture overview"
+      >
+        {layers.map((a, i) => {
+          const x = startX + i * gap;
+          return (
+            <g key={a.layer}>
+              {i > 0 && (
+                <>
+                  <line
+                    x1={x - 30}
+                    y1={cy}
+                    x2={x - 10}
+                    y2={cy}
+                    stroke="var(--accent)"
+                    strokeWidth="2"
+                    markerEnd="url(#arch-arrow)"
+                  />
+                  <text
+                    x={x - 110}
+                    y={cy - 10}
+                    fill="var(--muted)"
+                    fontSize="11"
+                    fontFamily="var(--font-ui)"
+                    textAnchor="middle"
+                    letterSpacing="0.02em"
+                  >
+                    {a.protocol ?? "data flow"}
+                  </text>
+                </>
+              )}
+              <rect
+                x={x}
+                y={cy - boxH / 2}
+                width={boxW}
+                height={boxH}
+                rx="10"
+                fill="var(--bg-elev)"
+                stroke="var(--line)"
+              />
+              <text
+                x={x + 20}
+                y={cy - 14}
+                fill="var(--ink)"
+                fontSize="13.5"
+                fontWeight="600"
+                fontFamily="var(--font-ui)"
+              >
+                {a.layer}
+              </text>
+              <text
+                x={x + 20}
+                y={cy + 6}
+                fill="var(--ink-2)"
+                fontSize="11.5"
+                fontFamily="var(--font-ui)"
+              >
+                {a.detail}
+              </text>
+            </g>
+          );
+        })}
+        <defs>
+          <marker id="arch-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)" />
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
 function Section({
   n,
   title,
@@ -107,26 +195,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           </Section>
 
           <Section n="03" title="System architecture">
-            <div className="space-y-0 py-1">
-              {cs.architecture.map((a, i) => (
-                <div key={a.layer}>
-                  {i > 0 && (
-                    <div className="flex items-center gap-3 py-2 pl-6">
-                      <span aria-hidden className="text-accent">
-                        ↓
-                      </span>
-                      <span className="font-ui text-[11.5px] font-[650] uppercase tracking-[0.1em] text-faint">
-                        {a.protocol ?? "data flow"}
-                      </span>
-                    </div>
-                  )}
-                  <div className="rounded-card border border-line bg-elev px-6 py-5 shadow-card">
-                    <p className="font-display text-lg font-medium text-ink">{a.layer}</p>
-                    <p className="mt-1 text-sm text-muted">{a.detail}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ArchFlow layers={cs.architecture} />
             <p className="text-[13px] italic text-faint">
               Illustrative architecture of the deployed system.
             </p>
