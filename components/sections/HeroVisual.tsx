@@ -56,6 +56,19 @@ export default function HeroVisual() {
         );
       }
 
+      /* icon anchor positions on a slightly larger shell */
+      const M = TECH_ICONS.length;
+      const IR = 1.95;
+      const iconPos: import("three").Vector3[] = [];
+      for (let i = 0; i < M; i++) {
+        const y = 1 - (i / (M - 1)) * 2;
+        const r = Math.sqrt(Math.max(0, 1 - y * y));
+        const theta = golden * i + 0.6;
+        iconPos.push(
+          new THREE.Vector3(Math.cos(theta) * r, y, Math.sin(theta) * r).multiplyScalar(IR)
+        );
+      }
+
       /* round dot sprite texture */
       const makeDotTexture = () => {
         const S = 64;
@@ -105,15 +118,35 @@ export default function HeroVisual() {
       accentDots.renderOrder = 1;
       group.add(accentDots);
 
-      /* proximity lines */
-      const MAX = 0.62;
+      /* constellation edges: every node connects to its nearest neighbours,
+         and each tech icon is tied into the mesh so nothing floats loose */
+      const K = 3;
+      const seen = new Set<string>();
       const linePos: number[] = [];
+      const keyOf = (v: import("three").Vector3) =>
+        `${v.x.toFixed(3)},${v.y.toFixed(3)},${v.z.toFixed(3)}`;
+      const addEdge = (a: import("three").Vector3, b: import("three").Vector3) => {
+        const ka = keyOf(a);
+        const kb = keyOf(b);
+        const key = ka < kb ? `${ka}|${kb}` : `${kb}|${ka}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        linePos.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      };
+
       for (let i = 0; i < N; i++) {
-        for (let j = i + 1; j < N; j++) {
-          if (pts[i].distanceTo(pts[j]) < MAX) {
-            linePos.push(pts[i].x, pts[i].y, pts[i].z, pts[j].x, pts[j].y, pts[j].z);
-          }
-        }
+        const order = pts
+          .map((p, j) => ({ j, d: pts[i].distanceTo(p) }))
+          .filter((o) => o.j !== i)
+          .sort((x, y) => x.d - y.d);
+        for (let k = 0; k < K; k++) addEdge(pts[i], pts[order[k].j]);
+      }
+
+      for (const ip of iconPos) {
+        const order = pts
+          .map((p, j) => ({ j, d: ip.distanceTo(p) }))
+          .sort((x, y) => x.d - y.d);
+        for (let k = 0; k < 2; k++) addEdge(ip, pts[order[k].j]);
       }
       const lineGeo = new THREE.BufferGeometry();
       lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(linePos, 3));
@@ -144,21 +177,12 @@ export default function HeroVisual() {
         return tex;
       };
 
-      const M = TECH_ICONS.length;
-      const IR = 1.95;
       const spriteMats: import("three").SpriteMaterial[] = [];
       const iconTextures: import("three").Texture[] = [];
       const sprites: import("three").Sprite[] = [];
 
       TECH_ICONS.forEach((icon, i) => {
-        const y = 1 - (i / (M - 1)) * 2;
-        const r = Math.sqrt(Math.max(0, 1 - y * y));
-        const theta = golden * i + 0.6;
-        const pos = new THREE.Vector3(
-          Math.cos(theta) * r,
-          y,
-          Math.sin(theta) * r
-        ).multiplyScalar(IR);
+        const pos = iconPos[i];
 
         const tex = makeIconTexture(icon.path);
         const mat = new THREE.SpriteMaterial({
