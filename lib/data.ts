@@ -12,7 +12,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/rahulmishra-dev/",
   linkedinHandle: "rahulmishra-dev",
   blog: "https://effortlesswithrahul.hashnode.dev/",
-  siteUrl: "https://resume-2026-portfolio.vercel.app/",
+  siteUrl: "https://www.mrahuls.in/",
   tagline: "Building products from architecture to deployment.",
   lede: "I engineer scalable web applications, robust backend systems, and intelligent AI-powered experiences using modern technologies.",
   heroChips: ["React.js", "Node.js", "TypeScript", "PostgreSQL", "Python"],
