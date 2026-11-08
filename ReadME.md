@@ -1,58 +1,66 @@
 # Rahul Mishra — Portfolio
 
-Personal resume/portfolio website for **Rahul Mishra — Software Engineer / Full Stack Developer**.
+Personal portfolio site, rebuilt with **Next.js 15 (App Router) + React 19 + Tailwind CSS v4 + Framer Motion + GSAP**.
 
-Designed as a clean, editorial-minimal engineering platform: warm paper background, stately serif display type (Fraunces), hairline rules, and a single terracotta accent. Includes full light/dark theming, a print-ready résumé page, and responsive layouts from mobile to desktop.
+The original static site (vanilla JS/CSS) is preserved in [`legacy/`](./legacy) for reference.
 
-## Features
-
-- **Hero** — name, role, CTAs, and an editorial contents index
-- **About** — engineering direction and current focus
-- **Experience** — vertical timeline with current role, internships, education
-- **Projects** — featured CinePulse case study (problem, data model, API surface, challenges), Pharmacy and WorkTrack cards
-- **Skills** — grouped technology cards (frontend, backend, database, engineering, AI/data)
-- **Writing & Highlights** — technical article, verified highlights, GitHub link
-- **Contact** — email/linkedin/github fields with one-click copy, message form (opens email app)
-- **Résumé** — dedicated `resume.html` page with a "Download / Print PDF" button
-- **Theming** — light/dark with system-preference detection and persisted choice
-- **Interactions** — sticky nav, active-section highlighting, scroll reveal, mobile menu, toast, copy feedback (respects `prefers-reduced-motion`)
-
-## Tech
-
-Pure HTML + CSS + vanilla JS. No build step, no dependencies.
-
-- **Fonts:** Fraunces (display), Inter (UI) via Google Fonts
-- **Icons:** inline SVG
-
-## File structure
-
-```
-.
-├── index.html              # Main portfolio page
-├── resume.html             # Print-ready résumé page
-├── assets/
-│   ├── css/style.css       # Design system + layout
-│   ├── js/main.js          # Theme, nav, reveal, copy, form
-│   └── img/
-│       ├── favicon.svg     # Site icon
-│       └── rahul-source.jpg# Source image
-└── resume/                 # Drop a PDF here to add direct PDF download
-```
-
-## Run locally
+## Getting started
 
 ```bash
-# from the project root
-python3 -m http.server 8000
-# open http://localhost:8000
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build
+npm run start   # serve the production build
 ```
 
-Or simply open `index.html` in a browser.
+## Routes
 
-## Deploy
+| Route      | Description                                                        |
+| ---------- | ------------------------------------------------------------------ |
+| `/`        | Single-page site: hero, about, experience, projects, skills, GitHub, writing, contact |
+| `/resume`  | Résumé page with a print-to-PDF toolbar (site chrome omitted)      |
 
-Static site — deploy the repository as-is to Vercel, Netlify, or GitHub Pages.
+`/resume.html` permanently redirects to `/resume` (see `next.config.ts`).
 
-## License
+## Structure
 
-MIT
+```
+app/
+  layout.tsx            # fonts, metadata/OG, JSON-LD, theme script, providers
+  globals.css           # design tokens, Tailwind @theme, easter-egg + resume CSS
+  (site)/               # site chrome scope: Header, Footer, palette, easter egg
+    layout.tsx
+    page.tsx            # composes the 8 sections
+  resume/page.tsx
+components/
+  sections/             # Hero, About, Experience(+Timeline), Projects, Skills, Github, Writing, Contact
+  layout/               # Header (nav, theme toggle, mobile sheet), Footer (visitor stats)
+  CommandPalette.tsx    # ⌘K / Ctrl+K command menu
+  EasterEgg.tsx         # "sudo hire rahul" terminal + Keyhunter snake game
+  ResumeToolbar.tsx     # print / back buttons on /resume
+  ui/                   # Reveal (scroll-in), SectionHead
+lib/
+  data.ts               # all site content (nav, projects, skills, posts, profile)
+  theme.tsx             # dark/light provider (data-theme, localStorage, no-flash)
+  toast.tsx             # toast provider + useToast()
+legacy/                 # original static site (HTML/CSS/JS) — not part of the build
+public/                 # favicons, og-image.jpg
+```
+
+## Feature parity with the legacy site
+
+- **⌘K / Ctrl+K command palette** — navigation, theme toggle, copy email, open résumé, GitHub/LinkedIn.
+- **Easter egg** — type `sudo hire rahul` anywhere: terminal boot sequence, WebAudio blips, and the **Keyhunter** snake game (best score in `localStorage.keyhunter_best`).
+- **Live GitHub section** — server component fetching `mrahulsit`'s profile + top repos, revalidated hourly, with graceful fallback.
+- **Theme** — dark default, no-flash inline script, `localStorage.theme`.
+- **Analytics** — local visitor/session counters in the footer.
+- **Resume** — print stylesheet (`print-color-adjust`) for PDF export.
+
+## Conventions
+
+- **Animation split** — Framer Motion for entrance/stagger, hover, modals; GSAP + ScrollTrigger for index-card parallax, timeline line draw, stat counters (both respect `prefers-reduced-motion`).
+- **Breakpoints** — legacy `980px` → Tailwind `lg`, legacy `640px` → `sm`.
+- **Content** — edit `lib/data.ts` only; components are presentational.
+- **Icons** — `lucide-react` (replaces the Font Awesome CDN).
+- **Fonts** — Fraunces (display) + Inter (UI) via `next/font`.
+- TypeScript strict; `tsconfig.json` excludes `legacy/`.
