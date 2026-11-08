@@ -74,11 +74,9 @@ export default function Hero() {
 
           <motion.h1
             variants={item}
-            className="mb-3 font-display text-[clamp(52px,9vw,92px)] font-medium leading-[0.98] tracking-[-0.03em] text-ink"
+            className="mb-3 whitespace-nowrap font-display text-[clamp(44px,7.5vw,76px)] font-medium leading-[1] tracking-[-0.03em] text-ink max-sm:text-[clamp(36px,11vw,52px)]"
           >
-            Rahul
-            <br />
-            Mishra
+            Rahul Mishra
           </motion.h1>
 
           <motion.p
