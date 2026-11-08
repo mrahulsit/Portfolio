@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { caseStudies, getCaseStudy } from "@/lib/caseStudies";
 import { ArrowLeft, ArrowUpRight, Github } from "lucide-react";
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return caseStudies.map((c) => ({ slug: c.slug }));
 }
