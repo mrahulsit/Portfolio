@@ -130,7 +130,7 @@ const mockups = {
 const lift =
   "[transform-style:preserve-3d] transition-all duration-300 ease-[cubic-bezier(.25,.8,.25,1)] hover:-translate-y-2 hover:border-accent hover:shadow-lift";
 
-function StatusBadge({ project }: { project: Project }) {
+export function StatusBadge({ project }: { project: Project }) {
   const live = project.status === "live";
   return (
     <span
@@ -145,7 +145,7 @@ function StatusBadge({ project }: { project: Project }) {
   );
 }
 
-function BrowserFrame({ project, small }: { project: Project; small?: boolean }) {
+export function BrowserFrame({ project, small }: { project: Project; small?: boolean }) {
   const Screen = mockups[project.mockup];
   return (
     <div className={`flex items-center justify-center ${small ? "px-5 py-6" : "px-[30px] py-10"}`}>
@@ -171,7 +171,7 @@ function BrowserFrame({ project, small }: { project: Project; small?: boolean })
   );
 }
 
-function TechBadge({ label, kind }: { label: string; kind?: Project["tech"][number]["kind"] }) {
+export function TechBadge({ label, kind }: { label: string; kind?: Project["tech"][number]["kind"] }) {
   const styles: Record<string, string> = {
     react: "border-[#61dafb]/70 bg-[#61dafb]/10 text-[#0891b2] dark:text-[#22d3ee]",
     node: "border-[#68a063]/70 bg-[#68a063]/10 text-[#4d7c0f] dark:text-[#84cc16]",
@@ -189,7 +189,7 @@ function TechBadge({ label, kind }: { label: string; kind?: Project["tech"][numb
   );
 }
 
-function ActionRow({ project }: { project: Project }) {
+export function ActionRow({ project }: { project: Project }) {
   const primaryCls =
     "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-accent bg-accent text-white hover:bg-accent-ink hover:border-accent-ink";
   const ghostCls =
