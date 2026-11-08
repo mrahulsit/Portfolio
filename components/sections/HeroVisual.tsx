@@ -165,7 +165,7 @@ export default function HeroVisual() {
           map: tex,
           transparent: true,
           depthWrite: false,
-          color: icon.accent ? LIME : INK_DARK,
+          color: LIME,
           opacity: 0.97,
         });
         const sprite = new THREE.Sprite(mat);
@@ -187,9 +187,6 @@ export default function HeroVisual() {
         const ink = isDark ? INK_DARK : INK_LIGHT;
         baseMat.color.copy(ink);
         lineMat.color.copy(ink);
-        spriteMats.forEach((mat, i) => {
-          if (!TECH_ICONS[i].accent) mat.color.copy(ink);
-        });
       };
       applyTheme();
       const themeObserver = new MutationObserver(applyTheme);
