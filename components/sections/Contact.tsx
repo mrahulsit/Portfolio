@@ -72,7 +72,7 @@ export default function Contact() {
             <span className="inline-flex items-center gap-2">
               <span
                 aria-hidden
-                className="inline-block h-2 w-2 rounded-full bg-[#10b981] shadow-[0_0_8px_rgba(16,185,129,0.8)]"
+                className="inline-block h-2 w-2 rounded-full bg-[#CDF22B] shadow-[0_0_8px_rgba(205,242,43,0.8)]"
               />
               {profile.availability.openLabel}
             </span>

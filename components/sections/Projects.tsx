@@ -19,12 +19,12 @@ function CinePulseScreen() {
       <rect fill="#30363d" x="164" y="66" width="60" height="16" rx="4" opacity="0.8" />
       <rect fill="#161b22" x="20" y="104" width="116" height="118" rx="10" />
       <rect fill="#1a1f2e" x="28" y="112" width="100" height="78" rx="6" />
-      <rect fill="#4f46e5" x="28" y="112" width="100" height="10" rx="4" opacity="0.5" />
+      <rect fill="#CDF22B" x="28" y="112" width="100" height="10" rx="4" opacity="0.55" />
       <rect fill="#30363d" x="28" y="196" width="60" height="8" rx="4" />
       <rect fill="#30363d" x="96" y="196" width="36" height="8" rx="4" />
       <rect fill="#161b22" x="156" y="104" width="116" height="118" rx="10" />
       <rect fill="#1a1f2e" x="164" y="112" width="100" height="78" rx="6" />
-      <rect fill="#818cf8" x="164" y="112" width="100" height="10" rx="4" opacity="0.5" />
+      <rect fill="#CDF22B" x="164" y="112" width="100" height="10" rx="4" opacity="0.4" />
       <rect fill="#30363d" x="164" y="196" width="56" height="8" rx="4" />
       <rect fill="#30363d" x="228" y="196" width="36" height="8" rx="4" />
       <rect fill="#161b22" x="20" y="220" width="360" height="20" rx="10" />
@@ -89,9 +89,9 @@ function GeminiScreen() {
       <circle fill="#27ca3f" cx="28" cy="22" r="3" />
       <rect fill="#21262d" x="60" y="12" width="150" height="20" rx="10" opacity="0.7" />
       <rect fill="#30363d" x="24" y="72" width="180" height="34" rx="10" />
-      <rect fill="#818cf8" x="196" y="80" width="170" height="34" rx="10" />
+      <rect fill="#CDF22B" x="196" y="80" width="170" height="34" rx="10" opacity="0.9" />
       <rect fill="#30363d" x="24" y="132" width="220" height="34" rx="10" />
-      <rect fill="#818cf8" x="170" y="148" width="196" height="34" rx="10" />
+      <rect fill="#CDF22B" x="170" y="148" width="196" height="34" rx="10" opacity="0.85" />
       <rect fill="#161b22" x="24" y="200" width="352" height="36" rx="18" />
       <rect fill="#30363d" x="36" y="210" width="240" height="16" rx="8" opacity="0.8" />
       <rect fill="#30363d" x="286" y="210" width="24" height="24" rx="6" />
@@ -109,11 +109,11 @@ function ChatbotScreen() {
       <rect fill="#e2e8f0" x="240" y="15" width="36" height="14" rx="7" opacity="0.6" />
       <rect fill="#ffffff" x="16" y="64" width="150" height="30" rx="10" />
       <rect fill="#e2e8f0" x="24" y="72" width="100" height="14" rx="7" />
-      <rect fill="#4f46e5" x="134" y="70" width="150" height="34" rx="10" />
+      <rect fill="#CDF22B" x="134" y="70" width="150" height="34" rx="10" opacity="0.9" />
       <rect fill="#ffffff" x="16" y="112" width="140" height="30" rx="10" />
       <rect fill="#e2e8f0" x="24" y="120" width="92" height="14" rx="7" />
-      <rect fill="#e1f5fe" x="24" y="156" width="252" height="24" rx="12" />
-      <rect fill="#bfdbfe" x="32" y="162" width="120" height="12" rx="6" />
+      <rect fill="#f6fbd6" x="24" y="156" width="252" height="24" rx="12" />
+      <rect fill="#dcfc7a" x="32" y="162" width="120" height="12" rx="6" />
     </svg>
   );
 }
@@ -136,7 +136,7 @@ export function StatusBadge({ project }: { project: Project }) {
     <span
       className={`absolute right-5 top-5 z-[1] rounded-full border px-3 py-1.5 text-[11px] font-[650] uppercase tracking-[0.08em] ${
         live
-          ? "border-[#10b981] bg-[#10b981]/12 text-[#059669] dark:text-[#34d399]"
+          ? "border-[#CDF22B]/70 bg-[#CDF22B]/18 text-[#08090B]"
           : "border-line-strong bg-sink text-muted"
       }`}
     >

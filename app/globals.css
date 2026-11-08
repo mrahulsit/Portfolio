@@ -5,43 +5,44 @@
 /* ==========================================================================
    Design tokens — editorial minimal (warm paper + terracotta/indigo accent)
    ========================================================================== */
-:root {
-  --bg: #fafbfc;
+:root,
+[data-theme="light"] {
+  --bg: #faf8f3;
   --bg-elev: #ffffff;
-  --bg-sink: #f4f5f7;
-  --ink: #0f1419;
-  --ink-2: #3d4451;
-  --muted: #6c7380;
-  --faint: #9ca3af;
-  --line: #e5e7eb;
-  --line-strong: #d1d5db;
-  --accent: #4f46e5;
-  --accent-ink: #3730a3;
-  --accent-soft: #eef2ff;
-  --shadow: 0 1px 3px rgba(15, 20, 25, 0.08), 0 20px 40px -24px rgba(15, 20, 25, 0.15);
-  --shadow-lift: 0 8px 24px -12px rgba(79, 70, 229, 0.25), 0 24px 64px -32px rgba(15, 20, 25, 0.3);
-  --sel: rgba(79, 70, 229, 0.14);
+  --bg-sink: #f0eee7;
+  --ink: #08090b;
+  --ink-2: #66645d;
+  --muted: #8a8a82;
+  --faint: #b0aca4;
+  --line: #e6e2d9;
+  --line-strong: #c9c4b9;
+  --accent: #cdf22b;
+  --accent-text: #08090b;
+  --accent-soft: #f6fbd6;
+  --shadow: 0 1px 3px rgba(8, 9, 11, 0.08), 0 20px 40px -24px rgba(8, 9, 11, 0.12);
+  --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(8, 9, 11, 0.28);
+  --sel: rgba(205, 242, 43, 0.18);
   --radius: 14px;
   --rail-w: 172px;
   --header-h: 68px;
 }
 
 [data-theme="dark"] {
-  --bg: #050811;
-  --bg-elev: #0d1117;
-  --bg-sink: #020408;
-  --ink: #f3f4f6;
-  --ink-2: #d1d5db;
-  --muted: #9ca3af;
-  --faint: #6b7280;
-  --line: #1a1f2e;
-  --line-strong: #2d3548;
-  --accent: #818cf8;
-  --accent-ink: #a5b4fc;
-  --accent-soft: #1e1b4b;
+  --bg: #08090b;
+  --bg-elev: #121418;
+  --bg-sink: #1a1d21;
+  --ink: #faf8f3;
+  --ink-2: #a6a8a0;
+  --muted: #737570;
+  --faint: #575953;
+  --line: #292c30;
+  --line-strong: #3d4248;
+  --accent: #cdf22b;
+  --accent-text: #08090b;
+  --accent-soft: #1c2008;
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 24px 64px -32px rgba(0, 0, 0, 0.9);
-  --shadow-lift: 0 12px 40px -16px rgba(129, 140, 248, 0.4), 0 40px 96px -48px rgba(79, 70, 229, 0.3);
-  --sel: rgba(129, 140, 248, 0.18);
+  --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(205, 242, 43, 0.15);
+  --sel: rgba(205, 242, 43, 0.18);
 }
 
 @theme inline {
@@ -97,10 +98,10 @@ body {
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(79, 70, 229, 0.15), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 80% 60%, rgba(129, 140, 248, 0.08), transparent 60%),
-    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(99, 102, 241, 0.1), transparent 50%),
-    linear-gradient(180deg, #050811 0%, #0a0f1a 50%, #050811 100%);
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(205, 242, 43, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 60%, rgba(205, 242, 43, 0.06), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(205, 242, 43, 0.08), transparent 50%),
+    linear-gradient(180deg, #08090b 0%, #0a0f15 50%, #08090b 100%);
   pointer-events: none;
 }
 

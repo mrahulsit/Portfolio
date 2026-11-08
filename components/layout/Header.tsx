@@ -24,7 +24,7 @@ function ThemeToggle() {
 }
 
 const btnBase =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-[0_4px_16px_-8px_rgba(79,70,229,0.3)]";
+  "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:text-ink hover:shadow-[0_4px_14px_-6px_rgba(205,242,43,0.35)]";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -71,7 +71,7 @@ export default function Header() {
     <header
       className={`sticky top-0 z-[100] border-b bg-bg/85 backdrop-blur-[12px] backdrop-saturate-[1.2] transition-all duration-300 ${
         scrolled
-          ? "h-[56px] border-line shadow-[0_6px_24px_-20px_rgba(28,26,21,0.4)]"
+          ? "h-[56px] border-line shadow-[0_6px_24px_-20px_rgba(8,9,11,0.5)]"
           : "h-(--header-h) border-transparent"
       }`}
     >
@@ -109,7 +109,7 @@ export default function Header() {
             href="/resume"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${btnBase} hidden px-3.5 py-[7px] text-[13.5px] sm:inline-flex sm:bg-accent sm:border-accent sm:text-white sm:hover:bg-accent-ink sm:hover:border-accent-ink sm:hover:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.5)]`}
+            className={`${btnBase} hidden px-3.5 py-[7px] text-[13.5px] sm:inline-flex sm:bg-accent sm:border-accent sm:text-accent-text sm:hover:bg-accent-ink sm:hover:border-accent-ink sm:hover:shadow-[0_8px_24px_-8px_rgba(205,242,43,0.45)]`}
           >
             Résumé
           </Link>
@@ -185,7 +185,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
-              className="block w-full rounded-full bg-accent px-[18px] py-2.5 text-center text-[14.5px] font-[550] text-white transition-colors hover:bg-accent-ink"
+              className="block w-full rounded-full bg-accent border-accent px-[18px] py-2.5 text-center text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:bg-accent-ink hover:border-accent-ink"
             >
               Download résumé
             </Link>

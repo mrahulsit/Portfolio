@@ -61,7 +61,7 @@ export default function Hero() {
           {profile.availability.open && (
             <motion.p
               variants={item}
-              className="mb-[26px] inline-flex items-center gap-2.5 rounded-full border border-[#10b981]/45 bg-[#10b981]/10 px-4 py-2 text-[13px] font-[650] tracking-[0.01em] text-[#059669] dark:text-[#34d399]"
+              className="mb-[26px] inline-flex items-center gap-2.5 rounded-full border border-[#CDF22B]/60 bg-[#CDF22B]/20 px-4 py-2 text-[13px] font-[650] tracking-[0.01em] text-[#08090B]"
             >
               <span className="avail-dot" aria-hidden />
               {profile.availability.openLabel}

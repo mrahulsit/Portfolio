@@ -120,7 +120,7 @@ export default function Footer() {
         <div className="flex flex-wrap items-center justify-between gap-5">
           <div className="flex gap-6 text-[13px] text-muted">
             <span className="flex items-center gap-2">
-              <span className="h-1.5 w-1.5 animate-[pulse-dot_2s_ease-in-out_infinite] rounded-full bg-[#10b981]" />
+              <span className="h-1.5 w-1.5 animate-[pulse-dot_2s_ease-in-out_infinite] rounded-full bg-[#CDF22B]" />
               {stats ? stats.active : "—"} viewing now
             </span>
             <span>{stats ? stats.total : "—"} total visits</span>
