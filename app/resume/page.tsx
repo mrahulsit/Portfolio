@@ -74,7 +74,11 @@ export default function ResumePage() {
             </div>
             <span className="resume-when">{current.when}</span>
           </div>
-          {current.promo && <p className="resume-p">{current.promo}</p>}
+          {current.progression && (
+            <p className="resume-p">
+              {current.progression.map((s) => `${s.title} (${s.when})`).join(" → ")}
+            </p>
+          )}
           <ul>
             {current.points.map((p) => (
               <li key={p}>{p}</li>
@@ -87,6 +91,7 @@ export default function ResumePage() {
           </ul>
         </div>
 
+        <h2>Courses &amp; training</h2>
         <div className="resume-grid">
           {earlier.map((job) => (
             <div key={job.org + job.role} className="resume-item">
@@ -134,7 +139,7 @@ export default function ResumePage() {
         <div className="resume-item">
           <div className="top">
             <div>
-              <h3>Pharmacy — Online pharmacy storefront</h3>
+              <h3>MediCart — Online pharmacy storefront</h3>
             </div>
           </div>
           <ul>

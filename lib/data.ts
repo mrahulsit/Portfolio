@@ -6,6 +6,8 @@ export const profile = {
   roleLong: "Software Engineer · Full Stack Developer",
   eyebrow: "Software Engineer · Full Stack Developer",
   location: "Rourkela, Odisha · IN",
+  experienceYears: "1.8",
+  workModes: "On-site, hybrid & remote",
   email: "mrahuls104@gmail.com",
   github: "https://github.com/mrahulsit",
   githubHandle: "mrahulsit",
@@ -19,17 +21,20 @@ export const profile = {
   availability: {
     open: true,
     openLabel: "Open to Software Engineering opportunities",
+    shortLabel: "Open to software roles",
     busyLabel: "Currently focused on shipping",
   },
 } as const;
 
 export const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Skills", href: "/#skills" },
+  { label: "GitHub", href: "/#github" },
+  { label: "Writing", href: "/#writing" },
+  { label: "Contact", href: "/#contact" },
 ] as const;
 
 export const contents = [
@@ -49,13 +54,14 @@ export const about = {
   ],
   note: "My foundation is a B.Tech in Electrical & Electronics Engineering — where I learned to reason about systems, constraints, and signals. That habit of thinking in systems is what I now apply to software.",
   focus: [
-    "Full-stack engineering",
-    "Next.js & React",
-    "TypeScript",
-    "PostgreSQL",
-    "Testing & CI/CD",
-    "AI applications",
-    "System design",
+    {
+      label: "Disciplines",
+      items: ["Full-stack engineering", "System design", "AI applications"],
+    },
+    {
+      label: "Tools",
+      items: ["Next.js & React", "TypeScript", "PostgreSQL", "Testing & CI/CD"],
+    },
   ],
 };
 
@@ -65,7 +71,8 @@ export type Job = {
   when?: string;
   role: string;
   org: string;
-  promo?: string;
+  /** Titles held at this company, oldest first (rendered as a promotion path). */
+  progression?: { title: string; when: string }[];
   points: string[];
   tags: string[];
   accentTags?: boolean;
@@ -73,12 +80,15 @@ export type Job = {
 
 export const experience: Job[] = [
   {
-    chip: "1.8 yrs",
+    chip: "Full-time",
     when: "Jan 2025 — Oct 2026",
     role: "Full Stack Engineer",
     org: "Aptus Data Labs",
-    promo:
-      "Intern (Jan–Jun 2025) → Junior Software Engineer (Jul 2025–Jul 2026) → Full Stack Engineer (Jul–Oct 2026)",
+    progression: [
+      { title: "Intern", when: "Jan – Jun 2025" },
+      { title: "Junior Software Engineer", when: "Jul 2025 – Jul 2026" },
+      { title: "Full Stack Engineer", when: "Jul – Oct 2026" },
+    ],
     points: [
       "One of two core frontend developers on an enterprise GenAI chatbot — carried it from first version to production.",
       "Built core chat features: conversation workspace, search, file upload, model selection, and voice input with live transcription.",
@@ -93,8 +103,9 @@ export const experience: Job[] = [
     accentTags: true,
   },
   {
-    chip: "Internship",
-    role: "Web Development Intern",
+    chip: "Course",
+    // TODO: confirm the Codebeat course start/end dates, then add `when` here.
+    role: "Web Development Course",
     org: "Codebeat",
     points: [
       "Built a pharmacy web application frontend in React, bundled with Vite.",
@@ -105,9 +116,9 @@ export const experience: Job[] = [
     tags: ["React", "Vite", "Node.js", "Express.js", "Git", "Vercel"],
   },
   {
-    chip: "Internship",
+    chip: "Course",
     when: "Jul 2024",
-    role: "Core Java Intern",
+    role: "Core Java Course",
     org: "Internship Studio",
     points: [
       "Built a menu-driven pizza billing application in core and advanced Java.",
@@ -117,9 +128,9 @@ export const experience: Job[] = [
     tags: ["Java", "OOP"],
   },
   {
-    chip: "Internship",
+    chip: "Course",
     when: "Aug 2022",
-    role: "Core Java Intern",
+    role: "Core Java Course",
     org: "Syllogistek Systems",
     points: [
       "Built a menu-driven student record system in core Java.",
@@ -150,6 +161,11 @@ export type Project = {
   actions?: { label: string; href: string; primary?: boolean }[];
   caseStudy?: string;
   note?: string;
+  /**
+   * TODO: add a real screenshot under /public/projects/<name>.png to replace
+   * the placeholder mockup. When present, ProjectScreen renders it instead.
+   */
+  image?: string;
   mockup: "cinepulse" | "pharmacy" | "worktrack" | "gemini" | "chatbot";
 };
 
@@ -176,17 +192,24 @@ export const projects: Project[] = [
       "Full-text search and advanced filtering",
       "Viewing analytics with completion tracking",
     ],
-    // TODO: add Source Code action once the repo is public
+    actions: [{ label: "Live Demo", href: "https://cinepulse-frontend.mrahuls104.workers.dev", primary: true }],
+    // TODO: add a Source action once the repo is public
     caseStudy: "cinepulse",
+    // Real screenshot of the live sign-in page (the catalogue needs an account), 2026-11-09.
+    image: "/projects/cinepulse.webp",
     mockup: "cinepulse",
   },
   {
     id: "pharmacy",
-    title: "Pharmacy",
-    subtitle: "E-commerce pharmacy storefront",
+    title: "MediCart",
+    subtitle: "Online pharmacy storefront",
     desc: "Category-driven pharmacy platform with medicine catalog, cart management via React Context, pincode serviceability check, and JWT-secured authentication.",
     status: "live",
-    statusLabel: "Live",
+    // The deployment (pharmacy-app-six.vercel.app) shows "Application error: a
+    // server-side exception has occurred" on its home page as of 2026-11-09, so
+    // the Live Demo action is removed.
+    // TODO: fix the deployment, then restore statusLabel "Live" and the Live Demo action.
+    statusLabel: "Shipped",
     tech: [
       { label: "React", kind: "react" },
       { label: "Express", kind: "node" },
@@ -194,10 +217,11 @@ export const projects: Project[] = [
       { label: "JWT" },
     ],
     actions: [
-      { label: "Live Demo", href: "https://pharmacy-app-six.vercel.app", primary: true },
-      { label: "Source", href: "https://github.com/mrahulsit/Pharmacy-App" },
+      { label: "Source", href: "https://github.com/mrahulsit/Pharmacy-App", primary: true },
     ],
     caseStudy: "pharmacy",
+    // Real screenshot, taken from the repo's client running locally (2026-11-09).
+    image: "/projects/medicart.webp",
     mockup: "pharmacy",
   },
   {
@@ -214,46 +238,58 @@ export const projects: Project[] = [
       { label: "PostgreSQL", kind: "muted" },
     ],
     note: "Stack planned, implementation pending",
+    caseStudy: "worktrack",
     mockup: "worktrack",
   },
   {
     id: "gemini",
-    title: "Gemini Clone",
-    subtitle: "Multimodal AI chat interface",
+    title: "Lumina",
+    subtitle: "Full-stack AI chat assistant",
     desc:
-      "Chat interface built with the Gemini API — streaming responses, conversation history, and multimodal input handling.",
+      "An AI assistant on Google's Gemini API with streaming answers, saved and searchable conversations, web search with citations, and image generation — React over an Express and Postgres backend.",
     status: "live",
-    statusLabel: "Live",
+    // The Vercel deployment (gemini-clone-five-mu.vercel.app) returns
+    // DEPLOYMENT_NOT_FOUND as of 2026-11-09, so the Live Demo action is removed.
+    // TODO: redeploy, then restore statusLabel "Live" and the Live Demo action.
+    statusLabel: "Shipped",
     tech: [
-      { label: "React 19", kind: "react" },
-      { label: "TypeScript" },
+      { label: "React 18", kind: "react" },
+      { label: "Express", kind: "node" },
+      { label: "Postgres", kind: "db" },
       { label: "Gemini API" },
-      { label: "Vite" },
+      { label: "TypeScript" },
     ],
     actions: [
-      { label: "Live Demo", href: "https://gemini-clone-five-mu.vercel.app", primary: true },
-      { label: "Source", href: "https://github.com/mrahulsit/GeminiClone" },
+      { label: "Source", href: "https://github.com/mrahulsit/GeminiClone", primary: true },
     ],
+    caseStudy: "lumina",
+    // Real screenshot of the landing page, taken from the repo running locally (2026-11-09).
+    image: "/projects/lumina.webp",
     mockup: "gemini",
   },
   {
     id: "chatbot",
-    title: "Support Chatbot",
-    subtitle: "AI customer-support assistant",
+    title: "SupportIQ",
+    subtitle: "Embeddable AI chat widget",
     desc:
-      "AI-powered support chatbot with contextual replies, quick-reply suggestions, and a clean support-desk interface.",
+      "A drop-in AI assistant for any website: one script tag adds a chat button that opens the assistant in an iframe, with replies from an open model via OpenRouter.",
     status: "live",
-    statusLabel: "Live",
+    // The demo (chatbot-zeta-topaz.vercel.app) loads, but every message gets
+    // "No response from AI" as of 2026-11-09, so the Live Demo action is removed.
+    // TODO: fix the OpenRouter key/model, then restore statusLabel "Live", the
+    // Live Demo action below, and add a real screenshot as `image`.
+    statusLabel: "Shipped",
     tech: [
-      { label: "React", kind: "react" },
+      { label: "Next.js 15", kind: "react" },
+      { label: "React 19", kind: "react" },
       { label: "TypeScript" },
-      { label: "OpenAI API" },
-      { label: "Node.js", kind: "node" },
+      { label: "OpenRouter API" },
     ],
     actions: [
-      { label: "Live Demo", href: "https://chatbot-zeta-topaz.vercel.app", primary: true },
-      { label: "Source", href: "https://github.com/mrahulsit/Chatbot" },
+      // { label: "Live Demo", href: "https://chatbot-zeta-topaz.vercel.app", primary: true },
+      { label: "Source", href: "https://github.com/mrahulsit/Chatbot", primary: true },
     ],
+    caseStudy: "supportiq",
     mockup: "chatbot",
   },
 ];
@@ -278,12 +314,12 @@ export const skills = [
   {
     title: "Backend & APIs",
     desc: "REST architecture, auth, validation, and containerised deployment.",
-    tags: ["Express.js", "FastAPI", "REST APIs", "JWT", "Zod", "Docker"],
+    tags: ["Express.js", "FastAPI", "REST APIs", "JWT", "Zod"],
   },
   {
     title: "Testing & quality",
     desc: "Unit, E2E, and CI pipelines that keep refactors safe.",
-    tags: ["Jest", "Playwright", "Vitest", "SonarQube", "GitHub Actions"],
+    tags: ["Jest", "Playwright", "Vitest", "SonarQube"],
   },
   {
     title: "AI & data",
@@ -301,18 +337,50 @@ export const skills = [
 
 export const writing = {
   eyebrow: "Technical writing / research",
-  title: "AI-driven banking compliance and autonomous oversight",
-  body: "A written exploration of how autonomous systems could take on continuous compliance monitoring in banking — where the oversight burden is constant, the rules are explicit, and the audit trail matters as much as the decision.",
-  href: "https://effortlesswithrahul.hashnode.dev/",
-  highlights: [
-    "1.8 years at Aptus Data Labs — production GenAI chatbot and audit platform",
-    "Full-stack applications deployed to production on Vercel and Render",
-    "Designed and shipped a normalised PostgreSQL schema with Prisma migrations",
-    "Implemented cookie-based JWT authentication across origins",
-    "Three engineering internships spanning core Java and the MERN stack",
-    "Publish technical writing on engineering and AI topics",
+  // TODO: add more posts here as they're published (title, body, href, date, reading time).
+  posts: [
+    {
+      title: "AI-driven banking compliance and autonomous oversight",
+      body: "A written exploration of how autonomous systems could take on continuous compliance monitoring in banking — where the oversight burden is constant, the rules are explicit, and the audit trail matters as much as the decision.",
+      href: "https://effortlesswithrahul.hashnode.dev/",
+      topics: ["AI", "Compliance", "Oversight"],
+    },
   ],
 };
+
+/**
+ * Curated one-line descriptions keyed by GitHub repository name. GitHub's API
+ * descriptions are often empty or generic; these override them. Any repo that
+ * has neither a curated description nor an API description is hidden from the
+ * homepage list.
+ *
+ * TODO: review names and copy for the repositories that should appear.
+ */
+export const githubRepoDescriptions: Record<string, string> = {
+  "Pharmacy-App":
+    "Online pharmacy storefront with catalog, cart, pincode serviceability and JWT auth.",
+  GeminiClone:
+    "Full-stack Gemini chat assistant with streaming, saved chats and web search.",
+  Chatbot:
+    "Embeddable AI chat widget — one script tag adds an assistant to any site.",
+};
+
+/**
+ * Product names shown in place of raw GitHub repository names (the repo name
+ * is still shown underneath, since that's what the link opens).
+ */
+export const githubDisplayNames: Record<string, string> = {
+  "Pharmacy-App": "MediCart",
+  GeminiClone: "Lumina",
+  Chatbot: "SupportIQ",
+};
+
+/**
+ * Repos whose GitHub "homepage" deployment is currently offline. Their "Live"
+ * badge is hidden so the GitHub section never advertises a dead link.
+ * Remove a name once its deployment is back up.
+ */
+export const githubOfflineHomepages = new Set<string>(["GeminiClone", "Pharmacy-App", "Chatbot"]);
 
 export const contact = {
   title: "Let's build something useful.",

@@ -1,9 +1,15 @@
 import SectionHead from "@/components/ui/SectionHead";
+import Tag from "@/components/ui/Tag";
 import {
   FaGithub as GithubIcon,
   FaExternalLinkAlt as ArrowUpRight,
 } from "react-icons/fa";
-import { profile } from "@/lib/data";
+import {
+  githubDisplayNames,
+  githubOfflineHomepages,
+  githubRepoDescriptions,
+  profile,
+} from "@/lib/data";
 
 export const revalidate = 3600;
 
@@ -35,17 +41,7 @@ function timeAgo(iso: string) {
   return `${Math.round(months / 12)}y ago`;
 }
 
-const LANG_COLORS: Record<string, string> = {
-  JavaScript: "#f1e05a",
-  TypeScript: "#3178c6",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Java: "#b07219",
-  Python: "#3572A5",
-  Shell: "#89e051",
-  Dockerfile: "#384d54",
-};
-const langColor = (lang: string) => LANG_COLORS[lang] || "#b4452a";
+const LANG_BARS = ["bg-accent", "bg-ink-2", "bg-muted", "bg-faint", "bg-line-strong"];
 
 async function fetchGithub(): Promise<{ profile: GhProfile; repos: GhRepo[] } | null> {
   try {
@@ -67,13 +63,13 @@ export default async function GithubSection() {
   const data = await fetchGithub();
 
   return (
-    <section id="github" className="bg-sink py-[92px] max-sm:py-16">
+    <section id="github" className="bg-sink py-20 max-sm:py-14">
       <div className="shell">
         <SectionHead
           label="GitHub"
           meta="Building in the open"
           title="Building in the open."
-          lede="Live data from my GitHub profile — public repositories and the languages I work in. No stars to show off, but a real paper trail of shipped work."
+          lede="Live data from my GitHub profile — public repositories and the languages I work in. A working record of what I'm building and learning."
         />
 
         {data ? <GithubStats data={data} /> : <GithubError />}
@@ -112,12 +108,20 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
 
   const picks = repos
     .filter((r) => !r.fork)
-    .sort((a, b) => +new Date(b.pushed_at) - +new Date(a.pushed_at))
+    .map((r) => ({
+      ...r,
+      description: githubRepoDescriptions[r.name] ?? r.description,
+    }))
+    .filter((r) => r.description)
+    .sort((a, b) => {
+      const curated = Number(!!githubRepoDescriptions[b.name]) - Number(!!githubRepoDescriptions[a.name]);
+      return curated || +new Date(b.pushed_at) - +new Date(a.pushed_at);
+    })
     .slice(0, 6);
 
   return (
     <>
-      <div className="mb-[30px] grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mb-[30px] grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           { k: gh.public_repos, v: "Public repositories" },
           { k: langCount, v: "Languages worked in" },
@@ -135,12 +139,12 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
           </div>
         ))}
 
-        <div className="rounded-xl border border-line bg-elev px-6 py-[22px] sm:col-span-2 lg:col-span-4">
+        <div className="rounded-xl border border-line bg-elev px-6 py-[22px] col-span-2 lg:col-span-4">
           <p className="mb-4 font-ui text-xs font-[650] uppercase tracking-[0.1em] text-faint">
             Languages across repositories
           </p>
           <div className="grid gap-2.5">
-            {langRows.map((l) => {
+            {langRows.map((l, i) => {
               const pct = Math.round((l.n / langTotal) * 100);
               return (
                 <div
@@ -150,8 +154,8 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
                   <span className="text-sm font-[550] text-ink-2">{l.name}</span>
                   <span className="relative h-2 overflow-hidden rounded-full bg-sink">
                     <span
-                      className="absolute inset-y-0 left-0 min-w-1 rounded-full"
-                      style={{ width: `${pct}%`, background: langColor(l.name) }}
+                      className={`absolute inset-y-0 left-0 min-w-1 rounded-full ${LANG_BARS[i] ?? "bg-faint"}`}
+                      style={{ width: `${pct}%` }}
                     />
                   </span>
                   <span className="text-[13px] text-muted">{pct}%</span>
@@ -171,23 +175,28 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
             rel="noopener noreferrer"
             className="group flex flex-col gap-2.5 rounded-xl border border-line bg-elev p-[22px] transition-all duration-250 hover:-translate-y-0.5 hover:border-accent hover:shadow-lift"
           >
-            <span className="flex items-center justify-between gap-2.5">
-              <span className="inline-flex items-center gap-2 font-display text-[18px] text-ink transition-colors group-hover:text-accent">
-                {r.name}
-                <ArrowUpRight size={12} className="text-faint" />
-              </span>
-              {r.homepage && (
-                <span className="rounded-full border border-accent bg-accent-soft px-2.5 py-1 text-[10.5px] font-[650] uppercase tracking-[0.08em] text-accent-ink">
-                  Live
+            <span className="flex items-start justify-between gap-2.5">
+              <span className="flex min-w-0 flex-col">
+                <span className="inline-flex items-center gap-2 font-display text-[18px] text-ink transition-colors group-hover:text-accent-strong">
+                  {githubDisplayNames[r.name] ?? r.name}
+                  <ArrowUpRight size={12} className="text-faint" />
                 </span>
+                {githubDisplayNames[r.name] && (
+                  <span className="truncate font-mono text-[11.5px] text-faint">
+                    {profile.githubHandle}/{r.name}
+                  </span>
+                )}
+              </span>
+              {r.homepage && !githubOfflineHomepages.has(r.name) && (
+                <Tag size="sm" variant="accent">
+                  Live
+                </Tag>
               )}
             </span>
-            <span className="flex-1 text-sm leading-relaxed text-muted">
-              {r.description || "No description yet — a quiet experiment on GitHub."}
-            </span>
+            <span className="flex-1 text-sm leading-relaxed text-muted">{r.description}</span>
             <span className="flex flex-wrap items-center gap-3.5 text-[12.5px] text-muted">
               {r.language && (
-                <span className="inline-flex items-center gap-1.5 before:h-2.5 before:w-2.5 before:rounded-full before:bg-accent before:content-['']">
+                <span className="inline-flex items-center gap-1.5 before:h-2.5 before:w-2.5 before:rounded-full before:bg-accent-strong before:content-['']">
                   {r.language}
                 </span>
               )}

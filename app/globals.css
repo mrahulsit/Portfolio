@@ -3,7 +3,7 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ==========================================================================
-   Design tokens — editorial minimal (warm paper + terracotta/indigo accent)
+   Design tokens — editorial minimal (warm paper + lime accent)
    ========================================================================== */
 :root,
 [data-theme="light"] {
@@ -17,14 +17,16 @@
   --line: #e6e2d9;
   --line-strong: #c9c4b9;
   --accent: #cdf22b;
+  --accent-strong: #4f5d00;
   --accent-ink: #b5c416;
   --accent-text: #08090b;
   --accent-soft: #f6fbd6;
+  --grid-line: rgba(8, 9, 11, 0.11);
   --shadow: 0 1px 3px rgba(8, 9, 11, 0.08), 0 20px 40px -24px rgba(8, 9, 11, 0.12);
   --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(8, 9, 11, 0.28);
   --sel: rgba(205, 242, 43, 0.18);
   --radius: 14px;
-  --rail-w: 172px;
+  --rail-w: 200px;
   --header-h: 68px;
 }
 
@@ -39,9 +41,11 @@
   --line: #292c30;
   --line-strong: #3d4248;
   --accent: #cdf22b;
+  --accent-strong: #cdf22b;
   --accent-ink: #b5c416;
   --accent-text: #08090b;
   --accent-soft: #1c2008;
+  --grid-line: rgba(250, 248, 243, 0.1);
   --shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 24px 64px -32px rgba(0, 0, 0, 0.9);
   --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(205, 242, 43, 0.15);
   --sel: rgba(205, 242, 43, 0.18);
@@ -58,6 +62,7 @@
   --color-line: var(--line);
   --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
   --color-accent-ink: var(--accent-ink);
   --color-accent-text: var(--accent-text);
   --color-accent-soft: var(--accent-soft);
@@ -75,7 +80,8 @@
    Base
    ========================================================================== */
 html {
-  scroll-behavior: smooth;
+  /* No CSS smooth scrolling: in-page jumps animate via lib/sectionNav.ts, and
+     arriving at /#section from another page should land instantly. */
   scroll-padding-top: calc(var(--header-h) + 12px);
   -webkit-text-size-adjust: 100%;
   scrollbar-width: thin;
@@ -106,6 +112,29 @@ body {
     radial-gradient(ellipse 50% 50% at 20% 80%, rgba(205, 242, 43, 0.08), transparent 50%),
     linear-gradient(180deg, #08090b 0%, #0a0f15 50%, #08090b 100%);
   pointer-events: none;
+}
+
+/* Square-grid backdrop for the hero — fades out before it reaches the next section */
+.hero-grid {
+  isolation: isolate;
+}
+.hero-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 72% at 50% 46%, #000 42%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 72% at 50% 46%, #000 42%, transparent 100%);
+}
+@media (max-width: 640px) {
+  .hero-grid::before {
+    background-size: 44px 44px;
+  }
 }
 
 ::selection {
@@ -158,14 +187,14 @@ textarea:focus-visible,
   top: 8px;
   z-index: 200;
   background: var(--accent);
-  color: #fff;
+  color: #08090b;
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
 }
 .skip:focus {
   left: 8px;
-  color: #fff;
+  color: #08090b;
 }
 
 code {
@@ -175,7 +204,7 @@ code {
   border: 1px solid var(--line);
   border-radius: 5px;
   padding: 0.1em 0.35em;
-  color: var(--accent-ink);
+  color: var(--accent-strong);
 }
 
 /* ==========================================================================
@@ -199,7 +228,7 @@ code {
   }
   50% {
     transform: scale(1.15);
-    box-shadow: 0 0 0 6px var(--accent-soft), 0 0 28px rgba(79, 70, 229, 0.6);
+    box-shadow: 0 0 0 6px var(--accent-soft), 0 0 28px rgba(205, 242, 43, 0.6);
   }
 }
 

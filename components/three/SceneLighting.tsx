@@ -13,96 +13,105 @@ type Props = {
 };
 
 export default function SceneLighting({ theme, reduced, quality }: Props) {
-  const limeRef = useRef<THREE.PointLight>(null);
+  const limeLight = useRef<THREE.PointLight>(null);
   const dark = theme === "dark";
 
-  useFrame((state) => {
-    if (!limeRef.current || reduced) return;
-    const t = state.clock.elapsedTime;
-    const angle = t * 0.34;
-    limeRef.current.position.set(
+  useFrame(({ clock }) => {
+    if (!limeLight.current || reduced) return;
+
+    const t = clock.elapsedTime;
+    const angle = t * 0.24;
+
+    // Orbit behind the sphere (z < 0) so the lime reads as a rim light on the
+    // silhouette instead of a soft blob on the camera-facing surface.
+    limeLight.current.position.set(
       Math.cos(angle) * 3.2,
-      Math.sin(t * 0.45) * 1.1 + 0.6,
-      Math.sin(angle) * 3.2
+      0.4 + Math.sin(t * 0.31) * 0.7,
+      -2.2 + Math.sin(angle) * 0.9,
     );
   });
 
   return (
     <>
-      <ambientLight intensity={dark ? 0.35 : 0.5} />
+      <ambientLight intensity={dark ? 0.28 : 0.42} />
+
       <directionalLight
-        position={[4, 5, 6]}
-        intensity={dark ? 1.5 : 1.2}
+        position={[6, 3, 2]}
+        intensity={dark ? 0.45 : 0.4}
         color={IVORY}
       />
       <directionalLight
-        position={[-2.5, 3, -6]}
-        intensity={dark ? 1.5 : 1.1}
+        position={[-3.5, 2.5, -5]}
+        intensity={dark ? 1.05 : 0.8}
         color={IVORY}
       />
       <directionalLight
-        position={[-5, -2, -4]}
-        intensity={dark ? 0.7 : 0.45}
+        position={[-5, -2, -3]}
+        intensity={dark ? 0.42 : 0.28}
         color={LIME}
       />
-      <directionalLight
-        position={[-3, 3, 4]}
-        intensity={dark ? 0.35 : 0.5}
-        color={IVORY}
-      />
+
       <pointLight
-        ref={limeRef}
-        position={[3.2, 0.6, 0]}
+        ref={limeLight}
+        position={[3.2, 0.4, -2.2]}
         color={LIME}
-        intensity={dark ? 5 : 3.4}
-        distance={16}
+        intensity={dark ? 3.4 : 2.2}
+        distance={9}
         decay={2}
       />
 
+      {/* Reflections are identical in both themes so the sphere looks the same. */}
       <Environment
         key={theme}
         resolution={quality === "high" ? 256 : 128}
         frames={1}
       >
-        <color attach="background" args={[dark ? "#050608" : "#cbc7bd"]} />
+        {/* Key softbox: a long tilted strip reads as a crisp studio
+            reflection across the upper-left of the sphere. */}
         <Lightformer
           form="rect"
-          intensity={dark ? 2.6 : 2.2}
+          intensity={3.2}
           color={IVORY}
-          position={[0, 5, -8]}
-          scale={[18, 10, 1]}
+          position={[-6, 6, 3]}
+          rotation-z={0.6}
+          scale={[12, 1, 1]}
           target={[0, 0, 0]}
         />
+        {/* Overhead wash for a soft gradient on the top hemisphere. */}
         <Lightformer
           form="rect"
-          intensity={dark ? 1.3 : 1}
+          intensity={1.4}
           color={IVORY}
-          position={[7, 1, 4]}
-          scale={[7, 9, 1]}
+          position={[0, 8, -2]}
+          scale={[14, 6, 1]}
           target={[0, 0, 0]}
         />
+        {/* Right-hand fill strip: defines the right edge. */}
         <Lightformer
           form="rect"
-          intensity={dark ? 0.9 : 0.6}
+          intensity={1.1}
+          color={IVORY}
+          position={[7, 0, 1]}
+          scale={[1.4, 9, 1]}
+          target={[0, 0, 0]}
+        />
+        {/* Back lights wrap around the silhouette for separation. */}
+        <Lightformer
+          form="rect"
+          intensity={1.6}
+          color={IVORY}
+          position={[0, 2, -9]}
+          scale={[16, 6, 1]}
+          target={[0, 0, 0]}
+        />
+        {/* Lime kicker placed well behind so its reflection hugs the
+            lower-left rim rather than sitting on the visible face. */}
+        <Lightformer
+          form="rect"
+          intensity={1.6}
           color={LIME}
-          position={[-7, -3, -2]}
-          scale={[5, 6, 1]}
-          target={[0, 0, 0]}
-        />
-        <Lightformer
-          form="rect"
-          intensity={0.5}
-          color={IVORY}
-          position={[0, 0, 9]}
-          scale={[16, 10, 1]}
-          target={[0, 0, 0]}
-        />
-        <Lightformer
-          form="rect"
-          intensity={0.15}
-          color="#15171a"
-          position={[0, -6, 0]}
-          scale={[14, 9, 1]}
+          position={[-3, -2.5, -9]}
+          scale={[6, 1.4, 1]}
           target={[0, 0, 0]}
         />
       </Environment>

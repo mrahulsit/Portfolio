@@ -137,7 +137,7 @@ export default function HeroVisual() {
   return (
     <div
       ref={hostRef}
-      className="pointer-events-none absolute inset-0"
+      className="pointer-events-none absolute -inset-[4%] lg:-inset-[16%]"
       aria-hidden
     >
       {env ? (

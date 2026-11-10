@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FaChevronLeft as ChevronLeft, FaFilter as Filter } from "react-icons/fa";
+import { FaChevronLeft as ChevronLeft } from "react-icons/fa";
 import { MdLayers as Layers } from "react-icons/md";
 import SectionHead from "@/components/ui/SectionHead";
+import Tag from "@/components/ui/Tag";
 import {
   ActionRow,
-  BrowserFrame,
+  ProjectScreen,
   StatusBadge,
-  TechBadge,
+  TechList,
 } from "@/components/sections/Projects";
-import { projects, type Project } from "@/lib/data";
+import { projects } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Projects · Rahul Mishra",
@@ -33,24 +34,25 @@ const filterLabels: Record<Filter, string> = {
   design: "In design",
 };
 
-export default function ProjectsPage({
+export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const active = (searchParams.status as Filter) ?? "all";
+  const sp = await searchParams;
+  const raw = Array.isArray(sp.status) ? sp.status[0] : sp.status;
+  const active: Filter = raw === "live" || raw === "design" ? raw : "all";
   const listed =
     active === "all"
       ? projects
       : projects.filter((p) => p.status === active);
   const featured = projects[0];
-  const rest = listed.filter((p) => p.id !== featured.id);
 
   return (
     <div className="py-[92px] max-sm:pt-16 pb-[60px]">
       <div className="shell">
         <nav className="mb-[60px] flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
-          <Link href="/" className="text-ink-2 hover:text-accent transition-colors">
+          <Link href="/" className="text-ink-2 hover:text-accent-strong transition-colors">
             Home
           </Link>
           <span aria-hidden className="text-faint">/</span>
@@ -64,19 +66,19 @@ export default function ProjectsPage({
           lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Each one demonstrates full-stack thinking from data model to user experience."
         />
 
-        <div className="mb-[44px] flex flex-wrap items-center gap-3">
-          <Layers size={14} className="text-faint" aria-hidden />
-          <div className="flex gap-2">
+        <div className="mb-[44px] flex flex-wrap items-center gap-5 border-b border-line pb-4">
+          <Layers size={13} className="text-faint" aria-hidden />
+          <div className="flex flex-wrap gap-5">
             {(["all", "live", "design"] as Filter[]).map((f) => {
               const isActive = active === f;
               return (
                 <Link
                   key={f}
                   href={`/projects?status=${f}`}
-                  className={`rounded-full border px-4 py-1.5 text-[12.5px] font-[550] uppercase tracking-[0.06em] transition-all duration-200 ${
+                  className={`border-b pb-1 font-ui text-[11px] font-[650] uppercase tracking-[0.14em] transition-colors duration-200 ${
                     isActive
-                      ? "border-accent bg-accent text-accent-text"
-                      : "border-line-strong text-ink-2 hover:border-accent"
+                      ? "border-accent text-ink"
+                      : "border-transparent text-muted hover:text-ink"
                   }`}
                 >
                   {filterLabels[f]}
@@ -88,104 +90,91 @@ export default function ProjectsPage({
 
         {/* Featured */}
         {active === "all" && featured && (
-          <article
-            className="overflow-hidden rounded-card border border-line bg-elev shadow-card [transform-style:preserve-3d] transition-all duration-300 ease-[cubic-bezier(.25,.8,.25,1)] hover:-translate-y-2 hover:border-accent hover:shadow-lift"
-          >
-            <div className="relative border-line bg-gradient-to-br from-sink to-bg">
-              <BrowserFrame project={featured} />
-              <StatusBadge project={featured} />
-            </div>
-            <div className="p-[40px] max-w-none lg:grid lg:grid-cols-12 lg:gap-[60px]">
-              <div className="lg:col-span-7">
-                <p className="mb-3 font-ui text-xs font-semibold uppercase tracking-[0.14em] text-faint">
-                  01 / {featured.title}
-                </p>
-                <div className="mb-[24px]">
-                  <h1 className="font-display text-[clamp(40px,6vw,64px)] font-medium tracking-[-0.02em] text-ink leading-[1.05]">
-                    {featured.subtitle}
-                  </h1>
-                </div>
-                <p className="mb-8 leading-relaxed text-ink-2 text-lg max-w-[44em]">
-                  {featured.desc}
-                </p>
-
-                <p className="mb-[24px] font-ui text-[11px] font-[650] uppercase tracking-[0.12em] text-faint">
-                  Technology
-                </p>
-                <div className="mb-[24px] flex flex-wrap gap-2">
-                  {featured.tech.map((t) => (
-                    <TechBadge key={t.label} {...t} />
-                  ))}
-                </div>
-
-                {featured.highlights && (
-                  <div className="mb-[24px]">
-                    <p className="mb-2 font-ui text-[11px] font-[650] uppercase tracking-[0.12em] text-faint">
-                      What I engineered
-                    </p>
-                    <div className="grid gap-2.5">
-                      {featured.highlights.map((h) => (
-                        <p
-                          key={h}
-                          className="flex items-start gap-2.5 text-[15px] leading-relaxed text-ink-2"
-                        >
-                          <span aria-hidden className="flex shrink-0 mt-[0.1em] text-accent">
-                            ✓
-                          </span>
-                          {h}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                <ActionRow project={featured} />
+          <article className="group grid overflow-hidden rounded-[22px] border border-line bg-elev transition-colors duration-300 hover:border-line-strong lg:grid-cols-[1.02fr_1fr]">
+            <ProjectScreen
+              project={featured}
+              className="border-b border-line lg:border-b-0 lg:border-r"
+            />
+            <div className="flex flex-col p-7 sm:p-10 lg:p-11">
+              <div className="mb-7 flex items-center justify-between gap-4">
+                <span className="font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint">
+                  01 — {featured.title}
+                </span>
+                <StatusBadge project={featured} />
               </div>
-              <div className="lg:col-span-5 flex items-end justify-end">
-                <a
-                  href={`/projects/${featured.caseStudy ?? featured.id}`}
-                  className="inline-block rounded-full border border-line-strong px-[22px] py-[16px] text-[15px] font-[650] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink"
-                >
-                  <span className="mr-2">Read case study</span>
-                  <span aria-hidden>→</span>
-                </a>
-              </div>
+
+              <h1 className="mb-4 max-w-[16em] font-display text-[clamp(34px,4vw,52px)] font-medium leading-[1.05] tracking-[-0.02em] text-ink">
+                {featured.subtitle}
+              </h1>
+              <p className="mb-7 max-w-[46ch] leading-relaxed text-ink-2">{featured.desc}</p>
+
+              <TechList tech={featured.tech} className="mb-7" />
+
+              {featured.highlights && (
+                <div className="mb-8 border-t border-line pt-6">
+                  <p className="mb-3 font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint">
+                    Engineering
+                  </p>
+                  <ul className="grid gap-x-7 gap-y-2 sm:grid-cols-2">
+                    {featured.highlights.map((h) => (
+                      <li
+                        key={h}
+                        className="flex items-start gap-2.5 text-[13.5px] leading-relaxed text-ink-2"
+                      >
+                        <span
+                          aria-hidden
+                          className="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-accent"
+                        />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <ActionRow project={featured} className="mt-auto" />
             </div>
           </article>
         )}
 
         {/* Grid */}
-        <div className={`mt-[60px] grid gap-[40px] lg:grid-cols-2 ${listed.length === 0 ? "min-h-[300px] items-center justify-center" : ""}`}>
+        <div
+          className={`mt-[60px] grid gap-6 lg:grid-cols-2 ${
+            listed.length === 0 ? "min-h-[300px] items-center justify-center" : ""
+          }`}
+        >
           {listed.map((p) => {
-            if (p.id === featured.id) return null;
+            if (active === "all" && p.id === featured.id) return null;
             return (
               <article
                 key={p.id}
-                className="flex flex-col overflow-hidden rounded-card border border-line bg-elev shadow-card [transform-style:preserve-3d] transition-all duration-300 ease-[cubic-bezier(.25,.8,.25,1)] hover:-translate-y-2 hover:border-accent hover:shadow-lift"
+                className="group flex flex-col overflow-hidden rounded-[18px] border border-line bg-elev transition-colors duration-300 hover:border-line-strong"
               >
-                <div className="relative border-b border-line bg-gradient-to-br from-sink to-bg aspect-[4/3] md:aspect-auto md:h-[300px]">
-                  <BrowserFrame project={p} small />
-                  <StatusBadge project={p} />
-                </div>
-                <div className="flex-1 flex-col p-[32px]">
-                  <div className="mb-[16px]">
-                    <h3 className="mb-1 font-display text-[30px] font-medium tracking-[-0.02em] text-ink">
-                      {p.title}
-                    </h3>
-                    <p className="text-base text-muted">{p.subtitle}</p>
+                <ProjectScreen project={p} compact className="border-b border-line" />
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="mb-5 flex items-center justify-between gap-4">
+                    <span className="font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint">
+                      {String(projects.indexOf(p) + 1).padStart(2, "0")} — {p.title}
+                    </span>
+                    <StatusBadge project={p} />
                   </div>
-                  <p className="mb-[24px] leading-relaxed text-ink-2 text-sm">{p.desc}</p>
-                  <div className="mb-[24px] flex flex-wrap gap-2">
-                    {p.tech.map((t) => (
-                      <TechBadge key={t.label} {...t} />
-                    ))}
-                  </div>
+
+                  <h3 className="mb-1.5 font-display text-[27px] font-medium leading-tight tracking-[-0.02em] text-ink">
+                    {p.subtitle}
+                  </h3>
+                  <p className="mb-5 line-clamp-3 text-[14px] leading-relaxed text-ink-2">
+                    {p.desc}
+                  </p>
+
+                  <TechList tech={p.tech} className="mb-5" />
+
                   {p.note && (
-                    <p className="mb-auto mt-[24px] text-[13px] italic text-faint">
+                    <p className="mb-5 mt-auto font-ui text-[10.5px] font-[600] uppercase tracking-[0.14em] text-faint">
                       {p.note}
                     </p>
                   )}
-                  <ActionRow project={p} />
+
+                  <ActionRow project={p} className={p.note ? "" : "mt-auto"} />
                 </div>
               </article>
             );
@@ -195,7 +184,7 @@ export default function ProjectsPage({
         <nav className="mt-[60px] flex items-center justify-between border-t border-line pt-[32px] text-sm">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-ink transition-colors hover:text-accent hover:pl-4"
+            className="inline-flex items-center gap-2 text-ink transition-colors hover:text-accent-strong hover:pl-4"
           >
             <ChevronLeft size={14} className="mr-1" />
             Back to homepage

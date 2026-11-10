@@ -1,6 +1,11 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import type { ReactElement } from "react";
+import { useEffect, useRef, useState, type ReactElement } from "react";
+import { FaArrowRight, FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import SectionHead from "@/components/ui/SectionHead";
+import Tag from "@/components/ui/Tag";
 import { Reveal } from "@/components/ui/Reveal";
 import { projects, type Project } from "@/lib/data";
 
@@ -69,10 +74,10 @@ function WorkTrackScreen() {
       <rect fill="#30363d" x="20" y="52" width="16" height="4" rx="2" />
       <rect fill="#30363d" x="20" y="64" width="16" height="4" rx="2" />
       <rect fill="#161b22" x="72" y="24" width="208" height="72" rx="10" />
-      <rect fill="#4f46e5" x="92" y="36" width="120" height="32" rx="8" opacity="0.5" />
+      <rect fill="#CDF22B" x="92" y="36" width="120" height="32" rx="8" opacity="0.25" />
       <rect fill="#30363d" x="92" y="76" width="80" height="8" rx="4" />
       <rect fill="#161b22" x="72" y="108" width="208" height="48" rx="10" />
-      <rect fill="#4f46e5" x="92" y="118" width="110" height="24" rx="6" opacity="0.5" />
+      <rect fill="#CDF22B" x="92" y="118" width="110" height="24" rx="6" opacity="0.25" />
       <circle cx="104" cy="132" r="5" fill="#30363d" />
       <rect fill="#30363d" x="92" y="146" width="64" height="8" rx="4" />
     </svg>
@@ -127,213 +132,325 @@ const mockups = {
 } as const;
 
 /* ---------- shared card bits ---------- */
-const lift =
-  "[transform-style:preserve-3d] transition-all duration-300 ease-[cubic-bezier(.25,.8,.25,1)] hover:-translate-y-2 hover:border-accent hover:shadow-lift";
+const ease =
+  "transition-[border-color,background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(.25,.8,.25,1)]";
 
-export function StatusBadge({ project }: { project: Project }) {
+export function StatusBadge({
+  project,
+  className = "",
+}: {
+  project: Project;
+  className?: string;
+}) {
   const live = project.status === "live";
   return (
     <span
-      className={`absolute right-5 top-5 z-[1] rounded-full border px-3 py-1.5 text-[11px] font-[650] uppercase tracking-[0.08em] ${
-        live
-          ? "border-[#CDF22B]/70 bg-[#CDF22B]/18 text-[#08090B]"
-          : "border-line-strong bg-sink text-muted"
-      }`}
+      className={`inline-flex items-center gap-2 font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] ${
+        live ? "text-ink" : "text-faint"
+      } ${className}`}
     >
+      <span
+        aria-hidden
+        className={`h-1.5 w-1.5 rounded-full ${
+          live ? "bg-accent-strong" : "border border-faint"
+        }`}
+      />
       {project.statusLabel}
     </span>
   );
 }
 
-export function BrowserFrame({ project, small }: { project: Project; small?: boolean }) {
+export function ProjectScreen({
+  project,
+  compact = false,
+  className = "",
+}: {
+  project: Project;
+  compact?: boolean;
+  className?: string;
+}) {
   const Screen = mockups[project.mockup];
   return (
-    <div className={`flex items-center justify-center ${small ? "px-5 py-6" : "px-[30px] py-10"}`}>
+    <div
+      className={`relative flex items-center justify-center bg-[radial-gradient(130%_120%_at_50%_-10%,var(--bg-sink),var(--bg)_70%)] ${
+        compact ? "px-4 py-5 sm:px-5 sm:py-6" : "px-6 py-9 sm:px-12 sm:py-14"
+      } ${className}`}
+    >
       <div
-        className={`w-full overflow-hidden rounded-[10px] bg-elev shadow-[0_8px_32px_-12px_rgba(0,0,0,0.3)] ${
-          small ? "" : "max-w-[420px]"
-        }`}
+        className={`w-full overflow-hidden rounded-xl border border-line-strong/70 bg-bg shadow-card ${
+          // Real screenshots get more room on detail pages than the drawn mockups.
+          compact ? "max-w-[360px]" : project.image ? "max-w-[760px]" : "max-w-[440px]"
+        } ${ease} group-hover:border-line-strong`}
       >
-        <div className="flex gap-1.5 border-b border-line bg-sink px-3 py-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ef4444]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#f59e0b]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#10b981]" />
-        </div>
-        <div
-          className={`flex aspect-[16/10] items-center justify-center bg-bg ${
-            project.mockup === "worktrack" ? "[&>svg]:bg-[#0d1117]" : ""
-          }`}
-        >
-          <Screen />
+        <div className="relative aspect-[16/10] w-full [&>svg]:block [&>svg]:h-full [&>svg]:w-full">
+          {project.image ? (
+            <Image
+              src={project.image}
+              alt={`${project.title} interface screenshot`}
+              fill
+              sizes={compact ? "(max-width: 768px) 90vw, 360px" : "(max-width: 1024px) 90vw, 760px"}
+              className="object-cover object-top"
+            />
+          ) : (
+            <Screen />
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export function TechBadge({ label, kind }: { label: string; kind?: Project["tech"][number]["kind"] }) {
-  const styles: Record<string, string> = {
-    react: "border-[#61dafb]/70 bg-[#61dafb]/10 text-[#0891b2] dark:text-[#22d3ee]",
-    node: "border-[#68a063]/70 bg-[#68a063]/10 text-[#4d7c0f] dark:text-[#84cc16]",
-    db: "border-accent bg-accent-soft text-accent-ink",
-    muted: "border-line-strong bg-sink text-ink-2 opacity-50",
-  };
+export function TechList({
+  tech,
+  className = "",
+}: {
+  tech: Project["tech"];
+  className?: string;
+}) {
   return (
-    <span
-      className={`rounded-full border px-3 py-1.5 text-xs font-[550] ${
-        kind ? styles[kind] : "border-line-strong bg-sink text-ink-2"
-      }`}
-    >
-      {label}
-    </span>
+    <ul className={`flex flex-wrap items-center gap-1.5 ${className}`}>
+      {tech.map((t) => (
+        <li key={t.label}>
+          <Tag size="sm" variant={t.kind === "muted" ? "muted" : "neutral"}>
+            {t.label}
+          </Tag>
+        </li>
+      ))}
+    </ul>
   );
 }
 
-export function ActionRow({ project }: { project: Project }) {
-  const primaryCls =
-    "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-accent bg-accent text-accent-text hover:bg-accent-ink hover:border-accent-ink";
-  const ghostCls =
-    "inline-flex items-center gap-2 rounded-full border px-3.5 py-[7px] text-[13.5px] font-[550] transition-all duration-200 hover:-translate-y-0.5 border-line-strong text-ink hover:border-ink";
+
+export function ActionRow({
+  project,
+  className = "",
+}: {
+  project: Project;
+  className?: string;
+}) {
+  const buttonCls =
+    "group/link inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1.5 font-ui text-[10.5px] font-[650] uppercase tracking-[0.08em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-bg";
 
   const items: ReactElement[] = [];
-  const hasPrimaryExternal = project.actions?.some((a) => a.primary) ?? false;
 
-  if (project.caseStudy && !hasPrimaryExternal) {
+  if (project.caseStudy) {
     items.push(
-      <Link key="case-study" href={`/projects/${project.caseStudy}`} className={primaryCls}>
-        View case study <span aria-hidden>→</span>
+      <Link key="case-study" href={`/projects/${project.caseStudy}`} className={buttonCls}>
+        Details{" "}
+        <FaArrowRight
+          size={9}
+          aria-hidden
+          className="transition-transform duration-200 group-hover/link:translate-x-0.5"
+        />
       </Link>,
     );
   }
-  project.actions?.forEach((a) => {
+
+  const live = project.actions?.find((a) => a.label.toLowerCase() === "live demo");
+  if (live) {
     items.push(
       <a
-        key={a.label}
-        href={a.href}
+        key="live"
+        href={live.href}
         target="_blank"
         rel="noopener noreferrer"
-        className={a.primary ? primaryCls : ghostCls}
+        className={buttonCls}
       >
-        {a.label} <span aria-hidden>↗</span>
+        Live <FaExternalLinkAlt size={9} aria-hidden />
       </a>,
     );
-  });
-  if (project.caseStudy && hasPrimaryExternal) {
+  }
+
+  const code = project.actions?.find(
+    (a) => a.label.toLowerCase() === "source" || a.href.includes("github"),
+  );
+  if (code) {
     items.push(
-      <Link key="case-study" href={`/projects/${project.caseStudy}`} className={ghostCls}>
-        Case study <span aria-hidden>→</span>
-      </Link>,
+      <a
+        key="code"
+        href={code.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={buttonCls}
+      >
+        Code <FaGithub size={10} aria-hidden />
+      </a>,
     );
   }
 
   if (!items.length) return null;
-  return <div className="mt-auto flex flex-wrap gap-3 pt-1">{items}</div>;
+  return (
+    <div className={`flex flex-wrap items-center gap-2.5 ${className}`}>{items}</div>
+  );
 }
 
 /* ---------- section ---------- */
 export default function Projects() {
-  const [featured, ...rest] = projects;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+
+  const update = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setProgress(max > 0 ? el.scrollLeft / max : 1);
+    setAtStart(el.scrollLeft <= 2);
+    setAtEnd(max - el.scrollLeft <= 2);
+  };
+
+  useEffect(() => {
+    update();
+    const el = trackRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-project-card]");
+    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
 
   return (
-    <section id="projects" className="bg-sink py-[92px] max-sm:py-16">
+    <section id="projects" className="bg-sink py-20 max-sm:py-14">
       <div className="shell">
         <SectionHead
           label="Projects"
-          meta="4 shipped · 1 in design"
+          meta={`${projects.filter((p) => p.status === "live").length} shipped · ${
+            projects.filter((p) => p.status === "design").length
+          } in design`}
           title="Things I've engineered."
           lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Each one demonstrates full-stack thinking from data model to user experience."
         />
 
-        <div className="grid gap-8">
-          {/* Featured */}
-          <Reveal as="article" className={`overflow-hidden rounded-card border border-line bg-elev shadow-card ${lift} max-lg:grid max-lg:grid-cols-1`}>
-            <div className="relative border-line bg-gradient-to-br from-sink to-bg max-lg:border-b lg:border-r">
-              <BrowserFrame project={featured} />
-              <StatusBadge project={featured} />
-            </div>
-            <div className="p-10 max-sm:p-6">
-              <p className="mb-3 font-ui text-xs font-semibold uppercase tracking-[0.14em] text-faint">
-                {String(projects.indexOf(featured) + 1).padStart(2, "0")} / {featured.title}
-              </p>
-              <div className="mb-[18px]">
-                <h3 className="font-display text-4xl font-medium tracking-[-0.02em] text-ink max-sm:text-[28px]">
-                  {featured.subtitle}
-                </h3>
-              </div>
-                <p className="mb-6 leading-relaxed text-ink">{featured.desc}</p>
-
-              <p className="mb-2.5 font-ui text-[11px] font-[650] uppercase tracking-[0.12em] text-faint">
-                Technology
-              </p>
-              <div className="mb-6 flex flex-wrap gap-2">
-                {featured.tech.map((t) => (
-                  <TechBadge key={t.label} {...t} />
-                ))}
-              </div>
-
-              {featured.highlights && (
-                <div className="mb-7">
-                  <p className="mb-2.5 font-ui text-[11px] font-[650] uppercase tracking-[0.12em] text-faint">
-                    What I engineered
-                  </p>
-                  <div className="grid gap-2.5">
-                    {featured.highlights.map((h) => (
-                      <p key={h} className="flex items-center gap-2.5 text-[14.5px] text-ink">
-                        <span aria-hidden className="text-accent">
-                          ✓
-                        </span>
-                        {h}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <ActionRow project={featured} />
-            </div>
-          </Reveal>
-
-          {/* Secondary grid */}
-          <div className="grid gap-6 max-lg:grid-cols-1 lg:grid-cols-2">
-            {rest.map((p, i) => (
-              <Reveal
-                key={p.id}
-                as="article"
-                delay={i * 0.08}
-                className={`flex flex-col overflow-hidden rounded-card border border-line bg-elev shadow-card ${lift}`}
-              >
-                <div className="relative border-b border-line bg-gradient-to-br from-sink to-bg">
-                  <BrowserFrame project={p} small />
-                  <StatusBadge project={p} />
-                </div>
-                <div className="flex flex-1 flex-col p-[30px] max-sm:p-[22px]">
-                  <div className="mb-[18px]">
-                    <h3 className="mb-1 font-display text-[32px] font-medium tracking-[-0.02em] text-ink max-sm:text-[26px]">
-                      {p.title}
-                    </h3>
-                    <p className="text-base text-muted">{p.subtitle}</p>
-                  <p className="mb-6 text-base leading-relaxed text-ink">{p.desc}</p>
-                  </div>
-                  <p className="mb-6 text-base leading-relaxed text-ink-2">{p.desc}</p>
-                  <div className="mb-6 flex flex-wrap gap-2">
-                    {p.tech.map((t) => (
-                      <TechBadge key={t.label} {...t} />
-                    ))}
-                  </div>
-                  {p.note && (
-                    <p className="mb-4 mt-auto text-[13px] italic text-faint">{p.note}</p>
-                  )}
-                  <ActionRow project={p} />
-                </div>
-              </Reveal>
-            ))}
+        <div className="mb-6 flex items-center justify-between gap-4 md:hidden">
+          <p className="font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint">
+            <span className="text-accent-strong">{projects.length}</span> selected builds · drag to explore
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              disabled={atStart}
+              aria-label="Previous project"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-200 hover:border-ink disabled:pointer-events-none disabled:opacity-30"
+            >
+              <FaChevronLeft size={11} aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              disabled={atEnd}
+              aria-label="Next project"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-200 hover:border-ink disabled:pointer-events-none disabled:opacity-30"
+            >
+              <FaChevronRight size={11} aria-hidden />
+            </button>
           </div>
         </div>
 
+        <div className="relative">
+            <div
+              aria-hidden
+              className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-sink to-transparent transition-opacity duration-200 md:hidden ${
+                atStart ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <div
+              aria-hidden
+              className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-sink to-transparent transition-opacity duration-200 md:hidden ${
+                atEnd ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <div
+              ref={trackRef}
+              onScroll={update}
+              role="region"
+              aria-roledescription="carousel"
+              aria-label="Selected projects"
+              tabIndex={0}
+              className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-3"
+            >
+              {projects.map((p, i) => (
+                <Reveal
+                  as="article"
+                  key={p.id}
+                  // Cards fade in one by one, row by row.
+                  delay={(i % 3) * 0.08}
+                  data-project-card
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${i + 1} of ${projects.length}: ${p.title}`}
+                  className={`group flex w-[80vw] max-w-[330px] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-line bg-elev sm:w-[330px] md:w-auto md:max-w-none md:shrink ${
+                    p.featured ? "md:col-span-2" : ""
+                  } ${ease} hover:border-line-strong`}
+                >
+                  <ProjectScreen project={p} compact className="border-b border-line" />
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <span className="font-ui text-[10.5px] font-[650] tabular-nums tracking-[0.16em] text-faint">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <StatusBadge project={p} />
+                    </div>
+
+                    <h3 className="font-display text-[26px] font-medium leading-tight tracking-[-0.02em] text-ink">
+                      {p.title}
+                    </h3>
+                    <p className="mb-3 mt-0.5 text-[14px] font-[550] text-accent-strong">
+                      {p.subtitle}
+                    </p>
+                    <p className="mb-4 text-[13.5px] leading-relaxed text-ink-2">
+                      {p.desc}
+                    </p>
+
+                    <TechList tech={p.tech.slice(0, 4)} className="mb-5" />
+
+                    {p.note && (
+                      <p className="mb-4 font-ui text-[10.5px] font-[600] uppercase tracking-[0.14em] text-faint">
+                        {p.note}
+                      </p>
+                    )}
+
+                    <ActionRow project={p} className="mt-auto" />
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+
+        <div aria-hidden className="relative mt-1 h-px overflow-hidden bg-line md:hidden">
+          <div
+            className="absolute inset-y-0 left-0 w-[22%] bg-accent transition-transform duration-200 ease-out"
+            style={{ transform: `translateX(${progress * 355}%)` }}
+          />
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/projects"
+            className="group inline-flex items-center gap-2 rounded-full border border-line-strong bg-elev px-5 py-2.5 text-[13.5px] font-[650] text-ink transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-accent-text"
+          >
+            All projects &amp; case studies
+            <FaArrowRight
+              size={11}
+              aria-hidden
+              className="transition-transform duration-200 group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
+
         {/* Easter egg hint */}
-        <Reveal className="mt-10 rounded-card border border-dashed border-line-strong bg-sink px-6 py-5 text-center">
+        <Reveal className="mt-10 rounded-[18px] border border-dashed border-line-strong px-6 py-5 text-center">
           <p className="text-sm text-muted">
-            <span aria-hidden className="mr-1.5 text-accent">
+            <span aria-hidden className="mr-1.5 text-accent-strong">
               💡
             </span>
             Curious developer? Type <code>sudo hire rahul</code> anywhere on this page and press

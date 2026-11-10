@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaSearch as Search } from "react-icons/fa";
 import { useTheme } from "@/lib/theme";
 import { useToast } from "@/lib/toast";
+import { scrollToSection } from "@/lib/sectionNav";
 import { profile } from "@/lib/data";
 
 type Command = {
@@ -20,10 +22,11 @@ export default function CommandPalette() {
   const listRef = useRef<HTMLUListElement>(null);
   const { toggle } = useTheme();
   const toast = useToast();
+  const router = useRouter();
 
   const commands = useMemo<Command[]>(() => {
     const goto = (id: string) => () => {
-      document.querySelector(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (!scrollToSection(id.replace(/^#/, ""))) router.push(`/${id}`);
     };
     return [
       { label: "Go to Experience", run: goto("#experience") },
@@ -65,7 +68,7 @@ export default function CommandPalette() {
         run: () => window.open(profile.blog, "_blank", "noopener,noreferrer"),
       },
     ];
-  }, [toggle, toast]);
+  }, [toggle, toast, router]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -212,7 +215,7 @@ export default function CommandPalette() {
                   >
                     <b
                       className={`text-[14.5px] font-semibold ${
-                        i === active ? "text-accent-ink" : "text-ink"
+                        i === active ? "text-accent-strong" : "text-ink"
                       }`}
                     >
                       {c.label}

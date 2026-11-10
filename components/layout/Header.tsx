@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   FaGithub as Github,
@@ -13,6 +14,7 @@ import {
 import { SiX as X } from "react-icons/si";
 import { navLinks, profile } from "@/lib/data";
 import { useTheme } from "@/lib/theme";
+import { SECTION_NAV_EVENT, type SectionNavDetail } from "@/lib/sectionNav";
 
 function ThemeToggle() {
   const { theme, toggle } = useTheme();
@@ -31,9 +33,21 @@ function ThemeToggle() {
 }
 
 export default function Header() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const projectsRoute = pathname === "/projects" || pathname.startsWith("/projects/");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState("home");
+  // While a nav click is scrolling, the highlight stays on the destination
+  // instead of flickering through every section it passes.
+  const navLock = useRef<string | null>(null);
+
+  const isLinkActive = (href: string) => {
+    const id = href.split("#")[1] ?? "home";
+    if (id === "projects" && projectsRoute) return true;
+    return isHome && active === id;
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -42,22 +56,74 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  /* Active section highlighting */
+  /* Active section highlighting (homepage only).
+     The active section is the last one whose top edge has crossed a probe
+     line 35% down the viewport. At the very bottom of the page the last
+     section wins, so short closing sections (Contact) still get highlighted. */
   useEffect(() => {
-    const sections = Array.from(document.querySelectorAll("main section[id]"));
+    if (!isHome) return;
+    let sections = Array.from(document.querySelectorAll<HTMLElement>("main section[id]"));
+    if (!sections.length) {
+      sections = Array.from(document.querySelectorAll<HTMLElement>("section[id]"));
+    }
     if (!sections.length) return;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "-40% 0px -45% 0px" },
-    );
-    sections.forEach((s) => io.observe(s));
-    return () => io.disconnect();
-  }, []);
+    let frame = 0;
+    let idle = 0;
+    let hardStop = 0;
+
+    const update = () => {
+      frame = 0;
+      if (navLock.current) return;
+      const probe = window.innerHeight * 0.35;
+      let current = sections[0].id;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= probe) current = section.id;
+      }
+      const atBottom =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) current = sections[sections.length - 1].id;
+      setActive(current);
+    };
+    const release = () => {
+      window.clearTimeout(idle);
+      window.clearTimeout(hardStop);
+      navLock.current = null;
+      update();
+    };
+    const schedule = () => {
+      if (navLock.current) {
+        // Release the lock once scrolling has been idle for a moment.
+        window.clearTimeout(idle);
+        idle = window.setTimeout(release, 160);
+        return;
+      }
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    const onSectionNav = (event: Event) => {
+      const { id } = (event as CustomEvent<SectionNavDetail>).detail;
+      navLock.current = id;
+      setActive(id);
+      window.clearTimeout(idle);
+      window.clearTimeout(hardStop);
+      // Covers clicks that don't scroll at all (already there) or user takeovers.
+      idle = window.setTimeout(release, 400);
+      hardStop = window.setTimeout(release, 2500);
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.addEventListener(SECTION_NAV_EVENT, onSectionNav);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(idle);
+      window.clearTimeout(hardStop);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener(SECTION_NAV_EVENT, onSectionNav);
+    };
+  }, [isHome]);
 
   /* Close mobile sheet on resize / escape */
   useEffect(() => {
@@ -82,25 +148,28 @@ export default function Header() {
           }`}
         >
           <Link
-            href="#home"
+            href="/#home"
             aria-label={`${profile.name} — home`}
             className="inline-flex items-center gap-2.5 whitespace-nowrap font-display text-[18px] font-semibold tracking-tight text-ink"
           >
             {profile.firstName}
-            <span className="text-accent">.</span>
+            <span className="text-accent-strong">.</span>
           </Link>
 
-          <nav aria-label="Sections" className="hidden gap-[26px] lg:flex">
+          <nav aria-label="Sections" className="hidden items-center gap-0.5 lg:flex">
             {navLinks.map((l) => {
-              const isActive = active === l.href.slice(1);
+              const isActive = isLinkActive(l.href);
               return (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`relative py-1.5 text-[13.5px] font-medium transition-all duration-200 ${
+                  aria-current={isActive ? "page" : undefined}
+                  // Every link shares the same pill box, so moving the
+                  // highlight never shifts neighbouring items.
+                  className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isActive
-                      ? "bg-accent text-accent-text rounded-full px-3 py-0.5 shadow-[0_0_0_1px_rgba(205,242,43,0.4)]"
-                      : "text-ink-2 hover:text-ink hover:bg-accent/10"
+                      ? "bg-accent text-accent-text"
+                      : "text-ink-2 hover:bg-line hover:text-ink"
                   }`}
                 >
                   {l.label}
@@ -114,7 +183,7 @@ export default function Header() {
               href="/resume"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-accent bg-accent px-[16px] py-2 text-[13.5px] font-[650] text-accent-text transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_6px_20px_-8px_rgba(205,242,43,0.5)] hidden sm:inline-flex"
+              className="hidden items-center justify-center gap-2 rounded-full border border-accent bg-accent px-[16px] py-2 text-[13.5px] font-[650] text-accent-text transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_6px_20px_-8px_rgba(205,242,43,0.5)] sm:inline-flex"
             >
               Résumé
             </Link>
@@ -161,27 +230,30 @@ export default function Header() {
       {/* Mobile sheet */}
       <AnimatePresence>
         {menuOpen && (
+          // The <header> is pointer-events-none (so its transparent margins don't
+          // block the page); the sheet must opt back in or taps fall through.
           <motion.div
             id="mobile-menu"
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="fixed top-[calc(var(--header-h)+1rem)] left-4 right-4 z-[99] mt-4 rounded-[2rem] border border-line-strong bg-elev/90 backdrop-blur-[24px] backdrop-saturate-[1.2] shadow-card overflow-hidden"
+            className="pointer-events-auto fixed top-[calc(var(--header-h)+1rem)] left-4 right-4 z-[99] mt-4 rounded-[2rem] border border-line-strong bg-elev/90 backdrop-blur-[24px] backdrop-saturate-[1.2] shadow-card max-h-[calc(100dvh-var(--header-h)-3rem)] overflow-y-auto pb-5"
           >
             <nav aria-label="Sections" className="py-[18px]">
-              {[...navLinks.slice(0, 5), { label: "Writing", href: "#writing" }, navLinks[5]].map(
+              {navLinks.map(
                 (l) => {
-                  const isActive = active === l.href.slice(1);
+                  const isActive = isLinkActive(l.href);
                   return (
                     <Link
                       key={l.href}
                       href={l.href}
                       onClick={() => setMenuOpen(false)}
-                      className={`block border-b border-line/50 py-3 px-6 font-display text-[26px] transition-colors duration-200 ${
+                      aria-current={isActive ? "page" : undefined}
+                      className={`mx-3 block rounded-[12px] px-4 py-2.5 font-display text-[24px] transition-colors duration-200 ${
                         isActive
-                          ? "bg-accent/20 text-accent-text rounded-[12px] mx-3"
-                          : "text-ink hover:text-accent hover:bg-accent/10"
+                          ? "bg-accent text-accent-text"
+                          : "text-ink hover:bg-line"
                       }`}
                     >
                       {l.label}

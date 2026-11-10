@@ -4,7 +4,7 @@ import { about, profile } from "@/lib/data";
 
 export default function About() {
   return (
-    <section id="about" className="bg-sink py-[92px] max-sm:py-16">
+    <section id="about" className="bg-sink py-20 max-sm:py-14">
       <div className="shell">
         <SectionHead label="About" meta={`${profile.location}`} title={about.title} />
 
@@ -18,7 +18,7 @@ export default function About() {
                 {p}
               </p>
             ))}
-            <p className="border-l-2 border-line-strong pl-[18px] text-[15px] text-muted">
+            <p className="border-l-2 border-accent pl-[18px] text-[15px] leading-relaxed text-ink-2">
               {about.note}
             </p>
           </Reveal>
@@ -30,20 +30,29 @@ export default function About() {
             >
               <h3
                 id="focus-h"
-                className="mb-[18px] flex items-center gap-2.5 font-display text-[15px] font-medium text-ink after:h-px after:flex-1 after:bg-line after:content-['']"
+                className="mb-4 flex items-center gap-2.5 font-display text-[15px] font-medium text-ink after:h-px after:flex-1 after:bg-line after:content-['']"
               >
                 Currently focused on
               </h3>
-              <ul className="grid gap-0.5">
-                {about.focus.map((f) => (
-                  <li
-                    key={f}
-                    className="flex items-center gap-3 border-b border-dashed border-line py-[9px] text-[15px] last:border-b-0 before:font-semibold before:text-accent before:content-['—']"
-                  >
-                    {f}
-                  </li>
+              <div className="grid gap-5">
+                {about.focus.map((group) => (
+                  <div key={group.label}>
+                    <p className="mb-2 font-ui text-[10.5px] font-[650] uppercase tracking-[0.14em] text-faint">
+                      {group.label}
+                    </p>
+                    <ul className="grid gap-1.5">
+                      {group.items.map((f) => (
+                        <li
+                          key={f}
+                          className="flex items-center gap-2.5 text-[15px] before:font-semibold before:text-accent-strong before:content-['—']"
+                        >
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </aside>
           </Reveal>
         </div>

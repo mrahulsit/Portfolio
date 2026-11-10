@@ -11,9 +11,9 @@ import HeroVisual from "./HeroVisual";
 gsap.registerPlugin(ScrollTrigger);
 
 const btnAccent =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:-translate-y-[3px] hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_8px_24px_-8px_rgba(79,70,229,0.5)]";
+  "inline-flex items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:-translate-y-[3px] hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_8px_24px_-8px_rgba(205,242,43,0.45)]";
 const btnGhost =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_16px_-8px_rgba(79,70,229,0.3)]";
+  "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_16px_-8px_rgba(8,9,11,0.28)]";
 
 export default function Hero() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -50,21 +50,34 @@ export default function Hero() {
     show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
   };
   const item = {
-    hidden: reduce ? {} : { opacity: 0, y: 22 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+    hidden: { opacity: 0, y: 22 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: reduce ? 0 : 0.6, ease: "easeOut" as const },
+    },
   };
 
   return (
-    <section ref={heroRef} id="home" className="pb-10 pt-[92px] max-sm:pt-16">
-      <div className="shell grid items-center gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-[60px] [perspective:1200px]">
+    <section
+      ref={heroRef}
+      id="home"
+      className="hero-grid relative pb-[92px] pt-[92px] max-sm:pb-20 max-sm:pt-16"
+      // Clip the 3D canvas, which intentionally bleeds past its column, so it
+      // never causes horizontal scroll. `clip` (unlike `hidden`) keeps vertical
+      // overflow visible and creates no scroll container.
+      style={{ overflowX: "clip" }}
+    >
+      <div className="shell relative z-10 grid items-center gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-[60px] [perspective:1200px]">
         <motion.div variants={container} initial="hidden" animate="show">
           {profile.availability.open && (
             <motion.p
               variants={item}
-              className="mb-[26px] inline-flex items-center gap-2.5 rounded-full border border-[#CDF22B]/60 bg-[#CDF22B]/20 px-4 py-2 text-[13px] font-[650] tracking-[0.01em] text-[#08090B]"
+              className="mb-[26px] inline-flex max-w-full items-center gap-2.5 rounded-full border border-accent bg-accent px-4 py-2 text-[13px] font-[650] tracking-[0.01em] text-accent-text"
             >
               <span className="avail-dot" aria-hidden />
-              {profile.availability.openLabel}
+              <span className="sm:hidden">{profile.availability.shortLabel}</span>
+              <span className="hidden sm:inline">{profile.availability.openLabel}</span>
             </motion.p>
           )}
 
@@ -96,17 +109,6 @@ export default function Hero() {
             {profile.lede}
           </motion.p>
 
-          <motion.ul variants={item} className="mb-8 flex flex-wrap gap-2.5">
-            {profile.heroChips.map((c) => (
-              <li
-                key={c}
-                className="rounded-full border border-line-strong bg-elev px-3.5 py-1.5 text-[13px] font-[550] text-ink-2"
-              >
-                {c}
-              </li>
-            ))}
-          </motion.ul>
-
           <motion.div variants={item} className="flex flex-wrap gap-3.5">
             <Link href="#projects" className={btnAccent}>
               Explore Projects
@@ -126,10 +128,10 @@ export default function Hero() {
         <motion.div
           ref={cardRef}
           aria-hidden
-          initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+          initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.35, ease: "easeOut" }}
-          className="relative mx-auto aspect-square w-full max-w-[520px] will-change-transform lg:max-w-none"
+          transition={{ duration: reduce ? 0 : 0.8, delay: reduce ? 0 : 0.35, ease: "easeOut" }}
+          className="relative mx-auto aspect-square w-full max-w-[560px] will-change-transform lg:max-w-none"
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* soft ambient glow behind the model */}

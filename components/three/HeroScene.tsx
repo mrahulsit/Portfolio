@@ -5,11 +5,16 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import CentralSphere from "./CentralSphere";
 import CircuitTraces from "./CircuitTraces";
+import TopologyMesh from "./TopologyMesh";
+import EngineeringDetails from "./EngineeringDetails";
 import OrbitalSystem from "./OrbitalSystem";
-import AbstractDetails from "./AbstractDetails";
 import SceneLighting from "./SceneLighting";
+import DustField from "./DustField";
 
 type Quality = "high" | "low";
+
+/** Relative size of the central sphere (and its surface artwork). */
+const SPHERE_SCALE = 0.99;
 
 type Props = {
   theme: "light" | "dark";
@@ -118,10 +123,15 @@ function Sculpture({
 
   return (
     <group ref={groupRef}>
-      <CentralSphere theme={theme} reduced={reduced} />
-      <CircuitTraces theme={theme} reduced={reduced} />
+      {/* The sphere and everything attached to its surface share one scale. */}
+      <group scale={SPHERE_SCALE}>
+        <CentralSphere theme={theme} reduced={reduced} />
+        <CircuitTraces theme={theme} reduced={reduced} />
+        <TopologyMesh theme={theme} reduced={reduced} />
+      </group>
+      <EngineeringDetails theme={theme} reduced={reduced} />
       <OrbitalSystem theme={theme} reduced={reduced} />
-      <AbstractDetails theme={theme} reduced={reduced} />
+      <DustField theme={theme} reduced={reduced} quality={quality} />
     </group>
   );
 }
@@ -133,7 +143,7 @@ export default function HeroScene({ theme, quality, reduced, active }: Props) {
     <div ref={hostRef} className="absolute inset-0">
       <Canvas
         dpr={[1, quality === "high" ? 2 : 1.5]}
-        camera={{ position: [0, 0, 7.6], fov: 42 }}
+        camera={{ position: [0, 0, 7.3], fov: 42 }}
         gl={{
           antialias: true,
           alpha: true,
