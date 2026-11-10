@@ -8,7 +8,7 @@ import {
   FaGamepad as Gamepad,
   FaPlay as Play,
 } from "react-icons/fa";
-import { SiX as X } from "react-icons/si";
+import { FaTimes as X } from "react-icons/fa";
 import { profile } from "@/lib/data";
 
 const PHRASE = "sudo hire rahul";

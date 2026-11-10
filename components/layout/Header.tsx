@@ -11,7 +11,7 @@ import {
   FaMoon as Moon,
   FaSun as Sun,
 } from "react-icons/fa";
-import { SiX as X } from "react-icons/si";
+import { FaTimes as X } from "react-icons/fa";
 import { navLinks, profile } from "@/lib/data";
 import { useTheme } from "@/lib/theme";
 import { SECTION_NAV_EVENT, type SectionNavDetail } from "@/lib/sectionNav";
