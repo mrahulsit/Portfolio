@@ -121,6 +121,7 @@ body {
   text-rendering: optimizeLegibility;
   overscroll-behavior-y: none;
   position: relative;
+  overflow-x: clip;
 }
 
 /* Background image: a generated topographic contour map, fixed behind the

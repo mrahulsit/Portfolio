@@ -205,8 +205,10 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* Lime tech marquee */}
-      <div className="relative z-10 -mx-2 my-10 -rotate-[1.2deg] bg-accent py-4 text-accent-text max-sm:my-6">
+      {/* Lime tech marquee — tilted and slightly wider than the page, so its
+          ends are clipped horizontally to avoid sideways scrolling. */}
+      <div className="overflow-x-clip py-2">
+      <div className="relative z-10 -mx-2 my-8 -rotate-[1.2deg] bg-accent py-4 text-accent-text max-sm:my-4">
         <LogoSlider
           label="Technologies I work with"
           speed={45}
@@ -224,6 +226,7 @@ export default function Hero() {
             </span>
           ))}
         />
+      </div>
       </div>
     </>
   );

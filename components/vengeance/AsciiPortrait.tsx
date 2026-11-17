@@ -129,8 +129,10 @@ export default function AsciiPortrait({
       cellSize = size / columns;
       canvas.width = Math.round(size * dpr);
       canvas.height = Math.round(size * dpr);
-      canvas.style.width = `${size}px`;
-      canvas.style.height = `${size}px`;
+      // Fluid CSS size; only the backing store is in device pixels, so the
+      // canvas never holds its card wider than the screen.
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       draw();
     };
