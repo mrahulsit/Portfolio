@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { entrance } from "./utils";
-import { IVORY, LIME, MIDNIGHT } from "./palette";
+import { IVORY, LIME } from "./palette";
 
 type Props = {
   theme: "light" | "dark";
@@ -113,7 +113,7 @@ export default function CentralSphere({ theme, reduced }: Props) {
     }
     const breathe = reduced ? 1 : 0.85 + 0.15 * Math.sin(t * 0.6);
     haloMaterial.uniforms.uColor.value.set(
-      theme === "dark" ? "#b9dc2a" : "#d6ef6a"
+      theme === "dark" ? "#b9f12f" : "#d6f57a"
     );
     haloMaterial.uniforms.uStrength.value =
       (theme === "dark" ? 0.16 : 0.13) * progress * breathe;
@@ -125,7 +125,7 @@ export default function CentralSphere({ theme, reduced }: Props) {
         <sphereGeometry args={[1.8, 96, 96]} />
         {/* Same polished obsidian finish in both themes. */}
         <meshPhysicalMaterial
-          color={MIDNIGHT}
+          color="#05192a"
           metalness={0.82}
           roughness={0.3}
           clearcoat={0.8}

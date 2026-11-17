@@ -1,54 +1,66 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
 /* ==========================================================================
-   Design tokens — editorial minimal (warm paper + lime accent)
+   Design tokens — one theme, three colours
+     Deep Midnight Teal  #0B3048
+     Soft Pearl          #F2F0E9
+     Vibrant Neon Lime   #B9F12F
+   Pearl is the page; teal "bands" (.band-dark) re-map the same tokens so
+   every component works on either surface. Lime is only ever a fill or a
+   highlight on pearl (teal text on top) — as text it appears on teal only.
    ========================================================================== */
-:root,
-[data-theme="light"] {
-  --bg: #faf8f3;
-  --bg-elev: #ffffff;
-  --bg-sink: #f0eee7;
-  --ink: #08090b;
-  --ink-2: #66645d;
-  --muted: #8a8a82;
-  --faint: #b0aca4;
-  --line: #e6e2d9;
-  --line-strong: #c9c4b9;
-  --accent: #cdf22b;
-  --accent-strong: #4f5d00;
-  --accent-ink: #b5c416;
-  --accent-text: #08090b;
-  --accent-soft: #f6fbd6;
-  --grid-line: rgba(8, 9, 11, 0.11);
-  --shadow: 0 1px 3px rgba(8, 9, 11, 0.08), 0 20px 40px -24px rgba(8, 9, 11, 0.12);
-  --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(8, 9, 11, 0.28);
-  --sel: rgba(205, 242, 43, 0.18);
-  --radius: 14px;
+:root {
+  --teal: #0b3048;
+  --teal-2: #123d5a;
+  --teal-deep: #072233;
+  --pearl: #f2f0e9;
+  --lime: #b9f12f;
+
+  --bg: var(--pearl);
+  --bg-elev: #fbfaf6;
+  --bg-sink: #e9e6dc;
+  --ink: var(--teal);
+  --ink-2: #2b4b60;
+  --muted: #587081;
+  --faint: #7f909b;
+  --line: #d9d6cb;
+  --line-strong: #bcc0b9;
+  --accent: var(--lime);
+  --accent-strong: var(--teal);
+  --accent-ink: #a5dc1c;
+  --accent-text: var(--teal);
+  --accent-soft: #e5f4bd;
+  --danger: #a4372a;
+  --grid-line: rgba(11, 48, 72, 0.08);
+  --shadow: 0 1px 2px rgba(11, 48, 72, 0.06), 0 18px 40px -24px rgba(11, 48, 72, 0.22);
+  --shadow-lift: 0 10px 30px -12px rgba(11, 48, 72, 0.28), 0 0 0 1px rgba(11, 48, 72, 0.04);
+  --sel: rgba(185, 241, 47, 0.55);
+  --radius: 20px;
   --rail-w: 200px;
-  --header-h: 68px;
+  --header-h: 60px;
+  color-scheme: light;
 }
 
-[data-theme="dark"] {
-  --bg: #08090b;
-  --bg-elev: #121418;
-  --bg-sink: #1a1d21;
-  --ink: #faf8f3;
-  --ink-2: #a6a8a0;
-  --muted: #737570;
-  --faint: #575953;
-  --line: #292c30;
-  --line-strong: #3d4248;
-  --accent: #cdf22b;
-  --accent-strong: #cdf22b;
-  --accent-ink: #b5c416;
-  --accent-text: #08090b;
-  --accent-soft: #1c2008;
-  --grid-line: rgba(250, 248, 243, 0.1);
-  --shadow: 0 2px 8px rgba(0, 0, 0, 0.6), 0 24px 64px -32px rgba(0, 0, 0, 0.9);
-  --shadow-lift: 0 8px 24px -12px rgba(205, 242, 43, 0.25), 0 24px 64px -32px rgba(205, 242, 43, 0.15);
-  --sel: rgba(205, 242, 43, 0.18);
+/* Midnight-teal surface. Not a theme — a section colour. */
+.band-dark {
+  --bg: var(--teal);
+  --bg-elev: var(--teal-2);
+  --bg-sink: var(--teal-deep);
+  --ink: var(--pearl);
+  --ink-2: #c8d3d6;
+  --muted: #94a9b4;
+  --faint: #7390a0;
+  --line: rgba(242, 240, 233, 0.12);
+  --line-strong: rgba(242, 240, 233, 0.24);
+  --accent-strong: var(--lime);
+  --accent-soft: rgba(185, 241, 47, 0.12);
+  --danger: #ffb4a6;
+  --grid-line: rgba(242, 240, 233, 0.06);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 24px 48px -28px rgba(0, 0, 0, 0.6);
+  --shadow-lift: 0 16px 40px -16px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(185, 241, 47, 0.18);
+  --sel: rgba(185, 241, 47, 0.35);
+  background-color: var(--bg);
+  color: var(--ink);
 }
 
 @theme inline {
@@ -66,10 +78,17 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-text: var(--accent-text);
   --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-teal: var(--teal);
+  --color-teal-2: var(--teal-2);
+  --color-teal-deep: var(--teal-deep);
+  --color-pearl: var(--pearl);
+  --color-lime: var(--lime);
 
-  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-display: var(--font-grotesk), "Helvetica Neue", Arial, sans-serif;
   --font-ui: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif;
+  --font-mono: var(--font-jbmono), "SFMono-Regular", Consolas, monospace;
 
   --shadow-card: var(--shadow);
   --shadow-lift: var(--shadow-lift);
@@ -85,7 +104,8 @@ html {
   scroll-padding-top: calc(var(--header-h) + 12px);
   -webkit-text-size-adjust: 100%;
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) var(--bg-sink);
+  scrollbar-color: var(--teal) var(--pearl);
+  background: var(--pearl);
 }
 
 body {
@@ -101,17 +121,30 @@ body {
   position: relative;
 }
 
-[data-theme="dark"] body::before {
+/* Subtle film grain over the whole page — keeps flat colour fields from feeling digital-flat. */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(205, 242, 43, 0.12), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 80% 60%, rgba(205, 242, 43, 0.06), transparent 60%),
-    radial-gradient(ellipse 50% 50% at 20% 80%, rgba(205, 242, 43, 0.08), transparent 50%),
-    linear-gradient(180deg, #08090b 0%, #0a0f15 50%, #08090b 100%);
+  z-index: 60;
   pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Lime "highlighter" mark for key words on pearl */
+.mark-lime {
+  background: linear-gradient(transparent 58%, var(--lime) 58%, var(--lime) 92%, transparent 92%);
+  padding: 0 0.08em;
+}
+
+/* Mono kicker label used for section indices */
+.kicker {
+  font-family: var(--font-jbmono), "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* Square-grid backdrop for the hero — fades out before it reaches the next section */
@@ -148,18 +181,18 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-sink);
+  background: var(--pearl);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
+  background: var(--teal);
   border-radius: 999px;
-  border: 2px solid var(--bg-sink);
+  border: 2px solid var(--pearl);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: var(--teal-2);
 }
 ::-webkit-scrollbar-corner {
-  background: var(--bg-sink);
+  background: var(--pearl);
 }
 
 a:focus-visible,
@@ -168,7 +201,7 @@ summary:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-strong);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -187,14 +220,14 @@ textarea:focus-visible,
   top: 8px;
   z-index: 200;
   background: var(--accent);
-  color: #08090b;
+  color: var(--teal);
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 600;
 }
 .skip:focus {
   left: 8px;
-  color: #08090b;
+  color: var(--teal);
 }
 
 code {
@@ -228,7 +261,7 @@ code {
   }
   50% {
     transform: scale(1.15);
-    box-shadow: 0 0 0 6px var(--accent-soft), 0 0 28px rgba(205, 242, 43, 0.6);
+    box-shadow: 0 0 0 6px var(--accent-soft), 0 0 28px rgba(185, 241, 47, 0.6);
   }
 }
 
@@ -281,7 +314,7 @@ code {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #2c9e6b;
+  background: currentColor;
   position: relative;
 }
 .avail-dot::after {
@@ -289,9 +322,39 @@ code {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 1.5px solid #2c9e6b;
+  border: 1.5px solid currentColor;
   opacity: 0;
   animation: avail-pulse 2.4s ease-out infinite;
+}
+
+/* ==========================================================================
+   Vengeance UI support — Logo Slider (marquee) + Spotlight nav
+   Adapted from Vengeance UI's logo-slider / spotlight-navbar.
+   ========================================================================== */
+@keyframes vui-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.vui-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.vui-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: vui-marquee var(--speed, 40s) linear infinite;
+}
+.vui-marquee[data-direction="right"] .vui-marquee__track {
+  animation-direction: reverse;
+}
+.vui-marquee[data-pause-on-hover="true"]:hover .vui-marquee__track {
+  animation-play-state: paused;
+}
+
+/* Highlight Grid cell label */
+.vui-hgrid-cell[data-active="true"] .vui-hgrid-label {
+  color: var(--teal);
 }
 
 /* ==========================================================================
@@ -723,7 +786,7 @@ html:has(.resume-page) {
 
 .resume-shell {
   min-height: 100vh;
-  background: #f7f5f0;
+  background: #f2f0e9;
   color: #45413a;
 }
 
@@ -735,7 +798,7 @@ html:has(.resume-page) {
   gap: 12px;
   justify-content: flex-end;
   padding: 14px 24px;
-  background: #1c1a15;
+  background: #0b3048;
 }
 
 .resume-toolbar a,
@@ -743,8 +806,8 @@ html:has(.resume-page) {
   font-family: var(--font-inter), -apple-system, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #f7f5f0;
-  background: #b4452a;
+  color: #0b3048;
+  background: #b9f12f;
   border: none;
   border-radius: 999px;
   padding: 9px 16px;
@@ -753,12 +816,12 @@ html:has(.resume-page) {
 }
 .resume-toolbar a.back {
   background: transparent;
-  border: 1px solid #4a463c;
-  color: #cfcab9;
+  border: 1px solid rgba(242, 240, 233, 0.3);
+  color: #f2f0e9;
 }
 
 .resume-page header {
-  border-bottom: 3px solid #b4452a;
+  border-bottom: 3px solid #0b3048;
   padding-bottom: 18px;
   margin-bottom: 22px;
 }
@@ -766,7 +829,7 @@ html:has(.resume-page) {
   font-family: var(--font-fraunces), Georgia, serif;
   font-size: 42px;
   font-weight: 600;
-  color: #1c1a15;
+  color: #0b3048;
   letter-spacing: -0.02em;
   margin: 0 0 4px;
 }
@@ -774,7 +837,7 @@ html:has(.resume-page) {
   font-family: var(--font-fraunces), Georgia, serif;
   font-style: italic;
   font-size: 19px;
-  color: #b4452a;
+  color: #0b3048;
   margin: 0 0 14px;
 }
 .resume-contact {
@@ -789,7 +852,7 @@ html:has(.resume-page) {
   text-decoration: none;
 }
 .resume-contact a:hover {
-  color: #b4452a;
+  color: #0b3048;
 }
 
 .resume-page h2 {
@@ -798,18 +861,18 @@ html:has(.resume-page) {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #b4452a;
+  color: #0b3048;
   margin: 26px 0 10px;
   padding-bottom: 5px;
   border-bottom: 1px solid #e4e0d4;
 }
 .resume-page h3 {
   font-size: 14px;
-  color: #1c1a15;
+  color: #0b3048;
   margin: 0 0 1px;
 }
 .resume-page .org {
-  color: #b4452a;
+  color: #0b3048;
   font-weight: 600;
   margin: 0;
 }
@@ -856,7 +919,7 @@ html:has(.resume-page) {
   padding: 2px 9px;
 }
 .resume-strong {
-  color: #1c1a15;
+  color: #0b3048;
 }
 .resume-p {
   margin: 0 0 4px;

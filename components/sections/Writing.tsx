@@ -6,9 +6,10 @@ import { writing } from "@/lib/data";
 
 export default function Writing() {
   return (
-    <section id="writing" className="py-20 max-sm:py-14">
+    <section id="writing" className="pb-24 max-sm:pb-16">
       <div className="shell">
         <SectionHead
+          index="06"
           label="Writing"
           meta="Essays & research"
           title="Reading, writing, shipping."
@@ -20,14 +21,14 @@ export default function Writing() {
             <Reveal
               key={post.href + post.title}
               delay={i * 0.06}
-              className="rounded-card border border-line bg-elev p-8 transition-colors duration-300 hover:border-line-strong sm:p-10 lg:p-12"
+              className="group/post rounded-card border border-line bg-elev p-8 transition-[border-color,box-shadow] duration-300 hover:border-teal hover:shadow-lift sm:p-10 lg:p-12"
             >
               <div className="grid gap-8 lg:grid-cols-[1fr_220px] lg:gap-14">
                 <div>
-                  <p className="mb-4 font-ui text-[11px] font-[650] uppercase tracking-[0.14em] text-accent-strong">
+                  <p className="kicker mb-5 inline-flex rounded-full bg-lime px-2.5 py-1 text-teal">
                     {writing.eyebrow}
                   </p>
-                  <h3 className="mb-4 max-w-[22em] font-display text-[clamp(26px,3.4vw,36px)] font-medium leading-[1.15] tracking-[-0.02em] text-ink">
+                  <h3 className="mb-4 max-w-[22em] font-display text-[clamp(28px,3.6vw,42px)] font-semibold leading-[1.05] tracking-[-0.035em] text-ink">
                     {post.title}
                   </h3>
                   <p className="mb-7 max-w-[58ch] leading-relaxed text-ink-2">{post.body}</p>
@@ -35,7 +36,7 @@ export default function Writing() {
                     href={post.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-2 font-ui text-[14px] font-[650] text-ink transition-colors hover:text-accent-strong"
+                    className="group inline-flex items-center gap-2 rounded-full bg-teal px-5 py-2.5 font-ui text-[14px] font-[600] text-pearl transition-transform duration-200 hover:-translate-y-0.5"
                   >
                     Read the essay
                     <ArrowRight
@@ -47,7 +48,7 @@ export default function Writing() {
 
                 <aside className="flex flex-col gap-6 border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
                   <div>
-                    <p className="mb-1.5 font-ui text-[10.5px] font-[650] uppercase tracking-[0.14em] text-faint">
+                    <p className="kicker mb-1.5 text-faint">
                       Published
                     </p>
                     <p className="text-[14px] font-[550] text-ink">Hashnode</p>
@@ -55,14 +56,14 @@ export default function Writing() {
                       href={post.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-1 inline-flex items-center gap-1.5 text-[12.5px] text-muted transition-colors hover:text-accent-strong"
+                      className="mt-1 inline-flex items-center gap-1.5 text-[12.5px] text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
                     >
                       effortlesswithrahul
                       <ArrowUpRight size={10} className="opacity-70" />
                     </a>
                   </div>
                   <div>
-                    <p className="mb-2.5 font-ui text-[10.5px] font-[650] uppercase tracking-[0.14em] text-faint">
+                    <p className="kicker mb-2.5 text-faint">
                       Topics
                     </p>
                     <div className="flex flex-wrap gap-1.5">

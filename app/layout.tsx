@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/lib/theme";
 import { ToastProvider } from "@/lib/toast";
 import { profile } from "@/lib/data";
 
@@ -16,6 +15,20 @@ const fraunces = Fraunces({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const grotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-grotesk",
+  display: "swap",
+});
+
+const jbmono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-jbmono",
   display: "swap",
 });
 
@@ -45,26 +58,15 @@ export const metadata: Metadata = {
       "Software Engineer building full-stack applications with React.js, Node.js, TypeScript and PostgreSQL.",
   },
   icons: {
-    icon: [
-      { rel: "icon", url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
-      { rel: "icon", url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
-      { rel: "icon", url: "/favicon-light.svg" },
-    ],
-    apple: [
-      { rel: "apple-touch-icon", url: "/favicon-light.svg", media: "(prefers-color-scheme: light)" },
-      { rel: "apple-touch-icon", url: "/favicon-dark.svg", media: "(prefers-color-scheme: dark)" },
-    ],
+    icon: [{ rel: "icon", url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ rel: "apple-touch-icon", url: "/favicon.svg" }],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f5f0" },
-    { media: "(prefers-color-scheme: dark)", color: "#17150f" },
-  ],
+  themeColor: "#0b3048",
+  colorScheme: "light",
 };
-
-const themeScript = `(function(){try{var s=localStorage.getItem('theme');var t=s||(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
 
 const personSchema = {
   "@context": "https://schema.org",
@@ -97,23 +99,22 @@ const personSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en">
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className={`${fraunces.variable} ${inter.variable} font-ui`}>
-        <ThemeProvider>
-          <ToastProvider>
-            <a className="skip" href="#main">
-              Skip to content
-            </a>
-            {children}
-          </ToastProvider>
-        </ThemeProvider>
+      <body
+        className={`${fraunces.variable} ${inter.variable} ${grotesk.variable} ${jbmono.variable} font-ui`}
+      >
+        <ToastProvider>
+          <a className="skip" href="#main">
+            Skip to content
+          </a>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );

@@ -41,7 +41,7 @@ function timeAgo(iso: string) {
   return `${Math.round(months / 12)}y ago`;
 }
 
-const LANG_BARS = ["bg-accent", "bg-ink-2", "bg-muted", "bg-faint", "bg-line-strong"];
+const LANG_BARS = ["bg-lime", "bg-teal", "bg-ink-2", "bg-muted", "bg-faint"];
 
 async function fetchGithub(): Promise<{ profile: GhProfile; repos: GhRepo[] } | null> {
   try {
@@ -63,9 +63,10 @@ export default async function GithubSection() {
   const data = await fetchGithub();
 
   return (
-    <section id="github" className="bg-sink py-20 max-sm:py-14">
+    <section id="github" className="py-24 max-sm:py-16">
       <div className="shell">
         <SectionHead
+          index="05"
           label="GitHub"
           meta="Building in the open"
           title="Building in the open."
@@ -79,7 +80,7 @@ export default async function GithubSection() {
             href={profile.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-sm font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_14px_-6px_rgba(205,242,43,0.35)]"
+            className="inline-flex items-center gap-2 rounded-full bg-teal px-6 py-3 text-sm font-[600] text-pearl transition-transform duration-200 hover:-translate-y-0.5"
           >
             <GithubIcon size={14} />
             See all repositories
@@ -130,17 +131,17 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
         ].map((s) => (
           <div
             key={s.v}
-            className="rounded-xl border border-line bg-elev px-[22px] py-5 transition-all duration-250 hover:-translate-y-0.5 hover:border-accent"
+            className="rounded-card border border-line bg-elev px-[22px] py-6 transition-all duration-250 hover:-translate-y-0.5 hover:border-teal"
           >
-            <p className="font-display text-[30px] leading-none tracking-[-0.02em] text-ink">
+            <p className="font-display text-[40px] font-semibold leading-none tracking-[-0.04em] text-ink">
               {s.k}
             </p>
-            <p className="mt-1.5 text-[12.5px] tracking-[0.02em] text-muted">{s.v}</p>
+            <p className="kicker mt-2.5 text-faint">{s.v}</p>
           </div>
         ))}
 
-        <div className="rounded-xl border border-line bg-elev px-6 py-[22px] col-span-2 lg:col-span-4">
-          <p className="mb-4 font-ui text-xs font-[650] uppercase tracking-[0.1em] text-faint">
+        <div className="band-dark col-span-2 rounded-card px-7 py-6 lg:col-span-4">
+          <p className="kicker mb-5 text-lime">
             Languages across repositories
           </p>
           <div className="grid gap-2.5">
@@ -152,7 +153,7 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
                   className="grid grid-cols-[120px_1fr_40px] items-center gap-3.5 max-sm:grid-cols-[90px_1fr_40px]"
                 >
                   <span className="text-sm font-[550] text-ink-2">{l.name}</span>
-                  <span className="relative h-2 overflow-hidden rounded-full bg-sink">
+                  <span className="relative h-2 overflow-hidden rounded-full bg-line">
                     <span
                       className={`absolute inset-y-0 left-0 min-w-1 rounded-full ${LANG_BARS[i] ?? "bg-faint"}`}
                       style={{ width: `${pct}%` }}
@@ -173,11 +174,11 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
             href={r.html_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex flex-col gap-2.5 rounded-xl border border-line bg-elev p-[22px] transition-all duration-250 hover:-translate-y-0.5 hover:border-accent hover:shadow-lift"
+            className="group flex flex-col gap-2.5 rounded-card border border-line bg-elev p-6 transition-all duration-250 hover:-translate-y-1 hover:border-teal hover:shadow-lift"
           >
             <span className="flex items-start justify-between gap-2.5">
               <span className="flex min-w-0 flex-col">
-                <span className="inline-flex items-center gap-2 font-display text-[18px] text-ink transition-colors group-hover:text-accent-strong">
+                <span className="inline-flex items-center gap-2 font-display text-[19px] font-semibold tracking-[-0.02em] text-ink">
                   {githubDisplayNames[r.name] ?? r.name}
                   <ArrowUpRight size={12} className="text-faint" />
                 </span>
@@ -196,7 +197,7 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
             <span className="flex-1 text-sm leading-relaxed text-muted">{r.description}</span>
             <span className="flex flex-wrap items-center gap-3.5 text-[12.5px] text-muted">
               {r.language && (
-                <span className="inline-flex items-center gap-1.5 before:h-2.5 before:w-2.5 before:rounded-full before:bg-accent-strong before:content-['']">
+                <span className="inline-flex items-center gap-1.5 before:h-2.5 before:w-2.5 before:rounded-full before:bg-lime before:ring-1 before:ring-teal/30 before:content-['']">
                   {r.language}
                 </span>
               )}
@@ -211,7 +212,7 @@ function GithubStats({ data }: { data: { profile: GhProfile; repos: GhRepo[] } }
 
 function GithubError() {
   return (
-    <p className="rounded-xl border border-dashed border-line-strong bg-elev p-[26px] text-muted">
+    <p className="rounded-card border border-dashed border-line-strong bg-elev p-[26px] text-muted">
       GitHub data couldn&rsquo;t load right now — but the profile is live, so poke around directly.
     </p>
   );

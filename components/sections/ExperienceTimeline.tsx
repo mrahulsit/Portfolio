@@ -2,8 +2,7 @@ import Tag from "@/components/ui/Tag";
 import { Reveal } from "@/components/ui/Reveal";
 import { experience, type Job } from "@/lib/data";
 
-const eyebrow =
-  "font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint";
+const eyebrow = "kicker text-faint";
 
 const jobs = experience.filter((j) => j.chip !== "Course");
 const courses = experience.filter((j) => j.chip === "Course");
@@ -11,7 +10,7 @@ const courses = experience.filter((j) => j.chip === "Course");
 /** Promotion path within one company: horizontal on desktop, vertical on phones. */
 function Progression({ steps }: { steps: NonNullable<Job["progression"]> }) {
   return (
-    <div className="my-6 rounded-[14px] border border-line bg-sink/50 px-5 py-4">
+    <div className="my-6 rounded-[16px] border border-line bg-bg px-5 py-4">
       <p className={`${eyebrow} mb-4`}>Promotion path</p>
       <ol className="grid gap-4 sm:grid-cols-3 sm:gap-0">
         {steps.map((step, i) => {
@@ -28,7 +27,7 @@ function Progression({ steps }: { steps: NonNullable<Job["progression"]> }) {
                 aria-hidden
                 className={`relative mt-1 h-[11px] w-[11px] shrink-0 rounded-full border-2 sm:mt-0 sm:block ${
                   latest
-                    ? "border-accent bg-accent shadow-[0_0_0_4px_var(--accent-soft)]"
+                    ? "border-teal bg-lime shadow-[0_0_0_4px_rgba(185,241,47,0.35)]"
                     : "border-line-strong bg-elev"
                 }`}
               />
@@ -56,7 +55,7 @@ function Bullets({ points, small = false }: { points: string[]; small?: boolean 
       {points.map((p) => (
         <li
           key={p}
-          className={`relative pl-[22px] leading-relaxed before:absolute before:left-0 before:text-accent-strong before:content-['—'] ${
+          className={`relative pl-[22px] leading-relaxed before:absolute before:left-0 before:font-mono before:text-[12px] before:leading-[1.9] before:text-faint before:content-['→'] ${
             small ? "text-[14px] text-ink-2" : "text-[15px]"
           }`}
         >
@@ -88,23 +87,23 @@ export default function ExperienceTimeline() {
           <Reveal
             as="li"
             key={job.role + job.org}
-            className="rounded-card border border-line bg-elev p-7 shadow-card max-sm:p-5"
+            className="rounded-card border border-line bg-elev p-8 transition-shadow duration-300 hover:shadow-lift max-sm:p-6"
           >
             <div className="mb-3 flex flex-wrap items-center gap-2.5">
               <Tag size="sm" variant="accent">
                 {job.chip}
               </Tag>
               {job.when && (
-                <span className="text-[13px] font-[550] tracking-[0.02em] text-faint">
+                <span className="kicker text-faint">
                   {job.when}
                 </span>
               )}
             </div>
 
-            <h3 className="font-display text-[26px] font-medium leading-tight tracking-tight text-ink max-sm:text-[23px]">
+            <h3 className="font-display text-[30px] font-semibold leading-[1.05] tracking-[-0.03em] text-ink max-sm:text-[24px]">
               {job.role}
             </h3>
-            <p className="mt-0.5 font-display text-[17px] italic text-accent-strong">{job.org}</p>
+            <p className="mt-1.5 text-[15px] font-[550] text-muted">{job.org}</p>
 
             {job.progression ? <Progression steps={job.progression} /> : <div className="h-5" />}
 
@@ -127,17 +126,17 @@ export default function ExperienceTimeline() {
                 as="li"
                 key={course.role + course.org}
                 delay={i * 0.06}
-                className="grid gap-x-8 gap-y-4 rounded-[14px] border border-line bg-elev/60 p-5 md:grid-cols-[190px_1fr]"
+                className="grid gap-x-8 gap-y-4 rounded-[18px] border border-dashed border-line-strong p-6 md:grid-cols-[200px_1fr]"
               >
                 <div>
-                  <p className="font-display text-[17px] font-medium leading-snug text-ink">
+                  <p className="font-display text-[18px] font-semibold leading-snug tracking-[-0.01em] text-ink">
                     {course.role}
                   </p>
-                  <p className="font-display text-[14.5px] italic text-accent-strong">
+                  <p className="text-[14px] font-[550] text-muted">
                     {course.org}
                   </p>
                   {course.when && (
-                    <p className="mt-1.5 text-[12px] font-[550] text-faint">{course.when}</p>
+                    <p className="kicker mt-2 text-faint">{course.when}</p>
                   )}
                 </div>
                 <div className="min-w-0">

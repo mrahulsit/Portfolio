@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaSearch as Search } from "react-icons/fa";
-import { useTheme } from "@/lib/theme";
 import { useToast } from "@/lib/toast";
 import { scrollToSection } from "@/lib/sectionNav";
 import { profile } from "@/lib/data";
@@ -20,7 +19,6 @@ export default function CommandPalette() {
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
-  const { toggle } = useTheme();
   const toast = useToast();
   const router = useRouter();
 
@@ -35,13 +33,6 @@ export default function CommandPalette() {
       { label: "Go to GitHub", run: goto("#github") },
       { label: "Go to Writing", run: goto("#writing") },
       { label: "Go to Contact", run: goto("#contact") },
-      {
-        label: "Toggle theme",
-        run: () => {
-          toggle();
-          toast(document.documentElement.getAttribute("data-theme") === "light" ? "Light theme on" : "Dark theme on");
-        },
-      },
       {
         label: "Download résumé",
         run: () => window.open("/resume", "_blank", "noopener,noreferrer"),
@@ -68,7 +59,7 @@ export default function CommandPalette() {
         run: () => window.open(profile.blog, "_blank", "noopener,noreferrer"),
       },
     ];
-  }, [toggle, toast, router]);
+  }, [toast, router]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();

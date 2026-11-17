@@ -26,7 +26,7 @@ const END_FADE = 0.06;
 /** Seconds a delivery ripple takes to expand and fade at a junction pad. */
 const RIPPLE_DURATION = 1.1;
 /** Colour of the white-hot pulse head. */
-const HOT = "#f6ffd6";
+const HOT = "#f2ffd0";
 
 
 /* -------------------------------------------------------------------------- */

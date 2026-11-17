@@ -1,50 +1,48 @@
 import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
-import { about, profile } from "@/lib/data";
+import { about, education, profile } from "@/lib/data";
 
 export default function About() {
   return (
-    <section id="about" className="bg-sink py-20 max-sm:py-14">
+    <section id="about" className="py-24 max-sm:py-16">
       <div className="shell">
-        <SectionHead label="About" meta={`${profile.location}`} title={about.title} />
+        <SectionHead index="01" label="About" meta={profile.location} title={about.title} />
 
-        <div className="grid gap-[60px] lg:grid-cols-[2fr_1fr]">
-          <Reveal className="max-w-none">
-            <p className="mb-[1.1em] font-display text-[21px] font-medium leading-snug text-ink">
+        <div className="grid gap-5 lg:grid-cols-12">
+          {/* Story */}
+          <Reveal className="rounded-card border border-line bg-elev p-8 sm:p-10 lg:col-span-7">
+            <p className="mb-7 font-display text-[clamp(22px,2.4vw,28px)] font-medium leading-[1.3] tracking-[-0.02em] text-ink">
               {about.lede}
             </p>
-            {about.paragraphs.map((p) => (
-              <p key={p.slice(0, 24)} className="mb-[1.15em]">
-                {p}
-              </p>
-            ))}
-            <p className="border-l-2 border-accent pl-[18px] text-[15px] leading-relaxed text-ink-2">
-              {about.note}
-            </p>
+            <div className="grid gap-4 text-[16px] leading-relaxed text-ink-2">
+              {about.paragraphs.map((p) => (
+                <p key={p.slice(0, 24)}>{p}</p>
+              ))}
+            </div>
           </Reveal>
 
-          <Reveal delay={0.1} className="self-start">
+          {/* Focus */}
+          <Reveal delay={0.08} className="lg:col-span-5">
             <aside
               aria-labelledby="focus-h"
-              className="rounded-card border border-line bg-elev px-[26px] pb-5 pt-[26px]"
+              className="band-dark relative flex h-full flex-col overflow-hidden rounded-card p-8 sm:p-10"
             >
-              <h3
-                id="focus-h"
-                className="mb-4 flex items-center gap-2.5 font-display text-[15px] font-medium text-ink after:h-px after:flex-1 after:bg-line after:content-['']"
-              >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.22),transparent)]"
+              />
+              <h3 id="focus-h" className="kicker mb-8 text-lime">
                 Currently focused on
               </h3>
-              <div className="grid gap-5">
+              <div className="relative grid gap-8">
                 {about.focus.map((group) => (
                   <div key={group.label}>
-                    <p className="mb-2 font-ui text-[10.5px] font-[650] uppercase tracking-[0.14em] text-faint">
-                      {group.label}
-                    </p>
-                    <ul className="grid gap-1.5">
+                    <p className="kicker mb-3 text-faint">{group.label}</p>
+                    <ul className="flex flex-wrap gap-2">
                       {group.items.map((f) => (
                         <li
                           key={f}
-                          className="flex items-center gap-2.5 text-[15px] before:font-semibold before:text-accent-strong before:content-['—']"
+                          className="rounded-full border border-line-strong px-3.5 py-1.5 text-[14px] text-pearl"
                         >
                           {f}
                         </li>
@@ -54,6 +52,36 @@ export default function About() {
                 ))}
               </div>
             </aside>
+          </Reveal>
+
+          {/* Note */}
+          <Reveal
+            delay={0.12}
+            className="grid gap-6 rounded-card bg-accent p-8 text-accent-text sm:p-10 lg:col-span-8 lg:grid-cols-[auto_1fr] lg:content-center"
+          >
+            <span aria-hidden className="font-display text-[64px] font-bold leading-[0.6]">
+              &ldquo;
+            </span>
+            <p className="font-display text-[clamp(18px,1.9vw,22px)] font-medium leading-snug tracking-[-0.01em]">
+              {about.note}
+            </p>
+          </Reveal>
+
+          {/* Education */}
+          <Reveal
+            delay={0.16}
+            className="flex flex-col justify-between gap-6 rounded-card border border-line bg-elev p-8 lg:col-span-4"
+          >
+            <p className="kicker text-faint">Education</p>
+            <div>
+              <p className="font-display text-[19px] font-semibold leading-snug tracking-[-0.01em] text-ink">
+                {education.degree}
+              </p>
+              <p className="mt-1.5 text-[14px] text-muted">{education.org}</p>
+              <p className="kicker mt-4 text-faint">
+                {education.when} · CGPA {education.cgpa}
+              </p>
+            </div>
           </Reveal>
         </div>
       </div>

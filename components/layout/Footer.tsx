@@ -89,11 +89,10 @@ function useLocalTime() {
   return time;
 }
 
-const heading =
-  "mb-4 font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint";
+const heading = "kicker mb-4 text-faint";
 
 const navLink =
-  "inline-flex w-fit py-1.5 text-[14.5px] font-medium text-ink-2 transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-accent-strong focus-visible:text-accent-strong";
+  "inline-flex w-fit py-1.5 text-[14.5px] font-medium text-ink-2 transition-[color,transform] duration-200 hover:translate-x-[3px] hover:text-ink focus-visible:text-ink";
 
 const kbd =
   "rounded-[5px] border border-line-strong bg-sink px-1.5 py-px font-ui text-[11px] font-[600] leading-[1.5] text-ink-2";
@@ -152,15 +151,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden border-t border-line bg-elev">
+    <footer className="relative overflow-hidden bg-bg">
       <div className="shell">
         <div className="pt-16 max-sm:pt-12">
           <div className="grid gap-12 pb-12 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr] lg:gap-10">
             {/* Brand */}
             <div className="md:col-span-2 lg:col-span-1">
-              <p className="font-display text-[28px] font-semibold leading-tight tracking-[-0.01em] text-ink">
+              <p className="font-display text-[30px] font-bold leading-tight tracking-[-0.04em] text-ink">
                 {profile.name}
-                <span className="text-accent-ink">.</span>
+                <span className="text-ink">.</span>
               </p>
               <p className="mt-1 text-[15px] text-ink-2">{profile.roleLong}</p>
               <p className="mt-4 max-w-[36ch] text-[14.5px] leading-relaxed text-muted">
@@ -169,7 +168,7 @@ export default function Footer() {
 
               <div className="mt-6 flex flex-col items-start gap-3 text-[13px]">
                 {profile.availability.open && (
-                  <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-3 py-1 font-[650] text-accent-strong">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1 font-[650] text-teal">
                     <span aria-hidden className="avail-dot" />
                     {profile.availability.shortLabel}
                   </span>
@@ -219,7 +218,7 @@ export default function Footer() {
                         : {})}
                       className="group -mx-2 flex items-center gap-3 rounded-[10px] px-2 py-1.5 transition-colors duration-200 hover:bg-sink focus-visible:bg-sink focus-visible:outline-none"
                     >
-                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-ink-2 transition-colors duration-200 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-text">
+                      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-line text-ink-2 transition-colors duration-200 group-hover:border-teal group-hover:bg-teal group-hover:text-lime">
                         <Icon size={13} aria-hidden />
                       </span>
                       <span className="flex min-w-0 flex-col leading-tight">
@@ -233,7 +232,7 @@ export default function Footer() {
                       <ArrowUpRight
                         size={14}
                         aria-hidden
-                        className="ml-auto shrink-0 text-faint opacity-0 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-strong group-hover:opacity-100"
+                        className="ml-auto shrink-0 text-faint opacity-0 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink group-hover:opacity-100"
                       />
                       {external && (
                         <span className="sr-only">(opens in a new tab)</span>
@@ -262,7 +261,7 @@ export default function Footer() {
                 <p className="flex gap-4 text-muted">
                   {stats.active >= 2 && (
                     <span className="flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 animate-[pulse-dot_2s_ease-in-out_infinite] rounded-full bg-accent-strong" />
+                      <span className="h-1.5 w-1.5 animate-[pulse-dot_2s_ease-in-out_infinite] rounded-full bg-teal" />
                       {stats.active} viewing now
                     </span>
                   )}
@@ -289,7 +288,7 @@ export default function Footer() {
               <button
                 type="button"
                 onClick={toTop}
-                className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-[13px] font-[600] text-ink-2 transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-accent-text focus-visible:border-accent focus-visible:bg-accent focus-visible:text-accent-text focus-visible:outline-none"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-3.5 py-1.5 text-[13px] font-[600] text-ink-2 transition-colors duration-200 hover:border-teal hover:bg-teal hover:text-lime focus-visible:border-teal focus-visible:bg-teal focus-visible:text-lime focus-visible:outline-none"
               >
                 <ArrowUp size={11} aria-hidden />
                 Back to top
@@ -305,21 +304,15 @@ export default function Footer() {
         className="shell pointer-events-none select-none overflow-hidden"
       >
         <p
-          className="-mb-[0.14em] whitespace-nowrap font-display font-semibold leading-[0.9] tracking-[-0.045em]"
+          className="-mb-[0.2em] whitespace-nowrap font-display font-bold leading-[0.9] tracking-[-0.06em] text-ink"
           style={{
-            // The name is ~4.83em wide: size it to span the shell's content
-            // width (viewport minus 56px of padding), capped at the 1160px shell.
-            fontSize: "min(calc(20.5vw - 12px), 226px)",
-            // Pin Fraunces' optical size so small screens don't get the wider text cut.
-            fontVariationSettings: '"opsz" 144',
-            backgroundImage:
-              "linear-gradient(180deg, color-mix(in srgb, var(--ink) 11%, transparent) 15%, transparent 92%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            color: "transparent",
+            // Sized so the wordmark spans the shell's content width
+            // (viewport minus 56px of padding), capped at the 1160px shell.
+            fontSize: "min(calc(17vw - 10px), 192px)",
           }}
         >
           {profile.name}
+          <span className="text-lime [-webkit-text-stroke:2px_var(--teal)]">.</span>
         </p>
       </div>
     </footer>

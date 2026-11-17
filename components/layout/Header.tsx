@@ -3,32 +3,110 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  FaGithub as Github,
-  FaLinkedin as Linkedin,
-  FaBars as Menu,
-  FaMoon as Moon,
-  FaSun as Sun,
-} from "react-icons/fa";
-import { FaTimes as X } from "react-icons/fa";
+import { AnimatePresence, animate, motion } from "framer-motion";
+import { FaGithub as Github, FaLinkedin as Linkedin } from "react-icons/fa";
+import { FiArrowUpRight, FiX as X } from "react-icons/fi";
 import { navLinks, profile } from "@/lib/data";
-import { useTheme } from "@/lib/theme";
 import { SECTION_NAV_EVENT, type SectionNavDetail } from "@/lib/sectionNav";
 
-function ThemeToggle() {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === "dark";
+/**
+ * Section links with the Vengeance UI "Spotlight Navbar" lighting: a soft lime
+ * glow follows the cursor, and a lime bar springs to sit under the active link.
+ */
+function SpotlightLinks({ isLinkActive }: { isLinkActive: (href: string) => boolean }) {
+  const navRef = useRef<HTMLElement>(null);
+  const [hovering, setHovering] = useState(false);
+  const ambienceX = useRef(0);
+  const ambienceW = useRef(0);
+  const activeHref = navLinks.find((l) => isLinkActive(l.href))?.href;
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const el = activeHref
+      ? nav.querySelector<HTMLElement>(`[data-href="${activeHref}"]`)
+      : null;
+    if (!el) {
+      nav.style.setProperty("--ambience-o", "0");
+      return;
+    }
+    const navRect = nav.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const x = r.left - navRect.left + r.width / 2;
+    const w = r.width * 0.5;
+    nav.style.setProperty("--ambience-o", "1");
+    // Jump into place the first time; spring on every later change.
+    const opts =
+      ambienceW.current === 0
+        ? { duration: 0 }
+        : { type: "spring" as const, stiffness: 260, damping: 26 };
+    const ax = animate(ambienceX.current, x, {
+      ...opts,
+      onUpdate: (v) => {
+        ambienceX.current = v;
+        nav.style.setProperty("--ambience-x", `${v}px`);
+      },
+    });
+    const aw = animate(ambienceW.current, w, {
+      ...opts,
+      onUpdate: (v) => {
+        ambienceW.current = v;
+        nav.style.setProperty("--ambience-w", `${v}px`);
+      },
+    });
+    return () => {
+      ax.stop();
+      aw.stop();
+    };
+  }, [activeHref]);
+
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-      aria-pressed={theme === "light"}
-      className="relative inline-flex h-[40px] w-[40px] items-center justify-center rounded-full border border-line-strong text-ink-2 transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:border-accent hover:bg-accent hover:text-accent-text"
+    <nav
+      ref={navRef}
+      aria-label="Sections"
+      onMouseMove={(e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        e.currentTarget.style.setProperty("--spotlight-x", `${e.clientX - r.left}px`);
+      }}
+      onMouseEnter={() => setHovering(true)}
+      onMouseLeave={() => setHovering(false)}
+      className="relative hidden h-10 items-center overflow-hidden rounded-full lg:flex"
     >
-      {isDark ? <Sun size={16} /> : <Moon size={16} />}
-    </button>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+        style={{
+          opacity: hovering ? 1 : 0,
+          background:
+            "radial-gradient(90px circle at var(--spotlight-x) 100%, rgba(185,241,47,0.2), transparent 70%)",
+        }}
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-0.5 h-[2px] rounded-full bg-lime shadow-[0_0_12px_rgba(185,241,47,0.9)] transition-opacity duration-300"
+        style={{
+          left: "calc(var(--ambience-x, 0px) - var(--ambience-w, 0px) / 2)",
+          width: "var(--ambience-w, 0px)",
+          opacity: "var(--ambience-o, 0)",
+        }}
+      />
+      {navLinks.map((l) => {
+        const isActive = isLinkActive(l.href);
+        return (
+          <Link
+            key={l.href}
+            href={l.href}
+            data-href={l.href}
+            aria-current={isActive ? "page" : undefined}
+            className={`relative z-[1] whitespace-nowrap rounded-full px-3 py-2 text-[13px] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime ${
+              isActive ? "text-pearl" : "text-[#94a9b4] hover:text-pearl"
+            }`}
+          >
+            {l.label}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }
 
@@ -137,89 +215,75 @@ export default function Header() {
     };
   }, []);
 
+  const iconBtn =
+    "relative hidden h-10 w-10 items-center justify-center rounded-full border border-line text-pearl/80 transition-colors duration-200 hover:border-lime hover:bg-lime hover:text-teal sm:inline-flex";
+
   return (
-    <header className="sticky top-4 z-[100] pointer-events-none">
-        <div className="mx-auto max-w-[1160px] w-full pointer-events-auto">
+    <header className="pointer-events-none sticky top-0 z-[100] px-4 pt-5 sm:px-6">
+      <div className="pointer-events-auto mx-auto w-full max-w-[1160px]">
         <div
-          className={`relative flex items-center justify-between gap-5 rounded-[2rem] border border-line-strong bg-elev/70 backdrop-blur-[20px] backdrop-saturate-[1.5] shadow-card px-5 py-2.5 transition-colors duration-300 ${
-            scrolled
-              ? "shadow-lift border-accent/40"
-              : ""
+          className={`band-dark relative flex items-center justify-between gap-4 rounded-full border py-2.5 pl-5 pr-2.5 backdrop-blur-[18px] backdrop-saturate-[1.4] transition-[background-color,border-color,box-shadow] duration-300 ${
+            // Translucent only while it floats over the home hero's teal panel.
+            scrolled || !isHome
+              ? "border-line-strong !bg-teal/90 shadow-[0_18px_40px_-18px_rgba(7,34,51,0.6)]"
+              : "border-line !bg-teal/50"
           }`}
         >
           <Link
             href="/#home"
             aria-label={`${profile.name} — home`}
-            className="inline-flex items-center gap-2.5 whitespace-nowrap font-display text-[18px] font-semibold tracking-tight text-ink"
+            className="inline-flex items-center whitespace-nowrap font-display text-[20px] font-bold tracking-[-0.04em] text-pearl"
           >
             {profile.firstName}
-            <span className="text-accent-strong">.</span>
+            <span className="text-lime">.</span>
           </Link>
 
-          <nav aria-label="Sections" className="hidden items-center gap-0.5 lg:flex">
-            {navLinks.map((l) => {
-              const isActive = isLinkActive(l.href);
-              return (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  aria-current={isActive ? "page" : undefined}
-                  // Every link shares the same pill box, so moving the
-                  // highlight never shifts neighbouring items.
-                  className={`whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    isActive
-                      ? "bg-accent text-accent-text"
-                      : "text-ink-2 hover:bg-line hover:text-ink"
-                  }`}
-                >
-                  {l.label}
-                </Link>
-              );
-            })}
-          </nav>
+          <SpotlightLinks isLinkActive={isLinkActive} />
 
-          <div className="flex items-center gap-2.5">
-            <Link
-              href="/resume"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden items-center justify-center gap-2 rounded-full border border-accent bg-accent px-[16px] py-2 text-[13.5px] font-[650] text-accent-text transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_6px_20px_-8px_rgba(205,242,43,0.5)] sm:inline-flex"
-            >
-              Résumé
-            </Link>
+          <div className="flex items-center gap-2">
             <a
               href={profile.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile (opens in a new tab)"
-              className="relative inline-flex h-[40px] w-[40px] items-center justify-center rounded-full border border-line-strong text-ink-2 transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:border-accent hover:bg-accent hover:text-accent-text md:inline-flex"
+              className={iconBtn}
             >
-              <Github size={16} />
+              <Github size={15} />
             </a>
             <a
               href={profile.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile (opens in a new tab)"
-              className="relative inline-flex h-[40px] w-[40px] items-center justify-center rounded-full border border-line-strong text-ink-2 transition-all duration-200 hover:-translate-y-0.5 hover:scale-105 hover:border-accent hover:bg-accent hover:text-accent-text md:inline-flex"
+              className={iconBtn}
             >
-              <Linkedin size={16} />
+              <Linkedin size={15} />
             </a>
-            <ThemeToggle />
+            <Link
+              href="/#contact"
+              className="group inline-flex h-10 items-center gap-1.5 rounded-full bg-lime px-4 text-[13.5px] font-[650] text-teal transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              Let&rsquo;s talk
+              <FiArrowUpRight
+                size={14}
+                aria-hidden
+                className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </Link>
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
-              className="relative inline-flex h-[40px] w-[40px] flex-col items-center justify-center gap-[5px] border-none bg-transparent p-0 lg:hidden"
+              className="relative inline-flex h-10 w-10 flex-col items-center justify-center gap-[5px] rounded-full border border-line bg-transparent p-0 lg:hidden"
             >
               {menuOpen ? (
-                <X size={20} className="text-ink" />
+                <X size={18} className="text-pearl" />
               ) : (
                 <>
-                  <span className="block h-0.5 w-5 rounded-sm bg-ink" />
-                  <span className="block h-0.5 w-5 rounded-sm bg-ink" />
+                  <span className="block h-0.5 w-[18px] rounded-sm bg-pearl" />
+                  <span className="block h-0.5 w-3 translate-x-[3px] rounded-sm bg-lime" />
                 </>
               )}
             </button>
@@ -238,38 +302,41 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="pointer-events-auto fixed top-[calc(var(--header-h)+1rem)] left-4 right-4 z-[99] mt-4 rounded-[2rem] border border-line-strong bg-elev/90 backdrop-blur-[24px] backdrop-saturate-[1.2] shadow-card max-h-[calc(100dvh-var(--header-h)-3rem)] overflow-y-auto pb-5"
+            className="band-dark pointer-events-auto fixed left-4 right-4 top-[calc(var(--header-h)+1.75rem)] z-[99] max-h-[calc(100dvh-var(--header-h)-3rem)] overflow-y-auto rounded-[28px] border border-line pb-6 shadow-[0_30px_60px_-20px_rgba(7,34,51,0.7)]"
           >
-            <nav aria-label="Sections" className="py-[18px]">
-              {navLinks.map(
-                (l) => {
-                  const isActive = isLinkActive(l.href);
-                  return (
-                    <Link
-                      key={l.href}
-                      href={l.href}
-                      onClick={() => setMenuOpen(false)}
-                      aria-current={isActive ? "page" : undefined}
-                      className={`mx-3 block rounded-[12px] px-4 py-2.5 font-display text-[24px] transition-colors duration-200 ${
-                        isActive
-                          ? "bg-accent text-accent-text"
-                          : "text-ink hover:bg-line"
+            <nav aria-label="Sections" className="py-4">
+              {navLinks.map((l, i) => {
+                const isActive = isLinkActive(l.href);
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`mx-3 flex items-baseline gap-3 rounded-[16px] px-4 py-2 font-display text-[28px] font-semibold tracking-[-0.03em] transition-colors duration-200 ${
+                      isActive ? "bg-lime text-teal" : "text-pearl hover:bg-line"
+                    }`}
+                  >
+                    <span
+                      className={`font-mono text-[11px] font-normal tracking-normal ${
+                        isActive ? "text-teal/70" : "text-faint"
                       }`}
                     >
-                      {l.label}
-                    </Link>
-                  );
-                },
-              )}
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    {l.label}
+                  </Link>
+                );
+              })}
             </nav>
             <Link
               href="/resume"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setMenuOpen(false)}
-              className="mx-6 mt-4 inline-block w-auto rounded-full border border-accent bg-accent px-[16px] py-2 text-center text-[13.5px] font-[650] text-accent-text transition-all duration-200 hover:bg-accent-ink hover:border-accent-ink"
+              className="mx-6 mt-2 inline-flex items-center gap-1.5 rounded-full border border-line-strong px-4 py-2 text-[13.5px] font-[650] text-pearl transition-colors duration-200 hover:border-lime hover:text-lime"
             >
-              Download résumé
+              Download résumé <FiArrowUpRight size={14} aria-hidden />
             </Link>
           </motion.div>
         )}

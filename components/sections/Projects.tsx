@@ -24,12 +24,12 @@ function CinePulseScreen() {
       <rect fill="#30363d" x="164" y="66" width="60" height="16" rx="4" opacity="0.8" />
       <rect fill="#161b22" x="20" y="104" width="116" height="118" rx="10" />
       <rect fill="#1a1f2e" x="28" y="112" width="100" height="78" rx="6" />
-      <rect fill="#CDF22B" x="28" y="112" width="100" height="10" rx="4" opacity="0.55" />
+      <rect fill="#B9F12F" x="28" y="112" width="100" height="10" rx="4" opacity="0.55" />
       <rect fill="#30363d" x="28" y="196" width="60" height="8" rx="4" />
       <rect fill="#30363d" x="96" y="196" width="36" height="8" rx="4" />
       <rect fill="#161b22" x="156" y="104" width="116" height="118" rx="10" />
       <rect fill="#1a1f2e" x="164" y="112" width="100" height="78" rx="6" />
-      <rect fill="#CDF22B" x="164" y="112" width="100" height="10" rx="4" opacity="0.4" />
+      <rect fill="#B9F12F" x="164" y="112" width="100" height="10" rx="4" opacity="0.4" />
       <rect fill="#30363d" x="164" y="196" width="56" height="8" rx="4" />
       <rect fill="#30363d" x="228" y="196" width="36" height="8" rx="4" />
       <rect fill="#161b22" x="20" y="220" width="360" height="20" rx="10" />
@@ -74,10 +74,10 @@ function WorkTrackScreen() {
       <rect fill="#30363d" x="20" y="52" width="16" height="4" rx="2" />
       <rect fill="#30363d" x="20" y="64" width="16" height="4" rx="2" />
       <rect fill="#161b22" x="72" y="24" width="208" height="72" rx="10" />
-      <rect fill="#CDF22B" x="92" y="36" width="120" height="32" rx="8" opacity="0.25" />
+      <rect fill="#B9F12F" x="92" y="36" width="120" height="32" rx="8" opacity="0.25" />
       <rect fill="#30363d" x="92" y="76" width="80" height="8" rx="4" />
       <rect fill="#161b22" x="72" y="108" width="208" height="48" rx="10" />
-      <rect fill="#CDF22B" x="92" y="118" width="110" height="24" rx="6" opacity="0.25" />
+      <rect fill="#B9F12F" x="92" y="118" width="110" height="24" rx="6" opacity="0.25" />
       <circle cx="104" cy="132" r="5" fill="#30363d" />
       <rect fill="#30363d" x="92" y="146" width="64" height="8" rx="4" />
     </svg>
@@ -94,9 +94,9 @@ function GeminiScreen() {
       <circle fill="#27ca3f" cx="28" cy="22" r="3" />
       <rect fill="#21262d" x="60" y="12" width="150" height="20" rx="10" opacity="0.7" />
       <rect fill="#30363d" x="24" y="72" width="180" height="34" rx="10" />
-      <rect fill="#CDF22B" x="196" y="80" width="170" height="34" rx="10" opacity="0.9" />
+      <rect fill="#B9F12F" x="196" y="80" width="170" height="34" rx="10" opacity="0.9" />
       <rect fill="#30363d" x="24" y="132" width="220" height="34" rx="10" />
-      <rect fill="#CDF22B" x="170" y="148" width="196" height="34" rx="10" opacity="0.85" />
+      <rect fill="#B9F12F" x="170" y="148" width="196" height="34" rx="10" opacity="0.85" />
       <rect fill="#161b22" x="24" y="200" width="352" height="36" rx="18" />
       <rect fill="#30363d" x="36" y="210" width="240" height="16" rx="8" opacity="0.8" />
       <rect fill="#30363d" x="286" y="210" width="24" height="24" rx="6" />
@@ -114,11 +114,11 @@ function ChatbotScreen() {
       <rect fill="#e2e8f0" x="240" y="15" width="36" height="14" rx="7" opacity="0.6" />
       <rect fill="#ffffff" x="16" y="64" width="150" height="30" rx="10" />
       <rect fill="#e2e8f0" x="24" y="72" width="100" height="14" rx="7" />
-      <rect fill="#CDF22B" x="134" y="70" width="150" height="34" rx="10" opacity="0.9" />
+      <rect fill="#B9F12F" x="134" y="70" width="150" height="34" rx="10" opacity="0.9" />
       <rect fill="#ffffff" x="16" y="112" width="140" height="30" rx="10" />
       <rect fill="#e2e8f0" x="24" y="120" width="92" height="14" rx="7" />
-      <rect fill="#f6fbd6" x="24" y="156" width="252" height="24" rx="12" />
-      <rect fill="#dcfc7a" x="32" y="162" width="120" height="12" rx="6" />
+      <rect fill="#eaf8c4" x="24" y="156" width="252" height="24" rx="12" />
+      <rect fill="#B9F12F" x="32" y="162" width="120" height="12" rx="6" />
     </svg>
   );
 }
@@ -145,14 +145,14 @@ export function StatusBadge({
   const live = project.status === "live";
   return (
     <span
-      className={`inline-flex items-center gap-2 font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] ${
+      className={`kicker inline-flex items-center gap-2 ${
         live ? "text-ink" : "text-faint"
       } ${className}`}
     >
       <span
         aria-hidden
         className={`h-1.5 w-1.5 rounded-full ${
-          live ? "bg-accent-strong" : "border border-faint"
+          live ? "bg-lime shadow-[0_0_0_3px_rgba(185,241,47,0.25)]" : "border border-faint"
         }`}
       />
       {project.statusLabel}
@@ -229,7 +229,7 @@ export function ActionRow({
   className?: string;
 }) {
   const buttonCls =
-    "group/link inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1.5 font-ui text-[10.5px] font-[650] uppercase tracking-[0.08em] text-ink transition-colors duration-200 hover:border-ink hover:bg-ink hover:text-bg";
+    "group/link inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.06em] text-ink transition-colors duration-200 hover:border-lime hover:bg-lime hover:text-teal";
 
   const items: ReactElement[] = [];
 
@@ -319,9 +319,15 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="bg-sink py-20 max-sm:py-14">
-      <div className="shell">
+    <section id="projects" className="px-3 sm:px-4">
+      <div className="band-dark relative overflow-hidden rounded-[28px] py-24 max-sm:py-16 sm:rounded-[36px]">
+      <span
+        aria-hidden
+        className="pointer-events-none absolute -left-[15%] top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.10),transparent)]"
+      />
+      <div className="shell relative">
         <SectionHead
+          index="03"
           label="Projects"
           meta={`${projects.filter((p) => p.status === "live").length} shipped · ${
             projects.filter((p) => p.status === "design").length
@@ -359,13 +365,13 @@ export default function Projects() {
         <div className="relative">
             <div
               aria-hidden
-              className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-sink to-transparent transition-opacity duration-200 md:hidden ${
+              className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-bg to-transparent transition-opacity duration-200 md:hidden ${
                 atStart ? "opacity-0" : "opacity-100"
               }`}
             />
             <div
               aria-hidden
-              className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-sink to-transparent transition-opacity duration-200 md:hidden ${
+              className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-bg to-transparent transition-opacity duration-200 md:hidden ${
                 atEnd ? "opacity-0" : "opacity-100"
               }`}
             />
@@ -388,20 +394,20 @@ export default function Projects() {
                   role="group"
                   aria-roledescription="slide"
                   aria-label={`${i + 1} of ${projects.length}: ${p.title}`}
-                  className={`group flex w-[80vw] max-w-[330px] shrink-0 snap-start flex-col overflow-hidden rounded-[18px] border border-line bg-elev sm:w-[330px] md:w-auto md:max-w-none md:shrink ${
+                  className={`group flex w-[80vw] max-w-[330px] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] border border-line bg-elev sm:w-[330px] md:w-auto md:max-w-none md:shrink ${
                     p.featured ? "md:col-span-2" : ""
-                  } ${ease} hover:border-line-strong`}
+                  } ${ease} hover:-translate-y-1 hover:border-lime/60 hover:shadow-lift`}
                 >
                   <ProjectScreen project={p} compact className="border-b border-line" />
                   <div className="flex flex-1 flex-col p-5">
                     <div className="mb-3 flex items-center justify-between gap-3">
-                      <span className="font-ui text-[10.5px] font-[650] tabular-nums tracking-[0.16em] text-faint">
+                      <span className="kicker tabular-nums text-faint">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <StatusBadge project={p} />
                     </div>
 
-                    <h3 className="font-display text-[26px] font-medium leading-tight tracking-[-0.02em] text-ink">
+                    <h3 className="font-display text-[28px] font-semibold leading-tight tracking-[-0.03em] text-ink">
                       {p.title}
                     </h3>
                     <p className="mb-3 mt-0.5 text-[14px] font-[550] text-accent-strong">
@@ -436,7 +442,7 @@ export default function Projects() {
         <div className="mt-8 flex justify-center">
           <Link
             href="/projects"
-            className="group inline-flex items-center gap-2 rounded-full border border-line-strong bg-elev px-5 py-2.5 text-[13.5px] font-[650] text-ink transition-colors duration-200 hover:border-accent hover:bg-accent hover:text-accent-text"
+            className="group inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-[14px] font-[650] text-teal transition-transform duration-200 hover:-translate-y-0.5"
           >
             All projects &amp; case studies
             <FaArrowRight
@@ -448,15 +454,16 @@ export default function Projects() {
         </div>
 
         {/* Easter egg hint */}
-        <Reveal className="mt-10 rounded-[18px] border border-dashed border-line-strong px-6 py-5 text-center">
+        <Reveal className="mt-10 rounded-[22px] border border-dashed border-line-strong px-6 py-5 text-center">
           <p className="text-sm text-muted">
-            <span aria-hidden className="mr-1.5 text-accent-strong">
-              💡
+            <span aria-hidden className="kicker mr-2 text-lime">
+              psst
             </span>
             Curious developer? Type <code>sudo hire rahul</code> anywhere on this page and press
             Enter.
           </p>
         </Reveal>
+      </div>
       </div>
     </section>
   );

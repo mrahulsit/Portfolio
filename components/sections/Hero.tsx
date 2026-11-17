@@ -5,141 +5,200 @@ import { useEffect, useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { profile } from "@/lib/data";
+import { FiArrowDownRight, FiArrowUpRight } from "react-icons/fi";
+import { experience, profile, projects } from "@/lib/data";
+import { TECH_ICONS } from "@/lib/techIcons";
+import StaggerText from "@/components/vengeance/StaggerText";
+import FlipFadeText from "@/components/vengeance/FlipFadeText";
+import StatsCounter from "@/components/vengeance/StatsCounter";
+import LogoSlider from "@/components/vengeance/LogoSlider";
 import HeroVisual from "./HeroVisual";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const btnAccent =
-  "inline-flex items-center justify-center gap-2 rounded-full bg-accent border border-accent px-[18px] py-2.5 text-[14.5px] font-[550] text-accent-text transition-all duration-200 hover:-translate-y-[3px] hover:bg-accent-ink hover:border-accent-ink hover:shadow-[0_8px_24px_-8px_rgba(205,242,43,0.45)]";
-const btnGhost =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-line-strong px-[18px] py-2.5 text-[14.5px] font-[550] text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-ink hover:shadow-[0_4px_16px_-8px_rgba(8,9,11,0.28)]";
+const ROLES = ["full-stack products", "React interfaces", "scalable APIs", "AI-powered features"];
 
 export default function Hero() {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const visualRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
-  /* GSAP: index-card parallax on scroll (desktop only, reduced-motion aware) */
+  /* GSAP: the 3D piece drifts down as the hero scrolls away (desktop only). */
   useEffect(() => {
     if (reduce) return;
-    const card = cardRef.current;
+    const visual = visualRef.current;
     const hero = heroRef.current;
-    if (!card || !hero) return;
-
+    if (!visual || !hero) return;
     const mm = gsap.matchMedia();
     mm.add("(min-width: 1024px)", () => {
-      gsap.to(card, {
-        y: 40,
-        z: -30,
-        rotateX: -3,
+      gsap.to(visual, {
+        y: 60,
         ease: "none",
-        scrollTrigger: {
-          trigger: hero,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
+        scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
       });
     });
     return () => mm.revert();
   }, [reduce]);
 
-  const container = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
-  };
-  const item = {
-    hidden: { opacity: 0, y: 22 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: reduce ? 0 : 0.6, ease: "easeOut" as const },
-    },
-  };
+  const fade = (delay: number) => ({
+    initial: reduce ? false : { opacity: 0, y: 18 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay, ease: "easeOut" as const },
+  });
+
+  const shipped = projects.filter((p) => p.status === "live").length;
+  const titlesHeld = experience[0]?.progression?.length ?? 1;
 
   return (
-    <section
-      ref={heroRef}
-      id="home"
-      className="hero-grid relative pb-[92px] pt-[92px] max-sm:pb-20 max-sm:pt-16"
-      // Clip the 3D canvas, which intentionally bleeds past its column, so it
-      // never causes horizontal scroll. `clip` (unlike `hidden`) keeps vertical
-      // overflow visible and creates no scroll container.
-      style={{ overflowX: "clip" }}
-    >
-      <div className="shell relative z-10 grid items-center gap-12 lg:grid-cols-[1.5fr_1fr] lg:gap-[60px] [perspective:1200px]">
-        <motion.div variants={container} initial="hidden" animate="show">
-          {profile.availability.open && (
-            <motion.p
-              variants={item}
-              className="mb-[26px] inline-flex max-w-full items-center gap-2.5 rounded-full border border-accent bg-accent px-4 py-2 text-[13px] font-[650] tracking-[0.01em] text-accent-text"
-            >
-              <span className="avail-dot" aria-hidden />
-              <span className="sm:hidden">{profile.availability.shortLabel}</span>
-              <span className="hidden sm:inline">{profile.availability.openLabel}</span>
-            </motion.p>
-          )}
-
-          <motion.h1
-            variants={item}
-            className="mb-3 whitespace-nowrap font-display text-[clamp(44px,7.5vw,76px)] font-medium leading-[1] tracking-[-0.03em] text-ink max-sm:text-[clamp(36px,11vw,52px)]"
-          >
-            Rahul Mishra
-          </motion.h1>
-
-          <motion.p
-            variants={item}
-            className="mb-4 font-display text-[clamp(21px,3vw,28px)] font-medium tracking-tight text-ink"
-          >
-            {profile.eyebrow}
-          </motion.p>
-
-          <motion.p
-            variants={item}
-            className="mb-4 font-display text-[clamp(18px,2.6vw,23px)] font-normal italic leading-snug text-muted"
-          >
-            {profile.tagline}
-          </motion.p>
-
-          <motion.p
-            variants={item}
-            className="mb-7 max-w-[34em] text-[clamp(16.5px,2vw,18.5px)] leading-relaxed text-ink"
-          >
-            {profile.lede}
-          </motion.p>
-
-          <motion.div variants={item} className="flex flex-wrap gap-3.5">
-            <Link href="#projects" className={btnAccent}>
-              Explore Projects
-            </Link>
-            <Link
-              href="/resume"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={btnGhost}
-            >
-              Download Resume
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* 3D full-stack visual (open, no frame) */}
-        <motion.div
-          ref={cardRef}
-          aria-hidden
-          initial={{ opacity: 0, scale: 0.96 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: reduce ? 0 : 0.8, delay: reduce ? 0 : 0.35, ease: "easeOut" }}
-          className="relative mx-auto aspect-square w-full max-w-[560px] will-change-transform lg:max-w-none"
-          style={{ transformStyle: "preserve-3d" }}
+    <>
+      <section
+        ref={heroRef}
+        id="home"
+        className="relative px-3 pb-3 sm:px-4"
+        // The header floats over the top of this panel.
+        // Header = 20px top padding + --header-h; the panel starts 12px down.
+        style={{ marginTop: "calc(-1 * (var(--header-h) + 8px))" }}
+      >
+        <div
+          className="band-dark hero-grid relative overflow-hidden rounded-[28px] sm:rounded-[36px]"
+          style={{ overflowX: "clip" }}
         >
-          {/* soft ambient glow behind the model */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_46%,var(--accent-soft),transparent_60%)] opacity-60" />
+          {/* lime glow + bottom vignette */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-[10%] -top-[20%] h-[70%] w-[60%] rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.16),transparent)]"
+          />
 
-          <HeroVisual />
-        </motion.div>
+          {/* Padding lives on this wrapper: the global .shell rule would override it. */}
+          <div className="relative z-10 pb-10 pt-[calc(var(--header-h)+72px)] lg:pb-14 lg:pt-[calc(var(--header-h)+80px)]">
+          <div className="shell grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-6">
+            <div className="min-w-0">
+              {profile.availability.open && (
+                <motion.p
+                  {...fade(0)}
+                  className="mb-8 inline-flex max-w-full items-center gap-2.5 rounded-full bg-accent px-3.5 py-1.5 text-[12.5px] font-[650] text-accent-text"
+                >
+                  <span className="avail-dot text-teal" aria-hidden />
+                  <span className="sm:hidden">{profile.availability.shortLabel}</span>
+                  <span className="hidden sm:inline">{profile.availability.openLabel}</span>
+                </motion.p>
+              )}
+
+              <h1 className="font-display font-semibold leading-[0.84] tracking-[-0.055em] text-ink">
+                <span className="block text-[clamp(72px,13vw,172px)]">
+                  <StaggerText text="Rahul" divideBy="letter" onView={false} delay={0.1} />
+                </span>
+                <span className="block text-[clamp(72px,13vw,172px)]">
+                  <StaggerText text="Mishra" divideBy="letter" onView={false} delay={0.25} />
+                  <span className="text-lime">.</span>
+                </span>
+              </h1>
+
+              <motion.p
+                {...fade(0.55)}
+                className="mt-8 flex flex-wrap items-baseline gap-x-3 font-display text-[clamp(22px,3vw,32px)] font-medium leading-tight tracking-[-0.02em] text-ink"
+              >
+                <span>I build</span>
+                <FlipFadeText words={ROLES} textClassName="text-lime" />
+              </motion.p>
+
+              <motion.p
+                {...fade(0.7)}
+                className="mt-5 max-w-[34em] text-[clamp(16px,1.6vw,18px)] leading-relaxed text-ink-2"
+              >
+                {profile.lede}
+              </motion.p>
+
+              <motion.div {...fade(0.85)} className="mt-9 flex flex-wrap gap-3">
+                <Link
+                  href="#projects"
+                  className="group inline-flex items-center gap-2 rounded-full bg-accent py-3 pl-6 pr-3 text-[15px] font-[650] text-accent-text transition-transform duration-200 hover:-translate-y-0.5"
+                >
+                  See my work
+                  <span className="grid h-8 w-8 place-items-center rounded-full bg-teal text-lime transition-transform duration-300 group-hover:rotate-[-45deg]">
+                    <FiArrowDownRight size={16} aria-hidden />
+                  </span>
+                </Link>
+                <Link
+                  href="/resume"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-[15px] font-[600] text-ink transition-colors duration-200 hover:border-lime hover:text-lime"
+                >
+                  Résumé
+                  <FiArrowUpRight size={15} aria-hidden />
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* 3D full-stack visual */}
+            <motion.div
+              ref={visualRef}
+              aria-hidden
+              initial={reduce ? false : { opacity: 0, scale: 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+              className="relative mx-auto aspect-square w-full max-w-[520px] will-change-transform max-lg:max-w-[420px] lg:max-w-none"
+            >
+              <HeroVisual />
+            </motion.div>
+          </div>
+          </div>
+
+          {/* Stat strip */}
+          <div className="relative z-10 border-t border-line">
+            <div className="shell">
+              <dl className="grid grid-cols-2 gap-px bg-line lg:grid-cols-4">
+                {[
+                  {
+                    k: <StatsCounter value={Number(profile.experienceYears)} decimals={1} suffix=" yrs" />,
+                    v: "Professional experience",
+                  },
+                  {
+                    k: <StatsCounter value={titlesHeld} />,
+                    v: `Roles at ${experience[0]?.org.split(" ")[0] ?? "work"}`,
+                  },
+                  { k: <StatsCounter value={shipped} />, v: "Products shipped" },
+                  { k: "Now", v: "Available to join" },
+                ].map((s, i) => (
+                  <div
+                    key={s.v}
+                    className={`flex flex-col bg-bg py-6 max-sm:py-5 ${i % 2 === 1 ? "pl-6" : "pr-4"} ${
+                      i === 2 ? "lg:pl-6" : ""
+                    }`}
+                  >
+                    <dt className="kicker order-2 mt-2 text-faint">{s.v}</dt>
+                    <dd className="font-display text-[clamp(26px,3vw,36px)] font-semibold leading-none tracking-[-0.03em] text-ink">
+                      {s.k}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Lime tech marquee */}
+      <div className="relative z-10 -mx-2 my-10 -rotate-[1.2deg] bg-accent py-4 text-accent-text max-sm:my-6">
+        <LogoSlider
+          label="Technologies I work with"
+          speed={45}
+          items={TECH_ICONS.map((t) => (
+            <span key={t.name} className="flex items-center gap-3 px-7">
+              <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden className="fill-teal">
+                <path d={t.path} />
+              </svg>
+              <span className="whitespace-nowrap font-display text-[22px] font-semibold tracking-[-0.02em]">
+                {t.name}
+              </span>
+              <span aria-hidden className="ml-7 text-[18px]">
+                ✦
+              </span>
+            </span>
+          ))}
+        />
       </div>
-    </section>
+    </>
   );
 }

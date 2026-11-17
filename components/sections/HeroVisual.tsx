@@ -2,7 +2,6 @@
 
 import { Component, type ReactNode, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { useTheme } from "@/lib/theme";
 
 const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
   ssr: false,
@@ -36,7 +35,7 @@ function Fallback() {
           className="absolute inset-[11%] rounded-full"
           style={{
             background:
-              "radial-gradient(circle at 34% 28%, #34373c 0%, #0b0c0e 44%, #050607 100%)",
+              "radial-gradient(circle at 34% 28%, #2a5a78 0%, #0b3048 44%, #051a28 100%)",
             boxShadow:
               "inset -22px -28px 60px rgba(0,0,0,0.85), 0 44px 90px -38px rgba(0,0,0,0.75)",
           }}
@@ -57,7 +56,7 @@ function Fallback() {
         />
         <div
           className="absolute left-[74%] top-[26%] h-2 w-2 rounded-full"
-          style={{ background: "#cdf22b", boxShadow: "0 0 14px #cdf22b" }}
+          style={{ background: "#b9f12f", boxShadow: "0 0 14px #b9f12f" }}
         />
         <div
           className="absolute left-[17%] top-[66%] h-1.5 w-1.5 rounded-full opacity-70"
@@ -85,7 +84,6 @@ function detectWebGL() {
 }
 
 export default function HeroVisual() {
-  const { theme } = useTheme();
   const hostRef = useRef<HTMLDivElement>(null);
   const [env, setEnv] = useState<Env | null>(null);
   const [supported, setSupported] = useState(true);
@@ -143,7 +141,8 @@ export default function HeroVisual() {
       {env ? (
         <SceneBoundary fallback={<Fallback />}>
           <HeroScene
-            theme={theme}
+            // The hero always sits on the midnight-teal band.
+            theme="dark"
             quality={env.quality}
             reduced={env.reduced}
             active={active}

@@ -4,9 +4,9 @@ type TagVariant = "neutral" | "accent" | "muted";
 type TagSize = "sm" | "md";
 
 const variants: Record<TagVariant, string> = {
-  neutral: "border-line-strong bg-bg text-ink-2",
-  accent: "border-accent bg-accent-soft text-accent-strong",
-  muted: "border-line text-faint",
+  neutral: "border-line-strong bg-transparent text-ink-2",
+  accent: "border-accent bg-accent text-accent-text",
+  muted: "border-dashed border-line-strong text-faint",
 };
 
 const sizes: Record<TagSize, string> = {
