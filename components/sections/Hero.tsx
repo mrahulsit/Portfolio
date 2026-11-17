@@ -162,7 +162,7 @@ export default function Hero() {
                   initial={reduce ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
-                  className="relative mx-auto aspect-[1.15] w-full max-w-[560px] will-change-transform"
+                  className="relative mx-auto aspect-square w-full max-w-[560px] will-change-transform"
                 >
                   <HeroVisual />
                 </motion.div>
