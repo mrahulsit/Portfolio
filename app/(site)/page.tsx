@@ -6,6 +6,7 @@ import Skills from "@/components/sections/Skills";
 import GithubSection from "@/components/sections/Github";
 import Writing from "@/components/sections/Writing";
 import Contact from "@/components/sections/Contact";
+import BuildBand from "@/components/sections/BuildBand";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <Skills />
       <GithubSection />
       <Writing />
+      <BuildBand />
       <Contact />
     </>
   );

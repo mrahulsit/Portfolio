@@ -3,7 +3,7 @@
 import { Component, type ReactNode, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
+const StackScene = dynamic(() => import("@/components/three/StackScene"), {
   ssr: false,
   loading: () => null,
 });
@@ -18,66 +18,37 @@ class SceneBoundary extends Component<
     return { failed: true };
   }
 
-  componentDidCatch() {
-    this.setState({ failed: true });
-  }
-
   render() {
     return this.state.failed ? this.props.fallback : this.props.children;
   }
 }
 
+/** Flat stand-in for the 3D stack when WebGL is unavailable. */
 function Fallback() {
   return (
     <div className="absolute inset-0 flex items-center justify-center">
-      <div className="relative aspect-square w-[80%] max-w-[440px]">
-        <div
-          className="absolute inset-[11%] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle at 34% 28%, #2a5a78 0%, #0b3048 44%, #051a28 100%)",
-            boxShadow:
-              "inset -22px -28px 60px rgba(0,0,0,0.85), 0 44px 90px -38px rgba(0,0,0,0.75)",
-          }}
-        />
-        <div
-          className="absolute inset-[1%] rounded-full opacity-55"
-          style={{
-            border: "1px solid var(--line)",
-            transform: "rotate(-14deg) scaleY(0.4)",
-          }}
-        />
-        <div
-          className="absolute inset-[7%] rounded-full opacity-40"
-          style={{
-            border: "1px solid var(--line)",
-            transform: "rotate(12deg) scaleY(0.46)",
-          }}
-        />
-        <div
-          className="absolute left-[74%] top-[26%] h-2 w-2 rounded-full"
-          style={{ background: "#b9f12f", boxShadow: "0 0 14px #b9f12f" }}
-        />
-        <div
-          className="absolute left-[17%] top-[66%] h-1.5 w-1.5 rounded-full opacity-70"
-          style={{ background: "var(--line)" }}
-        />
+      <div className="relative h-[62%] w-[64%]">
+        {[0, 1, 2].map((i) => (
+          <div
+            key={i}
+            className="absolute left-0 right-0 h-[30%] rounded-[14px] border border-[rgba(185,241,47,0.45)] bg-[#123d5a]"
+            style={{
+              top: `${i * 34}%`,
+              transform: "perspective(600px) rotateX(58deg) rotateZ(-32deg)",
+            }}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
-type Env = {
-  reduced: boolean;
-  quality: "high" | "low";
-};
+type Env = { reduced: boolean; quality: "high" | "low" };
 
 function detectWebGL() {
   try {
     const canvas = document.createElement("canvas");
-    return Boolean(
-      canvas.getContext("webgl2") || canvas.getContext("webgl")
-    );
+    return Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
   } catch {
     return false;
   }
@@ -94,16 +65,13 @@ export default function HeroVisual() {
       setSupported(false);
       return;
     }
-
     const reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const widthQuery = window.matchMedia("(max-width: 768px)");
-
     const read = () =>
       setEnv({
         reduced: reduceQuery.matches,
         quality: widthQuery.matches ? "low" : "high",
       });
-
     read();
     reduceQuery.addEventListener("change", read);
     widthQuery.addEventListener("change", read);
@@ -113,13 +81,13 @@ export default function HeroVisual() {
     };
   }, []);
 
+  // Pause rendering while the hero is off screen.
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setActive(entry.isIntersecting),
-      { rootMargin: "120px" }
-    );
+    const observer = new IntersectionObserver(([entry]) => setActive(entry.isIntersecting), {
+      rootMargin: "120px",
+    });
     observer.observe(host);
     return () => observer.disconnect();
   }, []);
@@ -133,20 +101,10 @@ export default function HeroVisual() {
   }
 
   return (
-    <div
-      ref={hostRef}
-      className="pointer-events-none absolute -inset-[4%] lg:-inset-[16%]"
-      aria-hidden
-    >
+    <div ref={hostRef} className="pointer-events-none absolute -inset-[6%]" aria-hidden>
       {env ? (
         <SceneBoundary fallback={<Fallback />}>
-          <HeroScene
-            // The hero always sits on the midnight-teal band.
-            theme="dark"
-            quality={env.quality}
-            reduced={env.reduced}
-            active={active}
-          />
+          <StackScene quality={env.quality} reduced={env.reduced} active={active} />
         </SceneBoundary>
       ) : null}
     </div>

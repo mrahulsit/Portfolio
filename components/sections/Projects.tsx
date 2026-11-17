@@ -2,8 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type ReactElement } from "react";
-import { FaArrowRight, FaChevronLeft, FaChevronRight, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
+import { useEffect, useState, type ReactElement } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
+import { FaArrowRight, FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 import SectionHead from "@/components/ui/SectionHead";
 import Tag from "@/components/ui/Tag";
 import { Reveal } from "@/components/ui/Reveal";
@@ -285,185 +292,174 @@ export function ActionRow({
 }
 
 /* ---------- section ---------- */
-export default function Projects() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
 
-  const update = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setProgress(max > 0 ? el.scrollLeft / max : 1);
-    setAtStart(el.scrollLeft <= 2);
-    setAtEnd(max - el.scrollLeft <= 2);
-  };
+/** Where a row's main link goes: the case study if there is one, else the live demo. */
+function primaryHref(p: Project) {
+  if (p.caseStudy) return `/projects/${p.caseStudy}`;
+  return p.actions?.find((a) => a.label.toLowerCase() === "live demo")?.href ?? "/projects";
+}
+
+/**
+ * Editorial project index — adapted from Vengeance UI's Image Reveal List and
+ * Cursor Card: big numbered rows, a lime curtain on hover, and a screenshot
+ * card that springs after the cursor (pointer devices only; touch screens get
+ * the screenshot inline in each row).
+ */
+function ProjectIndex() {
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [canHover, setCanHover] = useState(false);
+  const reduce = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { damping: 26, stiffness: 260 });
+  const sy = useSpring(y, { damping: 26, stiffness: 260 });
 
   useEffect(() => {
-    update();
-    const el = trackRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
-    return () => ro.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const q = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1024px)");
+    const read = () => setCanHover(q.matches);
+    read();
+    q.addEventListener("change", read);
+    return () => q.removeEventListener("change", read);
   }, []);
 
-  const scrollByCard = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const card = el.querySelector<HTMLElement>("[data-project-card]");
-    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  const onMove = (e: React.MouseEvent) => {
+    x.set(e.clientX + 56);
+    y.set(e.clientY - 150);
   };
 
   return (
-    <section id="projects" className="px-3 sm:px-4">
-      <div className="band-dark relative overflow-hidden rounded-[28px] py-24 max-sm:py-16 sm:rounded-[36px]">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -left-[15%] top-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.10),transparent)]"
-      />
-      <div className="shell relative">
-        <SectionHead
-          index="03"
-          label="Projects"
-          meta={`${projects.filter((p) => p.status === "live").length} shipped · ${
-            projects.filter((p) => p.status === "design").length
-          } in design`}
-          title="Things I've engineered."
-          lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Each one demonstrates full-stack thinking from data model to user experience."
-        />
+    <div onMouseMove={canHover ? onMove : undefined} onMouseLeave={() => setHovered(null)}>
+      <ol className="m-0 list-none border-b border-line p-0">
+        {projects.map((p, i) => {
+          const href = primaryHref(p);
+          const external = href.startsWith("http");
+          return (
+            <Reveal as="li" key={p.id} delay={i * 0.05} className="group relative border-t border-line">
+              <div
+                onMouseEnter={() => setHovered(i)}
+                className="relative isolate grid gap-5 py-8 lg:grid-cols-[64px_minmax(0,1.15fr)_minmax(0,1fr)_150px] lg:items-center lg:gap-8 lg:py-9"
+              >
+                {/* lime curtain */}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-[-12px] inset-y-0 -z-10 origin-bottom scale-y-0 rounded-[18px] bg-lime transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] lg:group-hover:scale-y-100"
+                />
 
-        <div className="mb-6 flex items-center justify-between gap-4 md:hidden">
-          <p className="font-ui text-[10.5px] font-[650] uppercase tracking-[0.16em] text-faint">
-            <span className="text-accent-strong">{projects.length}</span> selected builds · drag to explore
-          </p>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              disabled={atStart}
-              aria-label="Previous project"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-200 hover:border-ink disabled:pointer-events-none disabled:opacity-30"
-            >
-              <FaChevronLeft size={11} aria-hidden />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              disabled={atEnd}
-              aria-label="Next project"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line-strong text-ink transition-colors duration-200 hover:border-ink disabled:pointer-events-none disabled:opacity-30"
-            >
-              <FaChevronRight size={11} aria-hidden />
-            </button>
-          </div>
-        </div>
+                {/* Inline screenshot on touch / small screens */}
+                <ProjectScreen project={p} compact className="rounded-[18px] border border-line lg:hidden" />
 
-        <div className="relative">
-            <div
-              aria-hidden
-              className={`pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-bg to-transparent transition-opacity duration-200 md:hidden ${
-                atStart ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <div
-              aria-hidden
-              className={`pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-bg to-transparent transition-opacity duration-200 md:hidden ${
-                atEnd ? "opacity-0" : "opacity-100"
-              }`}
-            />
-            <div
-              ref={trackRef}
-              onScroll={update}
-              role="region"
-              aria-roledescription="carousel"
-              aria-label="Selected projects"
-              tabIndex={0}
-              className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:pb-0 lg:grid-cols-3"
-            >
-              {projects.map((p, i) => (
-                <Reveal
-                  as="article"
-                  key={p.id}
-                  // Cards fade in one by one, row by row.
-                  delay={(i % 3) * 0.08}
-                  data-project-card
-                  role="group"
-                  aria-roledescription="slide"
-                  aria-label={`${i + 1} of ${projects.length}: ${p.title}`}
-                  className={`group flex w-[80vw] max-w-[330px] shrink-0 snap-start flex-col overflow-hidden rounded-[22px] border border-line bg-elev sm:w-[330px] md:w-auto md:max-w-none md:shrink ${
-                    p.featured ? "md:col-span-2" : ""
-                  } ${ease} hover:-translate-y-1 hover:border-lime/60 hover:shadow-lift`}
-                >
-                  <ProjectScreen project={p} compact className="border-b border-line" />
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="mb-3 flex items-center justify-between gap-3">
-                      <span className="kicker tabular-nums text-faint">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <StatusBadge project={p} />
-                    </div>
+                <span className="kicker tabular-nums text-faint transition-colors duration-300 lg:group-hover:text-teal/60">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
 
-                    <h3 className="font-display text-[28px] font-semibold leading-tight tracking-[-0.03em] text-ink">
+                <div className="min-w-0">
+                  <h3 className="font-display text-[clamp(34px,5vw,64px)] font-semibold leading-[0.95] tracking-[-0.045em] text-ink transition-[color,transform] duration-500 ease-[cubic-bezier(.22,1,.36,1)] lg:group-hover:translate-x-2 lg:group-hover:text-teal">
+                    {/* The title link stretches over the whole row. */}
+                    <Link
+                      href={href}
+                      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                      className="stretched-link outline-none focus-visible:underline"
+                    >
                       {p.title}
-                    </h3>
-                    <p className="mb-3 mt-0.5 text-[14px] font-[550] text-accent-strong">
-                      {p.subtitle}
-                    </p>
-                    <p className="mb-4 text-[13.5px] leading-relaxed text-ink-2">
-                      {p.desc}
-                    </p>
+                    </Link>
+                  </h3>
+                  <p className="mt-2 text-[15px] font-[550] text-accent-strong transition-colors duration-300 lg:group-hover:text-teal">
+                    {p.subtitle}
+                  </p>
+                </div>
 
-                    <TechList tech={p.tech.slice(0, 4)} className="mb-5" />
+                <div className="min-w-0">
+                  <p className="mb-4 line-clamp-3 text-[14px] leading-relaxed text-ink-2 transition-colors duration-300 lg:group-hover:text-teal/80">
+                    {p.desc}
+                  </p>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {p.tech.slice(0, 4).map((t) => (
+                      <li
+                        key={t.label}
+                        className="rounded-full border border-line-strong px-2.5 py-1 text-[11.5px] font-[550] leading-none text-ink-2 transition-colors duration-300 lg:group-hover:border-teal/30 lg:group-hover:text-teal"
+                      >
+                        {t.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-                    {p.note && (
-                      <p className="mb-4 font-ui text-[10.5px] font-[600] uppercase tracking-[0.14em] text-faint">
-                        {p.note}
-                      </p>
-                    )}
+                <div className="flex items-center justify-between gap-3 lg:flex-col lg:items-end">
+                  <StatusBadge project={p} className="transition-colors duration-300 lg:group-hover:text-teal" />
+                  <span className="grid h-12 w-12 place-items-center rounded-full border border-line-strong text-ink transition-all duration-500 lg:group-hover:rotate-[-45deg] lg:group-hover:border-teal lg:group-hover:bg-teal lg:group-hover:text-lime">
+                    <FaArrowRight size={14} aria-hidden />
+                  </span>
+                </div>
+              </div>
+            </Reveal>
+          );
+        })}
+      </ol>
 
-                    <ActionRow project={p} className="mt-auto" />
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-
-        <div aria-hidden className="relative mt-1 h-px overflow-hidden bg-line md:hidden">
-          <div
-            className="absolute inset-y-0 left-0 w-[22%] bg-accent transition-transform duration-200 ease-out"
-            style={{ transform: `translateX(${progress * 355}%)` }}
-          />
-        </div>
-
-        <div className="mt-8 flex justify-center">
-          <Link
-            href="/projects"
-            className="group inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-[14px] font-[650] text-teal transition-transform duration-200 hover:-translate-y-0.5"
+      {/* Cursor-following preview */}
+      <AnimatePresence>
+        {canHover && hovered !== null && (
+          <motion.div
+            key="preview"
+            aria-hidden
+            initial={{ opacity: 0, scale: 0.85, rotate: -6 }}
+            animate={{ opacity: 1, scale: 1, rotate: -3 }}
+            exit={{ opacity: 0, scale: 0.85, rotate: -6 }}
+            transition={{ duration: reduce ? 0 : 0.2, ease: "easeOut" }}
+            style={{ x: sx, y: sy }}
+            className="pointer-events-none fixed left-0 top-0 z-[90] w-[380px] overflow-hidden rounded-[20px] border-4 border-teal bg-teal shadow-[0_40px_80px_-30px_rgba(0,0,0,0.6)]"
           >
-            All projects &amp; case studies
-            <FaArrowRight
-              size={11}
-              aria-hidden
-              className="transition-transform duration-200 group-hover:translate-x-1"
-            />
-          </Link>
-        </div>
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={projects[hovered].id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ProjectScreen project={projects[hovered]} compact className="!p-3" />
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
-        {/* Easter egg hint */}
-        <Reveal className="mt-10 rounded-[22px] border border-dashed border-line-strong px-6 py-5 text-center">
-          <p className="text-sm text-muted">
-            <span aria-hidden className="kicker mr-2 text-lime">
-              psst
-            </span>
-            Curious developer? Type <code>sudo hire rahul</code> anywhere on this page and press
-            Enter.
-          </p>
-        </Reveal>
-      </div>
+export default function Projects() {
+  const live = projects.filter((p) => p.status === "live").length;
+  const design = projects.filter((p) => p.status === "design").length;
+  return (
+    <section id="projects" className="px-3 sm:px-4">
+      <div className="band-dark topo-dark relative overflow-hidden rounded-[28px] py-24 max-sm:py-16 sm:rounded-[36px]">
+        <div className="shell relative">
+          <SectionHead
+            index="03"
+            label="Projects"
+            meta={`${live} shipped · ${design} in design`}
+            title="Things I've engineered."
+            lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Hover a row for a look; open one for the full case study."
+          />
+
+          <ProjectIndex />
+
+          <div className="mt-12 flex flex-wrap items-center justify-between gap-6">
+            <Link
+              href="/projects"
+              className="group inline-flex items-center gap-2 rounded-full bg-lime px-6 py-3 text-[14px] font-[650] text-teal transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              All projects &amp; case studies
+              <FaArrowRight size={11} aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+            <p className="text-sm text-muted">
+              <span aria-hidden className="kicker mr-2 text-lime">
+                psst
+              </span>
+              Type <code>sudo hire rahul</code> anywhere on this page and press Enter.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

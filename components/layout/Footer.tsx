@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { FiArrowUpRight as ArrowUpRight } from "react-icons/fi";
 import { navLinks, profile } from "@/lib/data";
+import GlitchText from "@/components/vengeance/GlitchText";
 
 function useVisitorStats() {
   const [stats, setStats] = useState<{ active: number; total: number } | null>(
@@ -199,7 +200,7 @@ export default function Footer() {
               >
                 {navLinks.map((l) => (
                   <Link key={l.href} href={l.href} className={navLink}>
-                    {l.label}
+                    <GlitchText text={l.label} />
                   </Link>
                 ))}
               </nav>
@@ -223,7 +224,7 @@ export default function Footer() {
                       </span>
                       <span className="flex min-w-0 flex-col leading-tight">
                         <span className="text-[14.5px] font-medium text-ink">
-                          {label}
+                          <GlitchText text={label} />
                         </span>
                         <span className="truncate text-[12px] text-faint">
                           {detail}
@@ -304,7 +305,7 @@ export default function Footer() {
         className="shell pointer-events-none select-none overflow-hidden"
       >
         <p
-          className="-mb-[0.2em] whitespace-nowrap font-display font-bold leading-[0.9] tracking-[-0.06em] text-ink"
+          className="pointer-events-auto -mb-[0.2em] whitespace-nowrap font-display font-bold leading-[0.9] tracking-[-0.06em] text-transparent transition-colors duration-700 [-webkit-text-stroke:1.5px_var(--teal)] hover:text-teal"
           style={{
             // Sized so the wordmark spans the shell's content width
             // (viewport minus 56px of padding), capped at the 1160px shell.

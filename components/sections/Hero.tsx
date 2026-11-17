@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -18,24 +18,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ROLES = ["full-stack products", "React interfaces", "scalable APIs", "AI-powered features"];
 
+/** Rahul's local time (IST), client-only to avoid a hydration mismatch. */
+function useIST() {
+  const [time, setTime] = useState<string | null>(null);
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Asia/Kolkata",
+    });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = setInterval(tick, 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
 export default function Hero() {
   const visualRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const time = useIST();
 
-  /* GSAP: the 3D piece drifts down as the hero scrolls away (desktop only). */
+  /* GSAP: the giant name slides left and the stack sinks as the hero scrolls away. */
   useEffect(() => {
     if (reduce) return;
-    const visual = visualRef.current;
     const hero = heroRef.current;
-    if (!visual || !hero) return;
+    if (!hero) return;
     const mm = gsap.matchMedia();
     mm.add("(min-width: 1024px)", () => {
-      gsap.to(visual, {
-        y: 60,
-        ease: "none",
-        scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true },
-      });
+      const st = { trigger: hero, start: "top top", end: "bottom top", scrub: true };
+      if (nameRef.current) gsap.to(nameRef.current, { xPercent: -6, ease: "none", scrollTrigger: st });
+      if (visualRef.current) gsap.to(visualRef.current, { y: 50, ease: "none", scrollTrigger: st });
     });
     return () => mm.revert();
   }, [reduce]);
@@ -55,94 +71,103 @@ export default function Hero() {
         ref={heroRef}
         id="home"
         className="relative px-3 pb-3 sm:px-4"
-        // The header floats over the top of this panel.
         // Header = 20px top padding + --header-h; the panel starts 12px down.
         style={{ marginTop: "calc(-1 * (var(--header-h) + 8px))" }}
       >
         <div
-          className="band-dark hero-grid relative overflow-hidden rounded-[28px] sm:rounded-[36px]"
+          className="band-dark topo-dark relative overflow-hidden rounded-[28px] sm:rounded-[36px]"
           style={{ overflowX: "clip" }}
         >
-          {/* lime glow + bottom vignette */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-[10%] -top-[20%] h-[70%] w-[60%] rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.16),transparent)]"
+            className="pointer-events-none absolute -right-[10%] top-[20%] h-[70%] w-[60%] rounded-full bg-[radial-gradient(closest-side,rgba(185,241,47,0.13),transparent)]"
           />
 
           {/* Padding lives on this wrapper: the global .shell rule would override it. */}
-          <div className="relative z-10 pb-10 pt-[calc(var(--header-h)+72px)] lg:pb-14 lg:pt-[calc(var(--header-h)+80px)]">
-          <div className="shell grid items-center gap-8 lg:grid-cols-[1.25fr_1fr] lg:gap-6">
-            <div className="min-w-0">
-              {profile.availability.open && (
-                <motion.p
-                  {...fade(0)}
-                  className="mb-8 inline-flex max-w-full items-center gap-2.5 rounded-full bg-accent px-3.5 py-1.5 text-[12.5px] font-[650] text-accent-text"
-                >
-                  <span className="avail-dot text-teal" aria-hidden />
-                  <span className="sm:hidden">{profile.availability.shortLabel}</span>
-                  <span className="hidden sm:inline">{profile.availability.openLabel}</span>
-                </motion.p>
-              )}
+          <div className="relative z-10 pb-6 pt-[calc(var(--header-h)+56px)] lg:pt-[calc(var(--header-h)+64px)]">
+            <div className="shell">
+              {/* Meta row */}
+              <motion.div
+                {...fade(0)}
+                className="mb-6 flex flex-wrap items-center justify-between gap-3"
+              >
+                {profile.availability.open && (
+                  <p className="inline-flex max-w-full items-center gap-2.5 rounded-full bg-accent px-3.5 py-1.5 text-[12.5px] font-[650] text-accent-text">
+                    <span className="avail-dot text-teal" aria-hidden />
+                    <span className="sm:hidden">{profile.availability.shortLabel}</span>
+                    <span className="hidden sm:inline">{profile.availability.openLabel}</span>
+                  </p>
+                )}
+                <p className="kicker hidden text-faint sm:block">
+                  {profile.location}
+                  {time && <span className="text-ink-2"> · {time} IST</span>}
+                </p>
+              </motion.div>
 
-              <h1 className="font-display font-semibold leading-[0.84] tracking-[-0.055em] text-ink">
-                <span className="block text-[clamp(72px,13vw,172px)]">
-                  <StaggerText text="Rahul" divideBy="letter" onView={false} delay={0.1} />
-                </span>
-                <span className="block text-[clamp(72px,13vw,172px)]">
-                  <StaggerText text="Mishra" divideBy="letter" onView={false} delay={0.25} />
-                  <span className="text-lime">.</span>
-                </span>
+              {/* Edge-to-edge name */}
+              <h1
+                ref={nameRef}
+                className="whitespace-nowrap font-display font-bold leading-[0.82] tracking-[-0.065em] text-ink"
+                // The name is ~5.7em wide: fit it to the panel width (viewport minus
+                // ~98px of gutters and scrollbar), capped at the 1160px shell.
+                style={{ fontSize: "min(calc(17.39vw - 17px), 192px)" }}
+              >
+                <StaggerText text="Rahul Mishra" divideBy="letter" onView={false} delay={0.1} />
+                <span className="text-lime">.</span>
               </h1>
 
-              <motion.p
-                {...fade(0.55)}
-                className="mt-8 flex flex-wrap items-baseline gap-x-3 font-display text-[clamp(22px,3vw,32px)] font-medium leading-tight tracking-[-0.02em] text-ink"
-              >
-                <span>I build</span>
-                <FlipFadeText words={ROLES} textClassName="text-lime" />
-              </motion.p>
+              <div className="mt-10 grid items-center gap-6 lg:mt-6 lg:grid-cols-[1fr_1.05fr]">
+                <div className="min-w-0">
+                  <motion.p
+                    {...fade(0.55)}
+                    className="flex flex-wrap items-baseline gap-x-3 font-display text-[clamp(22px,2.8vw,32px)] font-medium leading-tight tracking-[-0.02em] text-ink"
+                  >
+                    <span>I build</span>
+                    <FlipFadeText words={ROLES} textClassName="text-lime" />
+                  </motion.p>
 
-              <motion.p
-                {...fade(0.7)}
-                className="mt-5 max-w-[34em] text-[clamp(16px,1.6vw,18px)] leading-relaxed text-ink-2"
-              >
-                {profile.lede}
-              </motion.p>
+                  <motion.p
+                    {...fade(0.7)}
+                    className="mt-5 max-w-[32em] text-[clamp(16px,1.5vw,18px)] leading-relaxed text-ink-2"
+                  >
+                    {profile.lede}
+                  </motion.p>
 
-              <motion.div {...fade(0.85)} className="mt-9 flex flex-wrap gap-3">
-                <Link
-                  href="#projects"
-                  className="group inline-flex items-center gap-2 rounded-full bg-accent py-3 pl-6 pr-3 text-[15px] font-[650] text-accent-text transition-transform duration-200 hover:-translate-y-0.5"
+                  <motion.div {...fade(0.85)} className="mt-9 flex flex-wrap gap-3">
+                    <Link
+                      href="#projects"
+                      className="group inline-flex items-center gap-2 rounded-full bg-accent py-3 pl-6 pr-3 text-[15px] font-[650] text-accent-text transition-transform duration-200 hover:-translate-y-0.5"
+                    >
+                      See my work
+                      <span className="grid h-8 w-8 place-items-center rounded-full bg-teal text-lime transition-transform duration-300 group-hover:rotate-[-45deg]">
+                        <FiArrowDownRight size={16} aria-hidden />
+                      </span>
+                    </Link>
+                    <Link
+                      href="/resume"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-[15px] font-[600] text-ink transition-colors duration-200 hover:border-lime hover:text-lime"
+                    >
+                      Résumé
+                      <FiArrowUpRight size={15} aria-hidden />
+                    </Link>
+                  </motion.div>
+                </div>
+
+                {/* 3D: the full stack, layer by layer */}
+                <motion.div
+                  ref={visualRef}
+                  aria-hidden
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
+                  className="relative mx-auto aspect-[1.15] w-full max-w-[560px] will-change-transform"
                 >
-                  See my work
-                  <span className="grid h-8 w-8 place-items-center rounded-full bg-teal text-lime transition-transform duration-300 group-hover:rotate-[-45deg]">
-                    <FiArrowDownRight size={16} aria-hidden />
-                  </span>
-                </Link>
-                <Link
-                  href="/resume"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line-strong px-6 py-3 text-[15px] font-[600] text-ink transition-colors duration-200 hover:border-lime hover:text-lime"
-                >
-                  Résumé
-                  <FiArrowUpRight size={15} aria-hidden />
-                </Link>
-              </motion.div>
+                  <HeroVisual />
+                </motion.div>
+              </div>
             </div>
-
-            {/* 3D full-stack visual */}
-            <motion.div
-              ref={visualRef}
-              aria-hidden
-              initial={reduce ? false : { opacity: 0, scale: 0.94 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.9, delay: 0.3, ease: "easeOut" }}
-              className="relative mx-auto aspect-square w-full max-w-[520px] will-change-transform max-lg:max-w-[420px] lg:max-w-none"
-            >
-              <HeroVisual />
-            </motion.div>
-          </div>
           </div>
 
           {/* Stat strip */}

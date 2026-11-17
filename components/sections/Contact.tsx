@@ -15,6 +15,7 @@ import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
 import { useToast } from "@/lib/toast";
 import { contact, profile } from "@/lib/data";
+import GlitchText from "@/components/vengeance/GlitchText";
 
 type Errors = { name?: string; email?: string; message?: string };
 
@@ -100,7 +101,7 @@ export default function Contact() {
                   href={`mailto:${profile.email}`}
                   className="font-semibold text-ink transition-colors hover:text-accent-strong"
                 >
-                  {profile.email}
+                  <GlitchText text={profile.email} />
                 </a>
                 <button
                   type="button"
@@ -125,7 +126,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 font-semibold text-ink transition-colors hover:text-accent-strong"
               >
-                linkedin.com/in/{profile.linkedinHandle}
+                <GlitchText text={`linkedin.com/in/${profile.linkedinHandle}`} />
                 <ArrowUpRight size={11} className="opacity-70" />
               </a>
             </div>
@@ -141,7 +142,7 @@ export default function Contact() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 font-semibold text-ink transition-colors hover:text-accent-strong"
               >
-                {profile.githubHandle}
+                <GlitchText text={profile.githubHandle} />
                 <ArrowUpRight size={11} className="opacity-70" />
               </a>
             </div>
