@@ -128,7 +128,7 @@ export default function ExperienceTimeline() {
                 as="li"
                 key={course.role + course.org}
                 delay={i * 0.06}
-                className="grid gap-x-8 gap-y-4 rounded-[18px] border border-dashed border-line-strong p-6 md:grid-cols-[200px_1fr]"
+                className="grid gap-x-8 gap-y-4 rounded-[18px] border border-line bg-elev p-6 shadow-card md:grid-cols-[200px_1fr]"
               >
                 <div>
                   <p className="font-display text-[18px] font-semibold leading-snug tracking-[-0.01em] text-ink">
