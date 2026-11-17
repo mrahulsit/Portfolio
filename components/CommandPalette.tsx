@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
+import { FiCornerDownLeft } from "react-icons/fi";
 import { FaSearch as Search } from "react-icons/fa";
 import { useToast } from "@/lib/toast";
 import { scrollToSection } from "@/lib/sectionNav";
@@ -211,7 +212,7 @@ export default function CommandPalette() {
                     >
                       {c.label}
                     </b>
-                    <kbd className="font-ui text-[11px] text-muted">↵</kbd>
+                    <span className="text-muted"><FiCornerDownLeft size={14} aria-hidden /><span className="sr-only">Enter</span></span>
                   </button>
                 </li>
               ))}

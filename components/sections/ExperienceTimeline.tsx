@@ -1,3 +1,4 @@
+import { FiArrowRight } from "react-icons/fi";
 import Tag from "@/components/ui/Tag";
 import { Reveal } from "@/components/ui/Reveal";
 import { experience, type Job } from "@/lib/data";
@@ -55,10 +56,11 @@ function Bullets({ points, small = false }: { points: string[]; small?: boolean 
       {points.map((p) => (
         <li
           key={p}
-          className={`relative pl-[22px] leading-relaxed before:absolute before:left-0 before:font-mono before:text-[12px] before:leading-[1.9] before:text-faint before:content-['→'] ${
+          className={`relative pl-[22px] leading-relaxed ${
             small ? "text-[14px] text-ink-2" : "text-[15px]"
           }`}
         >
+          <FiArrowRight aria-hidden className="absolute left-0 top-[0.45em] text-faint" size={12} />
           {p}
         </li>
       ))}

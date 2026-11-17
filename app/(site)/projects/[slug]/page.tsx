@@ -285,8 +285,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                 {cs.next.map((item) => (
                   <li
                     key={item}
-                    className="relative pl-[22px] before:absolute before:left-0 before:text-accent-strong before:content-['—']"
+                    className="relative pl-[22px]"
                   >
+                    <ArrowRight aria-hidden size={12} className="absolute left-0 top-[0.45em] text-accent-strong" />
                     {item}
                   </li>
                 ))}

@@ -1,3 +1,4 @@
+import { FiArrowRight } from "react-icons/fi";
 import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
 import AsciiPortrait from "@/components/vengeance/AsciiPortrait";
@@ -29,7 +30,7 @@ export default function About() {
           <Reveal delay={0.08} className="lg:col-span-5 lg:row-span-2">
             <figure className="band-dark topo-dark relative flex h-full flex-col overflow-hidden rounded-card p-6 sm:p-8">
               <div className="mb-4 flex items-center justify-between">
-                <span className="kicker text-lime">rahul.jpg → ascii</span>
+                <span className="kicker inline-flex items-center gap-2 text-lime">rahul.jpg <FiArrowRight aria-hidden /> ascii</span>
                 <span className="kicker text-faint">hover me</span>
               </div>
               <div className="flex flex-1 items-center justify-center">

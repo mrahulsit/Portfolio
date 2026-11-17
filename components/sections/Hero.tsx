@@ -1,5 +1,6 @@
 "use client";
 
+import { PiStarFourFill } from "react-icons/pi";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
@@ -218,7 +219,7 @@ export default function Hero() {
                 {t.name}
               </span>
               <span aria-hidden className="ml-7 text-[18px]">
-                ✦
+                <PiStarFourFill aria-hidden size="1em" />
               </span>
             </span>
           ))}

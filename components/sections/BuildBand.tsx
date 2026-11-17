@@ -1,3 +1,4 @@
+import { PiStarFourFill } from "react-icons/pi";
 import LogoSlider from "@/components/vengeance/LogoSlider";
 import { profile } from "@/lib/data";
 
@@ -21,7 +22,7 @@ export default function BuildBand() {
               aria-hidden
               className="grid h-[clamp(44px,6vw,92px)] w-[clamp(44px,6vw,92px)] place-items-center rounded-full bg-lime text-[clamp(22px,3vw,44px)] text-teal"
             >
-              ✦
+              <PiStarFourFill aria-hidden size="1em" />
             </span>
           </span>
         ))}

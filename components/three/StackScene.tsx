@@ -1,392 +1,167 @@
 "use client";
 
-/**
- * "The stack" — the hero's 3D piece. Three floating glass layers (Interface,
- * API, Data) with lime request/response packets travelling between them: a
- * literal picture of full-stack work. The layers assemble on load, tilt
- * toward the cursor, and pull apart into an exploded view as the page scrolls.
- */
 import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Line, RoundedBox } from "@react-three/drei";
+import { Environment, Lightformer, Line, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 
-const SLAB = "#123d5a";
-const PART = "#1c5274";
-const PEARL = "#f2f0e9";
 const LIME = "#b9f12f";
+const PEARL = "#f2f0e9";
+const GAP = 1.48;
+const columns = [-1.25, 0, 1.25];
 
-const W = 3.2;
-const D = 2.2;
-const GAP = 1.15;
-const TOP = 0.07;
-
-const LAYERS = [
-  { key: "ui", n: "01", label: "Interface", stack: "React · Next.js", y: GAP },
-  { key: "api", n: "02", label: "API", stack: "Node · Express", y: 0 },
-  { key: "data", n: "03", label: "Data", stack: "PostgreSQL · Prisma", y: -GAP },
-] as const;
-
-const COLUMNS: [number, number][] = [
-  [-1.15, -0.55],
-  [1.15, -0.55],
-  [-0.35, 0.75],
-  [1.2, 0.8],
-];
-
-const PACKETS = [
-  { col: 0, up: true, speed: 0.32, phase: 0 },
-  { col: 1, up: false, speed: 0.27, phase: 0.4 },
-  { col: 2, up: true, speed: 0.38, phase: 0.65 },
-  { col: 3, up: false, speed: 0.3, phase: 0.15 },
-  { col: 0, up: false, speed: 0.24, phase: 0.55 },
-  { col: 2, up: false, speed: 0.29, phase: 0.1 },
-];
-
-const outline: [number, number, number][] = [
-  [-W / 2, TOP, -D / 2],
-  [W / 2, TOP, -D / 2],
-  [W / 2, TOP, D / 2],
-  [-W / 2, TOP, D / 2],
-  [-W / 2, TOP, -D / 2],
-];
-
-const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-
-function Slab() {
-  return (
-    <>
-      <RoundedBox args={[W, 0.12, D]} radius={0.05} smoothness={3}>
-        <meshPhysicalMaterial
-          color={SLAB}
-          roughness={0.35}
-          metalness={0.15}
-          clearcoat={1}
-          clearcoatRoughness={0.25}
-          transparent
-          opacity={0.92}
-        />
-      </RoundedBox>
-      <Line points={outline} color={LIME} lineWidth={1} transparent opacity={0.55} />
-    </>
-  );
-}
-
-/** UI layer: a few interface cards with lime header bars. */
-function InterfaceParts() {
-  const cards: [number, number, number, number][] = [
-    [-0.8, -0.38, 1.2, 0.95],
-    [0.65, -0.38, 1.4, 0.95],
-    [-0.08, 0.62, 2.65, 0.55],
-  ];
-  return (
-    <>
-      {cards.map(([x, z, w, d], i) => (
-        <group key={i} position={[x, TOP + 0.04, z]}>
-          <mesh>
-            <boxGeometry args={[w, 0.06, d]} />
-            <meshStandardMaterial color={PART} roughness={0.5} />
-          </mesh>
-          <mesh position={[0, 0.035, -d / 2 + 0.09]}>
-            <boxGeometry args={[w * 0.86, 0.012, 0.07]} />
-            <meshBasicMaterial color={i === 0 ? LIME : PEARL} toneMapped={false} />
-          </mesh>
-          <mesh position={[-w * 0.18, 0.035, 0.08]}>
-            <boxGeometry args={[w * 0.45, 0.01, 0.05]} />
-            <meshBasicMaterial color={PEARL} transparent opacity={0.35} />
-          </mesh>
-        </group>
-      ))}
-    </>
-  );
-}
-
-/** API layer: a grid of endpoint nodes and the routes between them. */
-function ApiParts() {
-  const { nodes, links } = useMemo(() => {
-    const ns: [number, number, number][] = [];
-    for (let r = 0; r < 3; r++)
-      for (let c = 0; c < 5; c++) ns.push([-1.2 + c * 0.6, TOP + 0.06, -0.65 + r * 0.65]);
-    const ls: [number, number, number][][] = [];
-    ns.forEach((p, i) => {
-      if (i % 5 < 4 && (i * 7) % 3 !== 0) ls.push([p, ns[i + 1]]);
-      if (i < 10 && (i * 5) % 4 !== 1) ls.push([p, ns[i + 5]]);
-    });
-    return { nodes: ns, links: ls };
+function Plate() {
+  const edge = useMemo(() => {
+    const shape = new THREE.Shape();
+    const w = 1.95, d = 1.12, r = 0.24;
+    shape.moveTo(-w + r, -d);
+    shape.lineTo(w - r, -d); shape.quadraticCurveTo(w, -d, w, -d + r);
+    shape.lineTo(w, d - r); shape.quadraticCurveTo(w, d, w - r, d);
+    shape.lineTo(-w + r, d); shape.quadraticCurveTo(-w, d, -w, d - r);
+    shape.lineTo(-w, -d + r); shape.quadraticCurveTo(-w, -d, -w + r, -d);
+    return shape.getPoints(16).map(p => new THREE.Vector3(p.x, 0.035, p.y));
   }, []);
-  return (
-    <>
-      {links.map((pts, i) => (
-        <Line key={i} points={pts} color={PEARL} lineWidth={1} transparent opacity={0.28} />
-      ))}
-      {nodes.map((p, i) => (
-        <mesh key={i} position={p}>
-          <sphereGeometry args={[0.065, 16, 16]} />
-          {i % 4 === 1 ? (
-            <meshBasicMaterial color={LIME} toneMapped={false} />
-          ) : (
-            <meshStandardMaterial color={PEARL} roughness={0.4} />
-          )}
-        </mesh>
-      ))}
-    </>
-  );
+  return <>
+    <RoundedBox args={[3.9, 0.09, 2.24]} radius={0.044} smoothness={4}>
+      <meshPhysicalMaterial color="#50787a" metalness={0.12} roughness={0.22}
+        transparent opacity={0.65} depthWrite={false} clearcoat={1} envMapIntensity={1.4} side={THREE.DoubleSide} />
+    </RoundedBox>
+    <Line points={edge} color={PEARL} lineWidth={0.85} transparent opacity={0.55} />
+    <Line points={edge} position={[0, -0.065, 0]} color={LIME} lineWidth={1.2} transparent opacity={0.6} />
+  </>;
 }
 
-/** Data layer: three database cylinders. */
-function DataParts() {
-  return (
-    <>
-      {[-0.95, 0, 0.95].map((x, i) => (
-        <group key={x} position={[x, TOP, i === 1 ? 0.15 : -0.1]}>
-          {[0.07, 0.2, 0.33].map((y) => (
-            <mesh key={y} position={[0, y, 0]}>
-              <cylinderGeometry args={[0.34, 0.34, 0.1, 40]} />
-              <meshStandardMaterial color={PART} roughness={0.45} metalness={0.2} />
-            </mesh>
-          ))}
-          <mesh position={[0, 0.385, 0]} rotation={[Math.PI / 2, 0, 0]}>
-            <torusGeometry args={[0.34, 0.012, 8, 56]} />
-            <meshBasicMaterial color={i === 1 ? LIME : PEARL} toneMapped={false} />
-          </mesh>
-        </group>
-      ))}
-    </>
-  );
-}
-
-/** Soft lime pool of light under the stack. */
-function Glow() {
-  const texture = useMemo(() => {
-    const c = document.createElement("canvas");
-    c.width = c.height = 128;
-    const g = c.getContext("2d")!;
-    const grad = g.createRadialGradient(64, 64, 0, 64, 64, 64);
-    grad.addColorStop(0, "rgba(185,241,47,0.55)");
-    grad.addColorStop(1, "rgba(185,241,47,0)");
-    g.fillStyle = grad;
-    g.fillRect(0, 0, 128, 128);
-    return new THREE.CanvasTexture(c);
-  }, []);
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -GAP - 0.55, 0]}>
-      <planeGeometry args={[5.5, 4.2]} />
-      <meshBasicMaterial map={texture} transparent depthWrite={false} toneMapped={false} />
-    </mesh>
-  );
-}
-
-// Where each layer's label hangs: just off the slab's right-hand edge.
-const LABEL_ANCHOR = new THREE.Vector3(W / 2 + 0.15, 0, -0.2);
-
-function Stack({
-  reduced,
-  hostRef,
-  labelRefs,
-}: {
-  reduced: boolean;
-  hostRef: React.RefObject<HTMLDivElement | null>;
-  labelRefs: React.RefObject<(HTMLDivElement | null)[]>;
+function Block({ position, size, color = PEARL }: {
+  position: [number, number, number]; size: [number, number, number]; color?: string;
 }) {
-  const projected = useMemo(() => new THREE.Vector3(), []);
+  return <RoundedBox position={position} args={size} radius={Math.min(...size) * 0.35} smoothness={3}>
+    <meshStandardMaterial color={color} roughness={0.34} metalness={0.14}
+      emissive={color === LIME ? LIME : "#000000"} emissiveIntensity={0.5} />
+  </RoundedBox>;
+}
+
+function WindowPanel({ x, scale = 1 }: { x: number; scale?: number }) {
+  return <group position={[x, 0.54 * scale + 0.09, -0.28]} rotation={[-0.16, 0, 0]} scale={scale}>
+    <Block position={[0, 0, 0]} size={[1.3, 1.04, 0.075]} color="#9baca1" />
+    <Block position={[0, 0.43, 0.045]} size={[1.29, 0.19, 0.045]} color={LIME} />
+    {[-0.51, -0.4, -0.29].map(x => <mesh key={x} position={[x, 0.44, 0.073]}>
+      <sphereGeometry args={[0.028, 12, 12]} /><meshStandardMaterial color="#0b3048" />
+    </mesh>)}
+    <Block position={[-0.3, 0.08, 0.065]} size={[0.5, 0.43, 0.045]} />
+    {[0.22, 0.08, -0.06].map(y => <Block key={y} position={[0.3, y, 0.065]} size={[0.43, 0.055, 0.045]} />)}
+    {[-0.4, 0, 0.4].map(x => <Block key={x} position={[x, -0.31, 0.065]} size={[0.33, 0.19, 0.045]} />)}
+  </group>;
+}
+
+function Interface() {
+  return <>
+    <WindowPanel x={0} /><WindowPanel x={-1.25} scale={0.55} /><WindowPanel x={1.25} scale={0.6} />
+    {[-0.57, 0.63].map(x => <group key={x} position={[x, 0.1, 0.65]}>
+      <Block position={[0, 0, 0]} size={[1, 0.09, 0.4]} color="#9baca1" />
+      <Block position={[-0.08, 0.065, 0]} size={[0.65, 0.045, 0.19]} />
+    </group>)}
+  </>;
+}
+
+function Api() {
+  return <>
+    {[0, 1, 2].map(r => <Line key={r} points={[[-1.3, 0.2, -0.6 + r * 0.6], [1.3, 0.2, -0.6 + r * 0.6]]} color={PEARL} lineWidth={1.3} />)}
+    {[0, 1, 2, 3, 4].map(c => <group key={c}>
+      <Line points={[[-1.3 + c * 0.65, 0.2, -0.6], [-1.3 + c * 0.65, 0.2, 0.6]]} color={PEARL} lineWidth={1.3} />
+      {[0, 1, 2].map(r => <mesh key={r} position={[-1.3 + c * 0.65, 0.2, -0.6 + r * 0.6]}>
+        <sphereGeometry args={[0.105, 24, 16]} /><meshStandardMaterial color={PEARL} metalness={0.25} roughness={0.23} />
+      </mesh>)}
+    </group>)}
+  </>;
+}
+
+function Data() {
+  return <>{columns.map(x => <group key={x} position={[x, 0.06, 0.18]}>
+    {[0, 1, 2, 3].map(i => <mesh key={i} position={[0, 0.075 + i * 0.13, 0]}>
+      <cylinderGeometry args={[0.37, 0.37, 0.115, 48]} />
+      <meshStandardMaterial color={PEARL} metalness={0.38} roughness={0.27} />
+    </mesh>)}
+    <mesh position={[0, 0.535, 0]} rotation={[Math.PI / 2, 0, 0]}>
+      <torusGeometry args={[0.35, 0.022, 12, 64]} /><meshBasicMaterial color={LIME} toneMapped={false} />
+    </mesh>
+    <pointLight position={[0, 0.62, 0]} color={LIME} intensity={0.55} distance={1.1} />
+  </group>)}</>;
+}
+
+function Sculpture({ reduced }: { reduced: boolean }) {
   const root = useRef<THREE.Group>(null);
-  const layerRefs = useRef<(THREE.Group | null)[]>([]);
-  const connectors = useRef<THREE.Group>(null);
-  const packetRefs = useRef<(THREE.Group | null)[]>([]);
-  const pointer = useRef(new THREE.Vector2());
-  const smooth = useRef(new THREE.Vector2());
-  const scroll = useRef(0);
-  const scrollTarget = useRef(0);
-  const intro = useRef(reduced ? 1 : 0);
-
-  useEffect(() => {
-    if (reduced) return;
-    const onMove = (e: PointerEvent) => {
-      const r = hostRef.current?.getBoundingClientRect();
-      if (!r || !r.width) return;
-      pointer.current.set(
-        THREE.MathUtils.clamp(((e.clientX - r.left) / r.width) * 2 - 1, -1, 1),
-        THREE.MathUtils.clamp(-(((e.clientY - r.top) / r.height) * 2 - 1), -1, 1),
-      );
-    };
-    const onScroll = () => {
-      scrollTarget.current = THREE.MathUtils.clamp(window.scrollY / 650, 0, 1);
-    };
-    const reset = () => pointer.current.set(0, 0);
-    onScroll();
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("mouseleave", reset);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("mouseleave", reset);
-    };
-  }, [reduced, hostRef]);
-
-  useFrame((state, delta) => {
-    const dt = Math.min(delta, 0.1);
-    const t = state.clock.elapsedTime;
-    if (!reduced) intro.current = Math.min(1, intro.current + dt / 1.8);
-    smooth.current.x = THREE.MathUtils.damp(smooth.current.x, pointer.current.x, 3.5, dt);
-    smooth.current.y = THREE.MathUtils.damp(smooth.current.y, pointer.current.y, 3.5, dt);
-    scroll.current = THREE.MathUtils.damp(scroll.current, scrollTarget.current, 4, dt);
-
-    const p = easeOut(intro.current);
-    // Layers start pulled apart, click together, then explode again on scroll.
-    const spread = 1 + (1 - p) * 0.9 + scroll.current * 0.45;
-
-    if (root.current) {
-      const sway = reduced ? 0 : Math.sin(t * 0.35) * 0.12;
-      root.current.rotation.y = sway + smooth.current.x * 0.32;
-      root.current.rotation.x = smooth.current.y * -0.1;
-      root.current.position.y = reduced ? 0 : Math.sin(t * 0.8) * 0.04;
+  const packets = useRef<(THREE.Mesh | null)[]>([]);
+  const glow = useMemo(() => {
+    const data = new Uint8Array(64 * 64 * 4);
+    for (let y = 0; y < 64; y++) for (let x = 0; x < 64; x++) {
+      const i = (y * 64 + x) * 4;
+      const r = Math.hypot((x - 31.5) / 31.5, (y - 31.5) / 31.5);
+      data.set([185, 241, 47, Math.round(Math.pow(Math.max(0, 1 - r), 3) * 220)], i);
     }
-
-    LAYERS.forEach((layer, i) => {
-      const g = layerRefs.current[i];
-      if (!g) return;
-      g.position.y = layer.y * spread;
-      const local = THREE.MathUtils.clamp(p * 1.4 - i * 0.2, 0, 1);
-      g.scale.setScalar(0.85 + 0.15 * local);
-
-      // Pin the DOM label to the slab's projected screen position.
-      const label = labelRefs.current?.[i];
-      if (label) {
-        g.updateWorldMatrix(true, false);
-        projected.copy(LABEL_ANCHOR).applyMatrix4(g.matrixWorld).project(state.camera);
-        const x = ((projected.x + 1) / 2) * state.size.width;
-        const y = ((1 - projected.y) / 2) * state.size.height;
-        label.style.transform = `translate(${x}px, ${y}px) translateY(-50%)`;
-        label.style.opacity = String(local);
-      }
-    });
-
-    if (connectors.current) connectors.current.scale.y = spread;
-
-    PACKETS.forEach((pk, i) => {
-      const g = packetRefs.current[i];
-      if (!g) return;
-      const f = reduced ? pk.phase : (t * pk.speed + pk.phase) % 1;
-      const k = pk.up ? f : 1 - f;
-      const [x, z] = COLUMNS[pk.col];
-      g.position.set(x, THREE.MathUtils.lerp(-GAP, GAP, k) * spread, z);
-      // Fade in/out at the layers so packets look like they pass through them.
-      const edge = Math.min(k, 1 - k) * 8;
-      g.scale.setScalar(Math.min(1, edge) * p);
+    const texture = new THREE.DataTexture(data, 64, 64);
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
+  useEffect(() => () => glow.dispose(), [glow]);
+  useFrame(({ clock }, delta) => {
+    if (reduced) return;
+    const t = clock.elapsedTime;
+    if (root.current) {
+      root.current.position.y = Math.sin(t * 0.65) * 0.035;
+      root.current.rotation.y = THREE.MathUtils.damp(root.current.rotation.y, Math.sin(t * 0.25) * 0.045, 3, delta);
+    }
+    packets.current.forEach((packet, i) => {
+      if (packet) packet.position.y = -GAP + ((t * 0.28 + i / 3) % 1) * GAP * 2;
     });
   });
-
-  return (
-    <group ref={root}>
-      <Glow />
-
-      <group ref={connectors}>
-        {COLUMNS.map(([x, z], i) => (
-          <Line
-            key={i}
-            points={[
-              [x, -GAP, z],
-              [x, GAP, z],
-            ]}
-            color={PEARL}
-            lineWidth={1}
-            dashed
-            dashSize={0.06}
-            gapSize={0.06}
-            transparent
-            opacity={0.3}
-          />
-        ))}
-      </group>
-
-      {LAYERS.map((layer, i) => (
-        <group
-          key={layer.key}
-          ref={(el) => {
-            layerRefs.current[i] = el;
-          }}
-        >
-          <Slab />
-          {layer.key === "ui" && <InterfaceParts />}
-          {layer.key === "api" && <ApiParts />}
-          {layer.key === "data" && <DataParts />}
-        </group>
-      ))}
-
-      {PACKETS.map((_, i) => (
-        <group
-          key={i}
-          ref={(el) => {
-            packetRefs.current[i] = el;
-          }}
-        >
-          <mesh>
-            <boxGeometry args={[0.08, 0.2, 0.08]} />
-            <meshBasicMaterial color={LIME} toneMapped={false} />
-          </mesh>
-          <mesh>
-            <sphereGeometry args={[0.2, 16, 16]} />
-            <meshBasicMaterial
-              color={LIME}
-              transparent
-              opacity={0.16}
-              depthWrite={false}
-              blending={THREE.AdditiveBlending}
-              toneMapped={false}
-            />
-          </mesh>
-        </group>
-      ))}
-    </group>
-  );
+  return <group ref={root}>
+    <mesh position={[0, -2.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <planeGeometry args={[5.7, 3.5]} /><meshBasicMaterial map={glow} transparent depthWrite={false} toneMapped={false} />
+    </mesh>
+    {columns.map((x, i) => <group key={x}>
+      <Line points={[[x, -GAP, -0.65], [x, GAP, -0.65]]} color={PEARL} dashed dashSize={0.055} gapSize={0.055} transparent opacity={0.65} lineWidth={1} />
+      <mesh ref={el => { packets.current[i] = el; }} position={[x, -0.8 + i * 0.8, -0.65]}>
+        <capsuleGeometry args={[0.035, 0.15, 4, 12]} /><meshBasicMaterial color={LIME} toneMapped={false} />
+      </mesh>
+    </group>)}
+    <group position={[0, GAP, 0]}><Plate /><Interface /></group>
+    <group><Plate /><Api /></group>
+    <group position={[0, -GAP, 0]}><Plate /><Data /></group>
+  </group>;
 }
 
-export default function StackScene({
-  quality,
-  reduced,
-  active,
-}: {
-  quality: "high" | "low";
-  reduced: boolean;
-  active: boolean;
+export default function StackScene({ reduced, active, quality, onReady }: {
+  reduced: boolean; active: boolean; quality: "high" | "low"; onReady: () => void;
 }) {
-  const hostRef = useRef<HTMLDivElement>(null);
-  const labelRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const showLabels = quality === "high";
-  return (
-    <div ref={hostRef} className="absolute inset-0">
-      <Canvas
-        dpr={[1, quality === "high" ? 2 : 1.5]}
-        camera={{ position: [5.4, 3.9, 7.4], fov: 30 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-        frameloop={active ? "always" : "never"}
-        onCreated={({ gl, camera }) => {
-          gl.toneMapping = THREE.ACESFilmicToneMapping;
-          camera.lookAt(0, -0.1, 0);
-        }}
-      >
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[4, 8, 5]} intensity={1.6} color={PEARL} />
-        <directionalLight position={[-6, 2, -4]} intensity={0.5} color={LIME} />
-        <pointLight position={[0, -2.2, 0]} intensity={6} distance={6} color={LIME} />
-        <Stack reduced={reduced} hostRef={hostRef} labelRefs={labelRefs} />
-      </Canvas>
-      {showLabels &&
-        LAYERS.map((layer, i) => (
-          <div
-            key={layer.key}
-            ref={(el) => {
-              labelRefs.current[i] = el;
-            }}
-            className="pointer-events-none absolute left-0 top-0 whitespace-nowrap pl-3 font-mono leading-tight opacity-0"
-          >
-            <div className="text-[10px] uppercase tracking-[0.12em] text-[#94a9b4]">
-              {layer.n} · {layer.label}
-            </div>
-            <div className="text-[11.5px] text-[#f2f0e9]">{layer.stack}</div>
-          </div>
-        ))}
-    </div>
-  );
+  return <Canvas orthographic camera={{ position: [4.2, 3.3, 7.5], zoom: 70 }}
+    dpr={[1, quality === "high" ? 2 : 1.25]} frameloop={active ? (reduced ? "demand" : "always") : "never"}
+    gl={{ alpha: true, antialias: true }}
+    onCreated={({ camera, gl, size }) => {
+      const orthographic = camera as THREE.OrthographicCamera;
+      orthographic.zoom = Math.min(size.width, size.height) / 6.4;
+      orthographic.updateProjectionMatrix();
+      camera.lookAt(0, 0.25, 0);
+      gl.toneMapping = THREE.ACESFilmicToneMapping;
+      onReady();
+    }}>
+    <ambientLight intensity={0.85} />
+    <directionalLight position={[3, 7, 5]} intensity={3.2} color={PEARL} />
+    <directionalLight position={[-4, 1, -3]} intensity={1.7} color={LIME} />
+    <Environment resolution={128}>
+      <Lightformer position={[0, 5, -4]} rotation={[Math.PI / 2, 0, 0]} scale={[8, 8, 1]} intensity={3} color={PEARL} />
+      <Lightformer position={[4, 2, 2]} rotation={[0, -Math.PI / 2, 0]} scale={[3, 6, 1]} intensity={4} color={PEARL} />
+      <Lightformer position={[-4, 0, -2]} rotation={[0, Math.PI / 2, 0]} scale={[2, 5, 1]} intensity={2} color={LIME} />
+    </Environment>
+    <Sculpture reduced={reduced} />
+    <FitCamera />
+  </Canvas>;
+}
+
+function FitCamera() {
+  useFrame(({ camera, size }) => {
+    const c = camera as THREE.OrthographicCamera;
+    const zoom = Math.min(size.width, size.height) / 6.4;
+    if (c.zoom !== zoom) { c.zoom = zoom; c.updateProjectionMatrix(); }
+  });
+  return null;
 }

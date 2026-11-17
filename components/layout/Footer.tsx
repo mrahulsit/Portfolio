@@ -10,7 +10,7 @@ import {
   FaLinkedin as Linkedin,
   FaMapMarkerAlt as MapPin,
 } from "react-icons/fa";
-import { FiArrowUpRight as ArrowUpRight } from "react-icons/fi";
+import { FiCommand, FiArrowUpRight as ArrowUpRight } from "react-icons/fi";
 import { navLinks, profile } from "@/lib/data";
 import GlitchText from "@/components/vengeance/GlitchText";
 
@@ -281,7 +281,7 @@ export default function Footer() {
                 className="hidden cursor-pointer items-center gap-2 text-[13px] text-muted transition-colors hover:text-ink [@media(pointer:fine)]:inline-flex"
               >
                 <span className="flex gap-1">
-                  <kbd className={kbd}>{isMac ? "⌘" : "Ctrl"}</kbd>
+                  <kbd className={kbd}>{isMac ? <><FiCommand size={12} aria-hidden className="inline-block" /><span className="sr-only">Command</span></> : "Ctrl"}</kbd>
                   <kbd className={kbd}>K</kbd>
                 </span>
                 to jump anywhere
