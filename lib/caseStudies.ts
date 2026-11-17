@@ -84,7 +84,7 @@ export const caseStudies: CaseStudy[] = [
     challenges: [
       {
         title: "Four-state watchlist semantics",
-        body: "Planned → watching → completed, plus dropped, is a small state machine rather than a boolean. Transitions are guarded server-side so invalid jumps (e.g. dropped → completed directly) can't corrupt analytics.",
+        body: "Planned, watching and completed, plus dropped, form a small state machine rather than a boolean. Transitions are guarded server-side so invalid jumps (e.g. jumping straight from dropped to completed) can't corrupt analytics.",
       },
       {
         title: "Search that matches how people look for films",
@@ -119,7 +119,7 @@ export const caseStudies: CaseStudy[] = [
     overview:
       "A category-driven pharmacy storefront: medicine catalog with search, cart management, pincode serviceability checks, and JWT-secured authentication — React frontend over an Express API, deployed to production.",
     problem:
-      "A pharmacy needs a simple online path from browsing medicines by category to a checked-out cart — without a heavyweight commerce stack. Built as the capstone of a web development course, the app covers the catalogue → cart → authenticated-order flow with just the pieces it needs.",
+      "A pharmacy needs a simple online path from browsing medicines by category to a checked-out cart — without a heavyweight commerce stack. Built as the capstone of a web development course, the app covers the whole flow from catalogue to cart to authenticated order with just the pieces it needs.",
     role:
       "Full-stack developer on the project — built the React storefront and the Node.js/Express backend, then deployed the application to production on Vercel.",
     features: [

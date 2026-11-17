@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Fragment } from "react";
+import { FiArrowRight } from "react-icons/fi";
 import ResumeToolbar from "@/components/ResumeToolbar";
 import { education, experience, profile } from "@/lib/data";
 
@@ -76,7 +78,17 @@ export default function ResumePage() {
           </div>
           {current.progression && (
             <p className="resume-p">
-              {current.progression.map((s) => `${s.title} (${s.when})`).join(" → ")}
+              {current.progression.map((s, i) => (
+                <Fragment key={s.title}>
+                  {i > 0 && (
+                    <>
+                      <FiArrowRight aria-hidden className="resume-arrow" />
+                      <span className="sr-only">then</span>
+                    </>
+                  )}
+                  {`${s.title} (${s.when})`}
+                </Fragment>
+              ))}
             </p>
           )}
           <ul>

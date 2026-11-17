@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa";
+import { FiArrowRight } from "react-icons/fi";
 import SectionHead from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
 import { experience, profile } from "@/lib/data";
@@ -86,7 +87,14 @@ export default function Experience() {
         <SectionHead
           index="02"
           label="Experience"
-          meta={`${profile.experienceYears} years · Java → full stack`}
+          meta={
+            <span className="inline-flex items-center gap-1.5">
+              {profile.experienceYears} years · Java
+              <FiArrowRight aria-hidden size={12} />
+              <span className="sr-only">to</span>
+              full stack
+            </span>
+          }
           title="Where I've built things."
           lede="Production full-stack engineering at Aptus Data Labs — built on earlier courses in web development and core Java."
         />

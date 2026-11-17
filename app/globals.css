@@ -933,6 +933,14 @@ html:has(.resume-page) {
   border-radius: 999px;
   padding: 2px 9px;
 }
+.resume-arrow {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin: 0 0.4em;
+  vertical-align: -0.12em;
+  color: #0b3048;
+}
 .resume-strong {
   color: #0b3048;
 }
