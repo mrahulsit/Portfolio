@@ -2,17 +2,40 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  FaCheck as Check,
-  FaEnvelope as Mail,
-  FaGithub as Github,
-  FaGamepad as Gamepad,
-  FaPlay as Play,
-} from "react-icons/fa";
-import { FaTimes as X } from "react-icons/fa";
+  FiArrowDown,
+  FiArrowLeft,
+  FiArrowRight,
+  FiArrowUp,
+  FiCheck,
+  FiDownload,
+  FiGithub,
+  FiMail,
+  FiPlay,
+  FiX,
+} from "react-icons/fi";
 import { profile } from "@/lib/data";
 
 const PHRASE = "sudo hire rahul";
 const COLS = 15;
+
+const CHECKS = [
+  "Full-stack development",
+  "React.js · Next.js · Node.js",
+  "TypeScript · PostgreSQL",
+  "Ships to production",
+  "Problem solver · team player",
+];
+
+// Brand palette (the canvas can't read CSS variables).
+const C = {
+  field: "#072233",
+  grid: "rgba(242,240,233,0.05)",
+  snake: "#b9f12f",
+  head: "#f2f0e9",
+  key: "#f2f0e9",
+  keyGlyph: "#0b3048",
+  over: "#b9f12f",
+};
 
 type Cell = { x: number; y: number };
 
@@ -85,7 +108,7 @@ export default function EasterEgg() {
       data-active={active ? "" : undefined}
       role="dialog"
       aria-modal="true"
-      aria-label="Terminal"
+      aria-label="Terminal: sudo hire rahul"
     >
       <div className="easter-egg__overlay" onClick={close} />
       <div className="easter-egg__terminal">
@@ -93,62 +116,96 @@ export default function EasterEgg() {
           <span className="easter-egg__led" />
           <span className="easter-egg__led" />
           <span className="easter-egg__led" />
-          <span className="easter-egg__title">rahul@portfolio:~$</span>
-          <button className="easter-egg__close" type="button" aria-label="Close" onClick={close}>
-            <X size={14} />
+          <span className="easter-egg__title">rahul@portfolio: ~/hire</span>
+          <button className="easter-egg__close" type="button" aria-label="Close terminal" onClick={close}>
+            <FiX size={16} aria-hidden />
           </button>
         </div>
         <div className="easter-egg__body" key={session}>
-          <div className="easter-egg__line">
-            <span className="easter-egg__prompt">$</span>
-            <span className="easter-egg__cmd">{PHRASE}</span>
-          </div>
-          <div className="easter-egg__line easter-egg__line--output">
-            <span className="easter-egg__text">Checking candidate credentials...</span>
-          </div>
-          {[
-            "Full Stack Development",
-            "React.js & Node.js",
-            "TypeScript & PostgreSQL",
-            "Problem Solver",
-            "Team Player",
-          ].map((skill) => (
-            <div key={skill} className="easter-egg__line easter-egg__line--output">
-              <Check size={12} className="easter-egg__check" aria-hidden />
-              {skill}
-            </div>
-          ))}
-          <div className="easter-egg__line easter-egg__line--success">
-            <span className="easter-egg__badge">ACCESS GRANTED</span>
-          </div>
-          <div className="easter-egg__line easter-egg__line--output">
-            <span className="easter-egg__text">
-              <Mail size={12} aria-hidden /> Contact:{" "}
-              <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            </span>
-          </div>
-          <div className="easter-egg__line easter-egg__line--output">
-            <span className="easter-egg__text">
-              <Github size={12} aria-hidden /> GitHub:{" "}
-              <a href={profile.github} target="_blank" rel="noopener noreferrer">
-                @{profile.githubHandle}
-              </a>
-            </span>
-          </div>
-
+          <Log />
           <Keyhunter />
-
-          <div className="easter-egg__line easter-egg__line--final">
-            <span className="easter-egg__prompt">$</span>
-            <span className="easter-egg__cursor">_</span>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-/* short synthesized keypress blip (stands in for the original base64 wav) */
+/** Left column: the command types itself, then the checks stream in. */
+function Log() {
+  const [typed, setTyped] = useState(0);
+  const done = typed >= PHRASE.length;
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTyped(PHRASE.length);
+      return;
+    }
+    const id = setInterval(() => {
+      setTyped((n) => {
+        if (n >= PHRASE.length) {
+          clearInterval(id);
+          return n;
+        }
+        return n + 1;
+      });
+    }, 55);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div className="easter-egg__log">
+      <p className="easter-egg__cmdline">
+        <span className="easter-egg__prompt" aria-hidden>
+          $
+        </span>
+        <span className="easter-egg__cmd">{PHRASE.slice(0, typed)}</span>
+        {!done && <span className="easter-egg__caret" aria-hidden />}
+      </p>
+
+      {done && (
+        <div className="easter-egg__out">
+          <p className="easter-egg__line easter-egg__muted">Checking candidate credentials…</p>
+          <ul className="easter-egg__checks">
+            {CHECKS.map((c) => (
+              <li key={c} className="easter-egg__line">
+                <span className="easter-egg__tick" aria-hidden>
+                  <FiCheck size={12} strokeWidth={3} />
+                </span>
+                {c}
+              </li>
+            ))}
+          </ul>
+
+          <p className="easter-egg__line easter-egg__granted">
+            <span className="easter-egg__badge">Access granted</span>
+            <span className="easter-egg__muted">Rahul is open to software roles.</span>
+          </p>
+
+          <div className="easter-egg__line easter-egg__actions">
+            <a className="easter-egg__btn easter-egg__btn--primary" href={`mailto:${profile.email}`}>
+              <FiMail size={14} aria-hidden /> Email me
+            </a>
+            <a className="easter-egg__btn" href="/resume" target="_blank" rel="noopener noreferrer">
+              <FiDownload size={14} aria-hidden /> Résumé
+            </a>
+            <a className="easter-egg__btn" href={profile.github} target="_blank" rel="noopener noreferrer">
+              <FiGithub size={14} aria-hidden /> @{profile.githubHandle}
+            </a>
+          </div>
+
+          <p className="easter-egg__line easter-egg__cmdline easter-egg__cmdline--idle">
+            <span className="easter-egg__prompt" aria-hidden>
+              $
+            </span>
+            <span className="easter-egg__caret easter-egg__caret--blink" aria-hidden />
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* short synthesized keypress blip */
 function blip() {
   try {
     const Ctx =
@@ -179,7 +236,7 @@ function Keyhunter() {
   const [best, setBest] = useState(0);
   const [status, setStatus] = useState("ready");
   const [overlayHidden, setOverlayHidden] = useState(false);
-  const [tag, setTag] = useState("Eat the keys · grow your skill");
+  const [tag, setTag] = useState("Eat the keys · grow the stack");
 
   const snake = useRef<Cell[]>([]);
   const dir = useRef<Cell>({ x: 1, y: 0 });
@@ -190,33 +247,54 @@ function Keyhunter() {
   const scoreRef = useRef(0);
   const bestRef = useRef(0);
 
+  const paintField = (ctx: CanvasRenderingContext2D, size: number) => {
+    ctx.fillStyle = C.field;
+    ctx.fillRect(0, 0, size, size);
+    ctx.strokeStyle = C.grid;
+    ctx.lineWidth = 1;
+    const cell = size / COLS;
+    for (let i = 1; i < COLS; i++) {
+      ctx.beginPath();
+      ctx.moveTo(i * cell + 0.5, 0);
+      ctx.lineTo(i * cell + 0.5, size);
+      ctx.moveTo(0, i * cell + 0.5);
+      ctx.lineTo(size, i * cell + 0.5);
+      ctx.stroke();
+    }
+  };
+
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
     const cell = canvas.width / COLS;
-    ctx.fillStyle = "#04070f";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    paintField(ctx, canvas.width);
 
-    /* food (a key) */
-    ctx.fillStyle = "#e3b341";
-    ctx.fillRect(food.current.x * cell + 2, food.current.y * cell + 2, cell - 4, cell - 4);
-    ctx.fillStyle = "#04070f";
+    /* food: a little keycap */
     const kx = food.current.x * cell;
     const ky = food.current.y * cell;
-    ctx.fillRect(kx + cell / 2 - 2, ky + 6, 2, cell - 12);
-    ctx.fillRect(kx + 6, ky + cell / 2 - 2, cell - 12, 2);
+    ctx.fillStyle = C.key;
+    ctx.beginPath();
+    ctx.roundRect(kx + 3, ky + 3, cell - 6, cell - 6, 3);
+    ctx.fill();
+    ctx.fillStyle = C.keyGlyph;
+    ctx.fillRect(kx + cell / 2 - 1, ky + 7, 2, cell - 14);
+    ctx.fillRect(kx + 7, ky + cell / 2 - 1, cell - 14, 2);
 
     /* body */
-    ctx.fillStyle = "#238636";
-    for (const s of snake.current) {
-      ctx.fillRect(s.x * cell + 1, s.y * cell + 1, cell - 2, cell - 2);
+    ctx.fillStyle = C.snake;
+    for (const s of snake.current.slice(1)) {
+      ctx.beginPath();
+      ctx.roundRect(s.x * cell + 1.5, s.y * cell + 1.5, cell - 3, cell - 3, 4);
+      ctx.fill();
     }
     /* head */
     const head = snake.current[0];
     if (head) {
-      ctx.fillStyle = "#3fb950";
-      ctx.fillRect(head.x * cell + 1, head.y * cell + 1, cell - 2, cell - 2);
+      ctx.fillStyle = C.head;
+      ctx.beginPath();
+      ctx.roundRect(head.x * cell + 1, head.y * cell + 1, cell - 2, cell - 2, 5);
+      ctx.fill();
     }
   }, []);
 
@@ -239,20 +317,9 @@ function Keyhunter() {
     setStatus("game over");
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
-    if (canvas && ctx) {
-      ctx.fillStyle = "#04070f";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#f85149";
-      ctx.font = 'bold 15px "SF Mono", Monaco, monospace';
-      ctx.textAlign = "center";
-      ctx.fillText(
-        `GAME OVER — score ${scoreRef.current}`,
-        canvas.width / 2,
-        canvas.height / 2 - 4,
-      );
-    }
+    if (canvas && ctx) paintField(ctx, canvas.width);
     setOverlayHidden(false);
-    setTag(`Final score ${scoreRef.current} · press to retry`);
+    setTag(`Game over — score ${scoreRef.current}`);
   }, []);
 
   const step = useCallback(() => {
@@ -318,10 +385,7 @@ function Keyhunter() {
     }
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
-    if (canvas && ctx) {
-      ctx.fillStyle = "#04070f";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
+    if (canvas && ctx) paintField(ctx, canvas.width);
     return () => {
       if (loop.current) clearInterval(loop.current);
     };
@@ -358,15 +422,39 @@ function Keyhunter() {
     return () => document.removeEventListener("keydown", onKey);
   }, [start]);
 
+  /* swipe steering on touch screens */
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const onTouchStart = (e: React.TouchEvent) => {
+    touch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const t0 = touch.current;
+    touch.current = null;
+    if (!t0 || !running.current) return;
+    const dx = e.changedTouches[0].clientX - t0.x;
+    const dy = e.changedTouches[0].clientY - t0.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
+    const next = Math.abs(dx) > Math.abs(dy) ? { x: Math.sign(dx), y: 0 } : { x: 0, y: Math.sign(dy) };
+    if (dir.current.x + next.x === 0 && dir.current.y + next.y === 0) return;
+    dirNext.current = next;
+  };
+
   return (
     <div className="easter-game">
       <div className="easter-game__bar">
-        <span className="easter-game__label">
-          <Gamepad size={12} aria-hidden /> bonus: keyhunter
+        <span className="easter-game__label">bonus · keyhunter</span>
+        <span className="easter-game__hint">
+          <span className="sr-only">Arrow keys, WASD or swipe</span>
+          <span aria-hidden className="easter-game__keys">
+            <kbd><FiArrowLeft size={10} /></kbd>
+            <kbd><FiArrowUp size={10} /></kbd>
+            <kbd><FiArrowDown size={10} /></kbd>
+            <kbd><FiArrowRight size={10} /></kbd>
+            <span>WASD · swipe</span>
+          </span>
         </span>
-        <span className="easter-game__hint">arrow keys / WASD</span>
       </div>
-      <div className="easter-game__field">
+      <div className="easter-game__field" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <canvas
           ref={canvasRef}
           width={300}
@@ -377,20 +465,18 @@ function Keyhunter() {
         <div className={`easter-game__overlay${overlayHidden ? " is-hidden" : ""}`}>
           <p className="easter-game__tag">{tag}</p>
           <button className="easter-game__start" type="button" onClick={start}>
-            <Play size={12} aria-hidden /> Start game
+            <FiPlay size={13} aria-hidden /> {status === "game over" ? "Play again" : "Start game"}
           </button>
         </div>
       </div>
       <div className="easter-game__score">
         <span>
-          score <b className="easter-game__scoreval">{score}</b>
+          score <b>{score}</b>
         </span>
         <span>
-          best <b className="easter-game__best">{best}</b>
+          best <b>{best}</b>
         </span>
-        <span className={`easter-game__status${status === "game over" ? " is-over" : ""}`}>
-          {status}
-        </span>
+        <span className={`easter-game__status${status === "game over" ? " is-over" : ""}`}>{status}</span>
       </div>
     </div>
   );

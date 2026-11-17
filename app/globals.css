@@ -389,304 +389,325 @@ code {
 }
 
 /* ==========================================================================
-   Easter egg terminal (faithful port — fixed dark palette by design)
+   Easter egg terminal ("sudo hire rahul") — brand palette, two columns
    ========================================================================== */
 .easter-egg {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 16px;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
+  font-family: var(--font-jbmono), "SFMono-Regular", Consolas, monospace;
 }
-
 .easter-egg[data-active] {
   pointer-events: auto;
   opacity: 1;
 }
-
 .easter-egg__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(4px);
+  background: rgba(7, 34, 51, 0.72);
+  backdrop-filter: blur(6px);
 }
-
 .easter-egg__terminal {
   position: relative;
-  width: 90%;
-  max-width: 680px;
-  background: #0d1117;
-  border: 1px solid #2d3548;
-  border-radius: 12px;
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--teal);
+  border: 1px solid rgba(242, 240, 233, 0.14);
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
-  transform: scale(0.95);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--pearl);
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(185, 241, 47, 0.06);
+  transform: translateY(12px) scale(0.97);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
 .easter-egg[data-active] .easter-egg__terminal {
-  transform: scale(1);
+  transform: none;
+}
+/* lime contour wash in the corner */
+.easter-egg__terminal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: url("/textures/topo-lime.svg") center / cover no-repeat;
+  opacity: 0.06;
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 100% 0%, #000 20%, transparent 75%);
+  mask-image: radial-gradient(ellipse 70% 70% at 100% 0%, #000 20%, transparent 75%);
 }
 
 .easter-egg__header {
-  background: #1a1f2e;
-  border-bottom: 1px solid #2d3548;
-  padding: 12px 16px;
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 14px 16px 14px 18px;
+  background: var(--teal-deep);
+  border-bottom: 1px solid rgba(242, 240, 233, 0.1);
 }
-
 .easter-egg__led {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
-  background: #ff5f56;
-}
-.easter-egg__led:nth-child(2) {
-  background: #ffbd2e;
+  background: rgba(242, 240, 233, 0.22);
 }
 .easter-egg__led:nth-child(3) {
-  background: #27ca3f;
+  background: var(--lime);
+  box-shadow: 0 0 10px rgba(185, 241, 47, 0.7);
 }
-
 .easter-egg__title {
   flex: 1;
-  color: #8b949e;
-  font-size: 13px;
-  font-weight: 500;
   margin-left: 8px;
+  font-size: 12.5px;
+  color: #94a9b4;
 }
-
 .easter-egg__close {
-  background: none;
-  border: none;
-  color: #8b949e;
-  font-size: 14px;
-  line-height: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(242, 240, 233, 0.16);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--pearl);
   cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 .easter-egg__close:hover {
-  background: #2d3548;
-  color: #c9d1d9;
+  background: var(--lime);
+  border-color: var(--lime);
+  color: var(--teal);
 }
 
 .easter-egg__body {
-  padding: 20px;
-  color: #c9d1d9;
-  font-size: 15px;
-  line-height: 1.6;
-  max-height: 60vh;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 28px;
+  padding: 26px 28px 28px;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(242, 240, 233, 0.25) transparent;
+}
+.easter-egg__body::-webkit-scrollbar {
+  width: 8px;
+}
+.easter-egg__body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.easter-egg__body::-webkit-scrollbar-thumb {
+  background: rgba(242, 240, 233, 0.22);
+  border: 2px solid var(--teal);
+  border-radius: 999px;
 }
 
-.easter-egg__line {
-  margin-bottom: 12px;
+/* ---- log column ---- */
+.easter-egg__log {
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.easter-egg__cmdline {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(4px);
-  animation: slideIn 0.3s ease forwards;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: 15px;
+  font-weight: 500;
 }
-
-.easter-egg__line:nth-child(1) { animation-delay: 0.1s; }
-.easter-egg__line:nth-child(2) { animation-delay: 0.3s; }
-.easter-egg__line:nth-child(3) { animation-delay: 0.5s; }
-.easter-egg__line:nth-child(4) { animation-delay: 0.7s; }
-.easter-egg__line:nth-child(5) { animation-delay: 0.9s; }
-.easter-egg__line:nth-child(6) { animation-delay: 1.1s; }
-.easter-egg__line:nth-child(7) { animation-delay: 1.3s; }
-.easter-egg__line:nth-child(8) { animation-delay: 1.5s; }
-.easter-egg__line:nth-child(9) { animation-delay: 1.7s; }
-.easter-egg__line:nth-child(10) { animation-delay: 1.9s; }
-.easter-egg__line:nth-child(11) { animation-delay: 2.1s; }
+/* Higher specificity than .easter-egg__line, which resets margins. */
+.easter-egg__line.easter-egg__cmdline--idle {
+  margin: 28px 0 0;
+}
+.easter-egg__prompt {
+  color: var(--lime);
+  font-weight: 600;
+}
+.easter-egg__cmd {
+  color: var(--pearl);
+}
+.easter-egg__caret {
+  display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--lime);
+}
+.easter-egg__caret--blink {
+  animation: blink 1s steps(1) infinite;
+}
+.easter-egg__muted {
+  color: #94a9b4;
+}
+.easter-egg__line {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: slideIn 0.35s ease forwards;
+}
+.easter-egg__out > .easter-egg__line:nth-child(1) { animation-delay: 0.05s; }
+.easter-egg__checks .easter-egg__line:nth-child(1) { animation-delay: 0.25s; }
+.easter-egg__checks .easter-egg__line:nth-child(2) { animation-delay: 0.4s; }
+.easter-egg__checks .easter-egg__line:nth-child(3) { animation-delay: 0.55s; }
+.easter-egg__checks .easter-egg__line:nth-child(4) { animation-delay: 0.7s; }
+.easter-egg__checks .easter-egg__line:nth-child(5) { animation-delay: 0.85s; }
+.easter-egg__granted { animation-delay: 1.05s !important; }
+.easter-egg__actions { animation-delay: 1.2s !important; }
+.easter-egg__cmdline--idle { animation-delay: 1.35s !important; }
 
 @keyframes slideIn {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
-
-.easter-egg__prompt {
-  color: #3fb950;
-  font-weight: 600;
-  min-width: 16px;
-}
-
-.easter-egg__cmd {
-  color: #c9d1d9;
-  font-weight: 500;
-}
-
-.easter-egg__text {
-  color: #8b949e;
-}
-
-.easter-egg__text a {
-  color: #58a6ff;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
-}
-.easter-egg__text a:hover {
-  border-bottom-color: #58a6ff;
-}
-
-.easter-egg__check {
-  color: #3fb950;
-  font-size: 13px;
-  width: 16px;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.easter-egg__line--output {
-  padding-left: 24px;
-}
-
-.easter-egg__line--success {
-  margin-top: 16px;
-  padding-left: 24px;
-}
-
-.easter-egg__badge {
-  background: linear-gradient(135deg, #238636, #2ea043);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  display: inline-block;
-}
-
-.easter-egg__line--final {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.easter-egg__cursor {
-  color: #3fb950;
-  font-weight: 600;
-  animation: blink 1s infinite;
-}
-
 @keyframes blink {
   0%, 50% { opacity: 1; }
   51%, 100% { opacity: 0; }
 }
 
-/* Typing effect */
-.easter-egg__cmd::after {
-  content: "";
+.easter-egg__checks {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.easter-egg__checks .easter-egg__line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.easter-egg__tick {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: rgba(185, 241, 47, 0.14);
+  color: var(--lime);
+}
+.easter-egg__granted {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-top: 26px;
+}
+.easter-egg__badge {
   display: inline-block;
-  width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  vertical-align: bottom;
-  animation: typing 0.3s steps(16, end) forwards;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: var(--lime);
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px -4px rgba(185, 241, 47, 0.6);
+}
+.easter-egg__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.easter-egg__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid rgba(242, 240, 233, 0.22);
+  border-radius: 999px;
+  color: var(--pearl);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.easter-egg__btn:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+  transform: translateY(-1px);
+}
+.easter-egg__btn--primary {
+  border-color: var(--lime);
+  background: var(--lime);
+  color: var(--teal);
+  font-weight: 650;
+}
+.easter-egg__btn--primary:hover {
+  color: var(--teal);
 }
 
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@media (max-width: 640px) {
-  .easter-egg__terminal {
-    width: 95%;
-    max-width: none;
-    font-size: 14px;
-  }
-  .easter-egg__body {
-    padding: 16px;
-    max-height: 70vh;
-  }
-  .easter-egg__line {
-    margin-bottom: 10px;
-  }
-  .easter-egg__badge {
-    font-size: 12px;
-    padding: 5px 10px;
-  }
-  .easter-game__canvas {
-    width: 100%;
-    height: auto;
-  }
-}
-
-/* Keyhunter mini-game */
+/* ---- game column ---- */
 .easter-game {
-  margin-top: 18px;
+  min-width: 0;
+  align-self: start;
   padding: 14px;
-  border: 1px solid #2d3548;
-  border-radius: 10px;
-  background: #060912;
+  border: 1px solid rgba(242, 240, 233, 0.12);
+  border-radius: 16px;
+  background: rgba(7, 34, 51, 0.6);
 }
-
 .easter-game__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
-
 .easter-game__label {
+  color: var(--lime);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.easter-game__hint {
+  color: #7390a0;
+  font-size: 10.5px;
+}
+.easter-game__keys {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  color: #58a6ff;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  gap: 3px;
 }
-
-.easter-game__hint {
-  color: #57606a;
-  font-size: 11px;
+.easter-game__keys > span {
+  margin-left: 5px;
 }
-
+.easter-game__hint kbd {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(242, 240, 233, 0.18);
+  border-radius: 4px;
+  color: var(--pearl);
+}
 .easter-game__field {
   position: relative;
-  width: 300px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
   aspect-ratio: 1 / 1;
-  background: #04070f;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
+  touch-action: none;
 }
-
 .easter-game__canvas {
   display: block;
   width: 100%;
   height: 100%;
-  background: #04070f;
-  image-rendering: pixelated;
 }
-
 .easter-game__overlay {
   position: absolute;
   inset: 0;
@@ -695,64 +716,90 @@ code {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  background: rgba(4, 7, 15, 0.88);
-  text-align: center;
   padding: 20px;
+  text-align: center;
+  background: rgba(7, 34, 51, 0.82);
   transition: opacity 0.25s ease;
 }
-
 .easter-game__overlay.is-hidden {
   opacity: 0;
   pointer-events: none;
 }
-
 .easter-game__tag {
-  color: #8b949e;
-  font-size: 13px;
   margin: 0;
+  color: #c8d3d6;
+  font-size: 13px;
 }
-
 .easter-game__start {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #238636, #2ea043);
-  color: #fff;
+  padding: 10px 18px;
   border: none;
-  border-radius: 8px;
-  padding: 9px 18px;
-  font: 600 13px "SF Mono", Monaco, monospace;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--teal);
+  font: 650 13px var(--font-jbmono), monospace;
   cursor: pointer;
-  transition: transform 0.15s ease, filter 0.2s ease;
+  transition: transform 0.15s ease;
 }
 .easter-game__start:hover {
   transform: translateY(-1px);
-  filter: brightness(1.08);
 }
-
 .easter-game__score {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 10px;
-  color: #57606a;
+  margin-top: 12px;
+  color: #7390a0;
   font-size: 12px;
 }
 .easter-game__score b {
-  color: #c9d1d9;
+  color: var(--pearl);
+  font-weight: 600;
 }
-.easter-game__scoreval { color: #3fb950 !important; }
-.easter-game__best { color: #e3b341 !important; }
-
 .easter-game__status {
-  color: #3fb950;
-  text-transform: uppercase;
-  font-size: 10px;
+  color: var(--lime);
+  font-size: 10.5px;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .easter-game__status.is-over {
-  color: #f85149;
+  color: #ffb4a6;
+}
+
+@media (max-width: 760px) {
+  .easter-egg {
+    padding: 10px;
+    align-items: flex-end;
+  }
+  .easter-egg__terminal {
+    max-height: calc(100dvh - 20px);
+    border-radius: 20px;
+  }
+  .easter-egg__body {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    padding: 20px 18px 22px;
+  }
+  .easter-egg__log {
+    font-size: 13.5px;
+  }
+  .easter-game__field {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .easter-game__keys > span {
+    display: none;
+  }
+  /* Buttons share each row evenly instead of bunching left. */
+  .easter-egg__actions {
+    gap: 10px;
+  }
+  .easter-egg__btn {
+    flex: 1 1 calc(50% - 5px);
+  }
 }
 
 /* ==========================================================================
