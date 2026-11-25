@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
       destination: "/resume",
       permanent: true,
     },
+    // WorkTrack was built and renamed Hourweft.
+    { source: "/projects/worktrack", destination: "/projects/hourweft", permanent: true },
   ],
 };
 

@@ -169,18 +169,39 @@ export default function ResumePage() {
         <div className="resume-item">
           <div className="top">
             <div>
-              <h3>Timesheet Tracker — Work logging &amp; timesheet export</h3>
+              <h3>SupportIQ — AI customer support platform</h3>
             </div>
             <span className="resume-when">2026</span>
           </div>
           <ul>
             <li>
-              Full-stack web app for logging daily work and generating monthly timesheets, with
-              Excel and PDF export. Next.js, Express.js, Prisma, PostgreSQL.
+              Embeddable support assistant (one script tag) answering from a knowledge base with
+              cited sources via hybrid pgvector + full-text search; LLM triage with human handoff,
+              an agent inbox with AI copilot, and analytics.
             </li>
           </ul>
           <ul className="resume-tags">
-            {["Next.js", "Express", "Prisma", "PostgreSQL"].map((t) => (
+            {["Next.js 16", "TypeScript", "PostgreSQL", "pgvector", "Prisma", "OpenRouter"].map((t) => (
+              <li key={t}>{t}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="resume-item">
+          <div className="top">
+            <div>
+              <h3>Hourweft — Work-log &amp; timesheet platform</h3>
+            </div>
+            <span className="resume-when">2026</span>
+          </div>
+          <ul>
+            <li>
+              Next.js client over an Express API with PostgreSQL/Prisma; JWT auth with scrypt
+              hashing, day/week/month timesheets, Excel/PDF import with editable preview, and
+              formatted report export.
+            </li>
+          </ul>
+          <ul className="resume-tags">
+            {["Next.js", "Express", "Prisma", "PostgreSQL", "TypeScript"].map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>

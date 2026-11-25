@@ -225,20 +225,27 @@ export const projects: Project[] = [
     mockup: "pharmacy",
   },
   {
-    id: "worktrack",
-    title: "WorkTrack",
-    subtitle: "Timesheet & productivity platform",
-    desc: "Time tracking platform with live timer, idle detection, manual entries, project/task boards, and weekly/monthly reports. Currently at design stage — wireframes complete.",
-    status: "design",
-    statusLabel: "In Design",
+    id: "hourweft",
+    title: "Hourweft",
+    subtitle: "Work-log & timesheet platform",
+    desc:
+      "A full-stack timesheet app: log daily work against projects, review it in day, week and month views, import existing Excel/PDF timesheets with an editable preview, and export formatted reports — Next.js over an Express and PostgreSQL API.",
+    status: "live",
+    // Not deployed yet (README, 2026-11-19), so only the Source action is shown.
+    // TODO: add a Live Demo action and a real screenshot once it's deployed.
+    statusLabel: "Shipped",
     tech: [
-      { label: "React", kind: "muted" },
-      { label: "TypeScript", kind: "muted" },
-      { label: "Node.js", kind: "muted" },
-      { label: "PostgreSQL", kind: "muted" },
+      { label: "Next.js 16", kind: "react" },
+      { label: "Express 5", kind: "node" },
+      { label: "PostgreSQL", kind: "db" },
+      { label: "Prisma" },
+      { label: "TypeScript" },
+      { label: "JWT" },
     ],
-    note: "Stack planned, implementation pending",
-    caseStudy: "worktrack",
+    actions: [
+      { label: "Source", href: "https://github.com/mrahulsit/Hourweft", primary: true },
+    ],
+    caseStudy: "hourweft",
     mockup: "worktrack",
   },
   {
@@ -268,26 +275,34 @@ export const projects: Project[] = [
     mockup: "gemini",
   },
   {
-    id: "chatbot",
+    id: "supportiq",
     title: "SupportIQ",
-    subtitle: "Embeddable AI chat widget",
+    subtitle: "AI customer support platform",
     desc:
-      "A drop-in AI assistant for any website: one script tag adds a chat button that opens the assistant in an iframe, with replies from an open model via OpenRouter.",
+      "One script tag adds an AI support assistant to any website. It answers from your own docs with cited sources (pgvector + full-text hybrid search), triages every conversation with an LLM, hands off to a human when needed, and gives the team an inbox with an AI copilot and analytics.",
     status: "live",
-    // The demo (chatbot-zeta-topaz.vercel.app) loads, but every message gets
-    // "No response from AI" as of 2026-11-09, so the Live Demo action is removed.
-    // TODO: fix the OpenRouter key/model, then restore statusLabel "Live", the
-    // Live Demo action below, and add a real screenshot as `image`.
+    // The demo (support-iq-puce.vercel.app) returns 404 as of 2026-11-20, so the
+    // Live Demo action is left out.
+    // TODO: redeploy, then restore statusLabel "Live", add the Live Demo action
+    // and a real screenshot as `image`.
     statusLabel: "Shipped",
     tech: [
-      { label: "Next.js 15", kind: "react" },
+      { label: "Next.js 16", kind: "react" },
       { label: "React 19", kind: "react" },
-      { label: "TypeScript" },
+      { label: "PostgreSQL + pgvector", kind: "db" },
+      { label: "Prisma 7" },
       { label: "OpenRouter API" },
+      { label: "TypeScript" },
+    ],
+    highlights: [
+      "RAG answers with citations from hybrid vector + full-text search",
+      "LLM triage with automatic human handoff",
+      "Agent inbox with an AI reply copilot",
+      "Works fully offline without an API key",
     ],
     actions: [
-      // { label: "Live Demo", href: "https://chatbot-zeta-topaz.vercel.app", primary: true },
-      { label: "Source", href: "https://github.com/mrahulsit/Chatbot", primary: true },
+      // { label: "Live Demo", href: "https://support-iq-puce.vercel.app", primary: true },
+      { label: "Source", href: "https://github.com/mrahulsit/SupportIQ", primary: true },
     ],
     caseStudy: "supportiq",
     mockup: "chatbot",
@@ -361,8 +376,10 @@ export const githubRepoDescriptions: Record<string, string> = {
     "Online pharmacy storefront with catalog, cart, pincode serviceability and JWT auth.",
   GeminiClone:
     "Full-stack Gemini chat assistant with streaming, saved chats and web search.",
-  Chatbot:
-    "Embeddable AI chat widget — one script tag adds an assistant to any site.",
+  Hourweft:
+    "Work-log and timesheet app with day/week/month views and Excel/PDF import and export.",
+  SupportIQ:
+    "AI customer support platform: embeddable widget, RAG answers, LLM triage and human handoff.",
 };
 
 /**
@@ -372,7 +389,6 @@ export const githubRepoDescriptions: Record<string, string> = {
 export const githubDisplayNames: Record<string, string> = {
   "Pharmacy-App": "MediCart",
   GeminiClone: "Lumina",
-  Chatbot: "SupportIQ",
 };
 
 /**
@@ -380,7 +396,7 @@ export const githubDisplayNames: Record<string, string> = {
  * badge is hidden so the GitHub section never advertises a dead link.
  * Remove a name once its deployment is back up.
  */
-export const githubOfflineHomepages = new Set<string>(["GeminiClone", "Pharmacy-App", "Chatbot"]);
+export const githubOfflineHomepages = new Set<string>(["GeminiClone", "Pharmacy-App", "SupportIQ"]);
 
 export const contact = {
   title: "Let's build something useful.",
