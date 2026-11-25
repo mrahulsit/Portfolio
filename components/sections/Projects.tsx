@@ -437,9 +437,9 @@ export default function Projects() {
           <SectionHead
             index="03"
             label="Projects"
-            meta={`${live} shipped · ${design} in design`}
+            meta={`${live} shipped${design ? ` · ${design} in design` : ""}`}
             title="Things I've engineered."
-            lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Hover a row for a look; open one for the full case study."
+            lede="Full-stack applications from data model to interface, including AI products. Hover a row for a look; open one for the full case study."
           />
 
           <ProjectIndex />

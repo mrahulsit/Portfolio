@@ -47,6 +47,7 @@ export default async function ProjectsPage({
       ? projects
       : projects.filter((p) => p.status === active);
   const featured = projects[0];
+  const designCount = projects.filter((p) => p.status === "design").length;
 
   return (
     <div className="py-[92px] max-sm:pt-16 pb-[60px]">
@@ -61,15 +62,15 @@ export default async function ProjectsPage({
 
         <SectionHead
           label="Projects"
-          meta={`${listed.length} listed · ${projects.filter((p) => p.status === "live").length} shipped · ${projects.filter((p) => p.status === "design").length} in design`}
+          meta={`${listed.length} listed · ${projects.filter((p) => p.status === "live").length} shipped${designCount ? ` · ${designCount} in design` : ""}`}
           title="Things I've engineered."
-          lede="Production applications with real deployment pipelines — plus AI interfaces and concepts in design. Each one demonstrates full-stack thinking from data model to user experience."
+          lede="Full-stack applications, including AI products. Each one demonstrates full-stack thinking from data model to user experience."
         />
 
         <div className="mb-[44px] flex flex-wrap items-center gap-5 border-b border-line pb-4">
           <Layers size={13} className="text-faint" aria-hidden />
           <div className="flex flex-wrap gap-5">
-            {(["all", "live", "design"] as Filter[]).map((f) => {
+            {(["all", "live", "design"] as Filter[]).filter((f) => f !== "design" || designCount).map((f) => {
               const isActive = active === f;
               return (
                 <Link
