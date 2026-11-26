@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FaChevronLeft as ChevronLeft } from "react-icons/fa";
 import { MdLayers as Layers } from "react-icons/md";
 import SectionHead from "@/components/ui/SectionHead";
-import Tag from "@/components/ui/Tag";
 import {
   ActionRow,
   ProjectScreen,

@@ -165,7 +165,7 @@ export default function Contact() {
 
             <div className="mt-8 rounded-card bg-lime p-6 text-teal">
               <p className="kicker mb-3.5 text-teal/70">
-                What I'm looking for
+                What I&apos;m looking for
               </p>
               <ul className="grid gap-2.5 text-[14px]">
                 {[
