@@ -30,14 +30,10 @@ export default function StatsCounter({
   const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
   const mv = useMotionValue(0);
   const spring = useSpring(mv, { duration: duration * 1000, bounce: 0 });
-  const [display, setDisplay] = useState(reduce ? value : 0);
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (reduce) {
-      setDisplay(value);
-      return;
-    }
-    if (inView) mv.set(value);
+    if (!reduce && inView) mv.set(value);
   }, [inView, value, mv, reduce]);
 
   useEffect(() => spring.on("change", (v) => setDisplay(v)), [spring]);
@@ -45,7 +41,7 @@ export default function StatsCounter({
   return (
     <span ref={ref} className={cn("tabular-nums", className)}>
       {prefix}
-      {display.toFixed(decimals)}
+      {(reduce ? value : display).toFixed(decimals)}
       {suffix}
     </span>
   );

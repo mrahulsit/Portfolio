@@ -132,14 +132,15 @@ export default function EasterEgg() {
 
 /** Left column: the command types itself, then the checks stream in. */
 function Log() {
-  const [typed, setTyped] = useState(0);
+  // Only mounted after the phrase is typed, never on the server, so reading
+  // the media query in the initializer is safe and skips the typing effect.
+  const [typed, setTyped] = useState(() =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ? PHRASE.length : 0,
+  );
   const done = typed >= PHRASE.length;
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setTyped(PHRASE.length);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => {
       setTyped((n) => {
         if (n >= PHRASE.length) {
@@ -205,6 +206,15 @@ function Log() {
   );
 }
 
+/* best keyhunter score; the game only mounts client-side */
+function readBest() {
+  try {
+    return parseInt(localStorage.getItem("keyhunter_best") || "0", 10) || 0;
+  } catch {
+    return 0;
+  }
+}
+
 /* short synthesized keypress blip */
 function blip() {
   try {
@@ -233,7 +243,7 @@ function blip() {
 function Keyhunter() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
-  const [best, setBest] = useState(0);
+  const [best, setBest] = useState(readBest);
   const [status, setStatus] = useState("ready");
   const [overlayHidden, setOverlayHidden] = useState(false);
   const [tag, setTag] = useState("Eat the keys · grow the stack");
@@ -245,7 +255,10 @@ function Keyhunter() {
   const running = useRef(false);
   const loop = useRef<ReturnType<typeof setInterval> | null>(null);
   const scoreRef = useRef(0);
-  const bestRef = useRef(0);
+  const bestRef = useRef(best);
+  // `step` and `speedUp` need each other; the interval calls through this ref
+  // so neither has to be declared before the other.
+  const stepRef = useRef<() => void>(() => {});
 
   const paintField = (ctx: CanvasRenderingContext2D, size: number) => {
     ctx.fillStyle = C.field;
@@ -322,6 +335,12 @@ function Keyhunter() {
     setTag(`Game over — score ${scoreRef.current}`);
   }, []);
 
+  const speedUp = useCallback(() => {
+    if (loop.current) clearInterval(loop.current);
+    const delay = Math.max(60, 150 - scoreRef.current * 6);
+    loop.current = setInterval(() => stepRef.current(), delay);
+  }, []);
+
   const step = useCallback(() => {
     const head = {
       x: snake.current[0].x + dirNext.current.x,
@@ -347,13 +366,10 @@ function Keyhunter() {
       snake.current.pop();
     }
     draw();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draw, gameOver, placeFood]);
+  }, [draw, gameOver, placeFood, speedUp]);
 
-  const speedUp = useCallback(() => {
-    if (loop.current) clearInterval(loop.current);
-    const delay = Math.max(60, 150 - scoreRef.current * 6);
-    loop.current = setInterval(step, delay);
+  useEffect(() => {
+    stepRef.current = step;
   }, [step]);
 
   const start = useCallback(() => {
@@ -374,15 +390,8 @@ function Keyhunter() {
     draw();
   }, [draw, placeFood, speedUp]);
 
-  /* best score + initial paint */
+  /* initial paint */
   useEffect(() => {
-    try {
-      const b = parseInt(localStorage.getItem("keyhunter_best") || "0", 10) || 0;
-      bestRef.current = b;
-      setBest(b);
-    } catch {
-      /* ignore */
-    }
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
     if (canvas && ctx) paintField(ctx, canvas.width);

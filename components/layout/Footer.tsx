@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import {
   FaArrowUp as ArrowUp,
   FaEnvelope as Mail,
@@ -129,18 +129,18 @@ const connect = [
   },
 ];
 
+const noSubscribe = () => () => {};
+const currentYear = () => String(new Date().getFullYear());
+const detectMac = () =>
+  /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent);
+
 export default function Footer() {
   const stats = useVisitorStats();
   const time = useLocalTime();
-  const [year, setYear] = useState("2026");
-  const [isMac, setIsMac] = useState(true);
-
-  useEffect(() => {
-    setYear(String(new Date().getFullYear()));
-    setIsMac(
-      /Mac|iPhone|iPad/i.test(navigator.platform || navigator.userAgent),
-    );
-  }, []);
+  // Client-only values: the server snapshot is what gets prerendered, and the
+  // browser's value replaces it after hydration without a mismatch.
+  const year = useSyncExternalStore(noSubscribe, currentYear, () => "2026");
+  const isMac = useSyncExternalStore(noSubscribe, detectMac, () => true);
 
   const showStats = stats && (stats.active >= 2 || stats.total >= 25);
 
